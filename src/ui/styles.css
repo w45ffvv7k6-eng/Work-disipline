@@ -725,3 +725,107 @@ button:disabled {
   font-size: 3rem;
   margin-bottom: 8px;
 }
+
+/* ---------- Minuteur de repos ---------- */
+
+.rest-bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--nav-h) + var(--safe-bottom));
+  z-index: 30;
+  display: block;
+  width: 100%;
+  background: #1d2a22;
+  border-top: 2px solid var(--accent);
+  overflow: hidden;
+  animation: slide-up 0.2s ease;
+}
+
+.rest-progress {
+  position: absolute;
+  inset: 0;
+  background: var(--accent-soft);
+  transform-origin: left;
+  transition: transform 0.25s linear;
+}
+
+.rest-bar-inner {
+  position: relative;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+}
+
+.rest-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.rest-clock {
+  font-size: 1.9rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.rest-label {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.rest-btn {
+  height: var(--tap);
+  min-width: 58px;
+  padding: 0 10px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  font-weight: 800;
+  font-size: 1rem;
+}
+.rest-btn:active {
+  transform: scale(0.95);
+}
+.rest-skip {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.rest-done .rest-clock {
+  font-size: 1.15rem;
+  color: var(--accent);
+  padding: 10px 0;
+}
+
+/* Laisse la place à la barre du minuteur en bas de la séance. */
+.with-rest-space {
+  padding-bottom: 110px;
+}
+
+.rest-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.rest-choice {
+  height: var(--tap);
+  font-size: 1.1rem;
+}
+
+.switch-accent.on {
+  background: var(--accent);
+}
+
+.value-pill {
+  background: var(--surface-2);
+  border-radius: 10px;
+  padding: 8px 14px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}

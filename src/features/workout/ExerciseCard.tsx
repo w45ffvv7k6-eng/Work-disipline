@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { useRepositories } from '../../data';
 import type { WorkoutExerciseDetail } from '../../data/repositories';
-import { formatKg, formatLastTime, formatTarget } from '../../domain/format';
+import { formatClock, formatKg, formatLastTime, formatTarget } from '../../domain/format';
 import { RECORD_LABELS, RECORD_UNITS, type RecordHit } from '../../domain/records';
-import type { WorkoutSet } from '../../domain/types';
+import { resolveRestSec } from '../../domain/timer';
+import type { Settings, WorkoutSet } from '../../domain/types';
+import { unlockAudio } from '../../ui/alarm';
 import { haptic, useFeedback } from '../../ui/feedback';
 import { CheckIcon, MoreIcon } from '../../ui/icons';
 import { Sheet } from '../../ui/Sheet';
+import { RestPickerSheet } from '../timer/RestPickerSheet';
 import { SetEditorSheet } from './SetEditorSheet';
 
 interface Props {
   detail: WorkoutExerciseDetail;
-  weightStep: number;
+  settings: Settings;
 }
 
 export function recordMessage(hits: RecordHit[]): string {
@@ -19,12 +22,14 @@ export function recordMessage(hits: RecordHit[]): string {
   return `🏆 Nouveau record ! ${parts.join(' · ')}`;
 }
 
-export function ExerciseCard({ detail, weightStep }: Props) {
-  const { workouts } = useRepositories();
+export function ExerciseCard({ detail, settings }: Props) {
+  const { workouts, exercises, timer } = useRepositories();
   const { toast, confirm } = useFeedback();
   const { exercise, sets, lastTime, records, workoutExercise } = detail;
   const [editing, setEditing] = useState<WorkoutSet | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [pickingRest, setPickingRest] = useState(false);
+  const restSec = resolveRestSec(workoutExercise, exercise, settings.defaultRestSec);
 
   const lastTimeText = formatLastTime(lastTime, exercise.kind);
   const targetText = formatTarget(workoutExercise, exercise.kind);
@@ -32,7 +37,10 @@ export function ExerciseCard({ detail, weightStep }: Props) {
 
   const toggle = async (set: WorkoutSet) => {
     haptic();
+    // Le tap débloque le son sur iPhone pour la fin du repos.
+    unlockAudio();
     const hits = await workouts.toggleSetCompleted(set.id);
+    if (!set.completed) await timer.start(workoutExercise.id, restSec);
     if (hits.length > 0) {
       haptic([60, 40, 60]);
       toast(recordMessage(hits), 'gold');
@@ -115,7 +123,7 @@ export function ExerciseCard({ detail, weightStep }: Props) {
         <SetEditorSheet
           set={editing}
           kind={exercise.kind}
-          weightStep={weightStep}
+          weightStep={settings.weightStepKg}
           onClose={() => setEditing(null)}
           onSave={async (values, complete) => {
             setEditing(null);
@@ -129,9 +137,32 @@ export function ExerciseCard({ detail, weightStep }: Props) {
         />
       )}
 
+      {pickingRest && (
+        <RestPickerSheet
+          title={`Repos · ${exercise.name}`}
+          current={restSec}
+          onClose={() => setPickingRest(false)}
+          onPick={async (sec) => {
+            setPickingRest(false);
+            // Pour cette séance, et par défaut pour les prochaines fois sur cet exercice.
+            await workouts.setRest(workoutExercise.id, sec);
+            await exercises.update(exercise.id, { restSec: sec });
+          }}
+        />
+      )}
+
       {menuOpen && (
         <Sheet onClose={() => setMenuOpen(false)} title={exercise.name}>
           <div className="stack">
+            <button
+              className="btn btn-block"
+              onClick={() => {
+                setMenuOpen(false);
+                setPickingRest(true);
+              }}
+            >
+              Temps de repos : {formatClock(restSec * 1000)}
+            </button>
             <button className="btn btn-block btn-danger" onClick={removeExercise}>
               Retirer l’exercice de la séance
             </button>

@@ -118,6 +118,8 @@ export interface Settings {
   weightStepKg: number;
   sound: boolean;
   vibration: boolean;
+  /** Empêche l'écran de se mettre en veille pendant une séance. */
+  keepAwake: boolean;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -126,6 +128,7 @@ export const DEFAULT_SETTINGS: Settings = {
   weightStepKg: 2.5,
   sound: true,
   vibration: true,
+  keepAwake: true,
 };
 
 export interface Profile {

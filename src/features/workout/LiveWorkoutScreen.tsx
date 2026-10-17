@@ -2,13 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import { formatClock } from '../../domain/format';
-import type { Exercise } from '../../domain/types';
+import { DEFAULT_SETTINGS, type Exercise } from '../../domain/types';
 import { useFeedback } from '../../ui/feedback';
 import { BackIcon, MoreIcon } from '../../ui/icons';
 import { Sheet } from '../../ui/Sheet';
 import { useNow } from '../../ui/useNow';
 import { ExerciseCard } from './ExerciseCard';
 import { ExercisePicker } from './ExercisePicker';
+import { RestTimerBar } from '../timer/RestTimerBar';
+import { useWakeLock } from '../../ui/useWakeLock';
 
 export function LiveWorkoutScreen() {
   const { id = '' } = useParams();
@@ -21,6 +23,7 @@ export function LiveWorkoutScreen() {
   const [picking, setPicking] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [renaming, setRenaming] = useState(false);
+  useWakeLock(!!detail && detail.workout.status === 'active' && (settings?.keepAwake ?? true));
 
   if (detail === undefined) return null; // chargement (quelques millisecondes)
   if (detail === null || detail.workout.status === 'finished') {
@@ -106,10 +109,10 @@ export function LiveWorkoutScreen() {
         </div>
       </header>
 
-      <div className="screen" style={{ paddingTop: 16 }}>
+      <div className="screen with-rest-space" style={{ paddingTop: 16 }}>
         <div className="stack">
           {exercises.map((e) => (
-            <ExerciseCard key={e.workoutExercise.id} detail={e} weightStep={settings?.weightStepKg ?? 2.5} />
+            <ExerciseCard key={e.workoutExercise.id} detail={e} settings={settings ?? DEFAULT_SETTINGS} />
           ))}
           {exercises.length === 0 && (
             <div className="empty">
@@ -125,6 +128,8 @@ export function LiveWorkoutScreen() {
         <h2 className="section-title">Notes de séance</h2>
         <NotesField workoutId={workout.id} initial={workout.notes} />
       </div>
+
+      <RestTimerBar labelFor={(weId) => exercises.find((e) => e.workoutExercise.id === weId)?.exercise.name} />
 
       {picking && <ExercisePicker onClose={() => setPicking(false)} onPick={addExercise} />}
 

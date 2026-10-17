@@ -2,6 +2,7 @@ import { liveQuery } from 'dexie';
 import { newId } from '../../domain/id';
 import { prefillValues, workingSets } from '../../domain/prefill';
 import { computeRecords, type RecordHit } from '../../domain/records';
+import { adjustTimer } from '../../domain/timer';
 import {
   DEFAULT_SETTINGS,
   type Exercise,
@@ -15,6 +16,7 @@ import type {
   ExerciseRepository,
   Repositories,
   SettingsRepository,
+  TimerRepository,
   WorkoutDetail,
   WorkoutRepository,
 } from '../repositories';
@@ -70,6 +72,9 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
       const exercise: Exercise = { ...data, id: newId(), isCustom: true, updatedAt: now() };
       await db.exercises.add(exercise);
       return exercise;
+    },
+    async update(id, patch) {
+      await db.exercises.update(id, { ...patch, updatedAt: now() });
     },
   };
 
@@ -169,6 +174,10 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
       });
     },
 
+    async setRest(workoutExerciseId, restSec) {
+      await db.workoutExercises.update(workoutExerciseId, { restSec, updatedAt: now() });
+    },
+
     async addSet(workoutExerciseId) {
       const we = await db.workoutExercises.get(workoutExerciseId);
       if (!we) throw new Error('Exercice introuvable dans la séance');
@@ -230,5 +239,24 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
     },
   };
 
-  return { exercises, workouts, settings };
+  // ---------- Minuteur de repos ----------
+
+  const timer: TimerRepository = {
+    watch: () => liveQuery(async () => (await db.timer.get('timer')) ?? null),
+    async start(workoutExerciseId, durationSec) {
+      await db.timer.put({ id: 'timer', workoutExerciseId, durationSec, endsAt: now() + durationSec * 1000 });
+    },
+    async adjust(deltaSec) {
+      const current = await db.timer.get('timer');
+      if (!current) return;
+      const next = adjustTimer(current, deltaSec, now());
+      if (next) await db.timer.put(next);
+      else await db.timer.clear();
+    },
+    async stop() {
+      await db.timer.clear();
+    },
+  };
+
+  return { exercises, workouts, settings, timer };
 }

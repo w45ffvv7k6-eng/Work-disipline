@@ -3,7 +3,7 @@
 // cloud (ex. Supabase), on écrira une autre implémentation sans toucher aux écrans.
 
 import type { RecordHit } from '../domain/records';
-import type { Exercise, Settings, Workout, WorkoutExercise, WorkoutSet } from '../domain/types';
+import type { ActiveTimer, Exercise, Settings, Workout, WorkoutExercise, WorkoutSet } from '../domain/types';
 
 /** Flux de données qui se met à jour tout seul quand la base change. */
 export interface Subscribable<T> {
@@ -14,6 +14,7 @@ export interface ExerciseRepository {
   watchAll(): Subscribable<Exercise[]>;
   get(id: string): Promise<Exercise | undefined>;
   create(data: Pick<Exercise, 'name' | 'muscleGroup' | 'kind'>): Promise<Exercise>;
+  update(id: string, patch: Partial<Pick<Exercise, 'name' | 'muscleGroup' | 'kind' | 'restSec'>>): Promise<void>;
 }
 
 export interface WorkoutExerciseDetail {
@@ -49,6 +50,8 @@ export interface WorkoutRepository {
    */
   addExercise(workoutId: string, exerciseId: string, setCount?: number): Promise<WorkoutExercise>;
   removeExercise(workoutExerciseId: string): Promise<void>;
+  /** Change le repos d'un exercice pour cette séance. */
+  setRest(workoutExerciseId: string, restSec: number): Promise<void>;
 
   /** Ajoute une série pré-remplie avec les valeurs de la dernière fois. */
   addSet(workoutExerciseId: string): Promise<WorkoutSet>;
@@ -56,6 +59,14 @@ export interface WorkoutRepository {
   /** Valide / dévalide une série. Renvoie les records battus si la série vient d'être validée. */
   toggleSetCompleted(setId: string): Promise<RecordHit[]>;
   deleteSet(setId: string): Promise<void>;
+}
+
+/** Minuteur de repos (un seul à la fois), conservé même si l'appli est fermée. */
+export interface TimerRepository {
+  watch(): Subscribable<ActiveTimer | null>;
+  start(workoutExerciseId: string, durationSec: number): Promise<void>;
+  adjust(deltaSec: number): Promise<void>;
+  stop(): Promise<void>;
 }
 
 export interface SettingsRepository {
@@ -68,4 +79,5 @@ export interface Repositories {
   exercises: ExerciseRepository;
   workouts: WorkoutRepository;
   settings: SettingsRepository;
+  timer: TimerRepository;
 }
