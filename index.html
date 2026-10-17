@@ -6,8 +6,36 @@
     <meta name="theme-color" content="#0f1115" />
     <title>Muscu</title>
   </head>
-  <body>
+  <body style="background:#0f1115">
     <div id="root"></div>
+    <!-- Filet de sécurité : si l'appli ne démarre pas, on affiche l'erreur au lieu d'une page blanche. -->
+    <script>
+      (function () {
+        var errors = [];
+        function show() {
+          var root = document.getElementById('root');
+          if (!root || root.childElementCount > 0) return;
+          root.innerHTML =
+            '<div style="font-family:system-ui,sans-serif;color:#f1f3f7;background:#0f1115;padding:24px;line-height:1.5">' +
+            '<h1 style="font-size:22px">L’appli n’a pas pu démarrer</h1>' +
+            '<p>Fais une capture d’écran de cette page et envoie-la pour qu’on corrige le problème.</p>' +
+            '<p style="font-size:13px;color:#9aa3b5;word-break:break-word">' +
+            (errors.join('<br>') || 'Aucune erreur détectée (chargement trop long ?)') +
+            '<br><br>' + navigator.userAgent + '</p>' +
+            '<button onclick="location.reload()" style="font-size:18px;padding:14px 20px;border-radius:12px;border:0;background:#4ade80;color:#06210f;font-weight:700">Réessayer</button>' +
+            '</div>';
+        }
+        window.addEventListener('error', function (e) {
+          errors.push(String(e.message || (e.target && e.target.src) || 'Erreur inconnue'));
+          setTimeout(show, 300);
+        }, true);
+        window.addEventListener('unhandledrejection', function (e) {
+          errors.push('Promesse : ' + String((e.reason && e.reason.message) || e.reason));
+          setTimeout(show, 300);
+        });
+        setTimeout(show, 8000);
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
