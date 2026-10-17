@@ -14,6 +14,7 @@ interface SetLike extends SetValues {
 export const DEFAULT_VALUES: Record<ExerciseKind, SetValues> = {
   weighted: { weightKg: 20, reps: 10 },
   bodyweight: { weightKg: 0, reps: 10 },
+  duration: { weightKg: 0, reps: 30 },
 };
 
 /** Séries « de travail » (validées, hors échauffement) d'une séance, dans l'ordre. */

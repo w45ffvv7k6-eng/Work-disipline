@@ -24,6 +24,7 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
   const [weight, setWeight] = useState(formatKg(set.weightKg));
   const [reps, setReps] = useState(String(set.reps));
   const [isWarmup, setIsWarmup] = useState(set.isWarmup);
+  const repStep = kind === 'duration' ? 5 : 1;
 
   const bumpWeight = (delta: number) => setWeight(formatKg(Math.max(0, roundTo(parseNumber(weight) + delta))));
   const bumpReps = (delta: number) => setReps(String(Math.max(0, Math.round(parseNumber(reps)) + delta)));
@@ -33,37 +34,39 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
 
   return (
     <Sheet onClose={onClose} title={`Série ${set.order + 1}`}>
-      <div className="stepper">
-        <div className="stepper-label">{kind === 'bodyweight' ? 'Lest (kg) — 0 si sans lest' : 'Charge (kg)'}</div>
-        <div className="stepper-row">
-          <button className="stepper-btn" onClick={() => bumpWeight(-weightStep)} aria-label="Diminuer la charge">
-            −
-          </button>
-          <input
-            className="stepper-input"
-            inputMode="decimal"
-            value={weight}
-            onChange={(e) => setWeight(e.target.value)}
-            onFocus={(e) => e.target.select()}
-            aria-label="Charge en kg"
-          />
-          <button className="stepper-btn" onClick={() => bumpWeight(weightStep)} aria-label="Augmenter la charge">
-            +
-          </button>
-        </div>
-        <div className="chips-row">
-          {[-10, -5, 5, 10].map((d) => (
-            <button key={d} className="chip" onClick={() => bumpWeight(d)}>
-              {d > 0 ? `+${d}` : `−${-d}`} kg
+      {kind !== 'duration' && (
+        <div className="stepper">
+          <div className="stepper-label">{kind === 'bodyweight' ? 'Lest (kg) — 0 si sans lest' : 'Charge (kg)'}</div>
+          <div className="stepper-row">
+            <button className="stepper-btn" onClick={() => bumpWeight(-weightStep)} aria-label="Diminuer la charge">
+              −
             </button>
-          ))}
+            <input
+              className="stepper-input"
+              inputMode="decimal"
+              value={weight}
+              onChange={(e) => setWeight(e.target.value)}
+              onFocus={(e) => e.target.select()}
+              aria-label="Charge en kg"
+            />
+            <button className="stepper-btn" onClick={() => bumpWeight(weightStep)} aria-label="Augmenter la charge">
+              +
+            </button>
+          </div>
+          <div className="chips-row">
+            {[-10, -5, 5, 10].map((d) => (
+              <button key={d} className="chip" onClick={() => bumpWeight(d)}>
+                {d > 0 ? `+${d}` : `−${-d}`} kg
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="stepper">
-        <div className="stepper-label">Répétitions</div>
+        <div className="stepper-label">{kind === 'duration' ? 'Durée (secondes)' : 'Répétitions'}</div>
         <div className="stepper-row">
-          <button className="stepper-btn" onClick={() => bumpReps(-1)} aria-label="Une répétition de moins">
+          <button className="stepper-btn" onClick={() => bumpReps(-repStep)} aria-label="Diminuer">
             −
           </button>
           <input
@@ -72,9 +75,9 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
             value={reps}
             onChange={(e) => setReps(e.target.value)}
             onFocus={(e) => e.target.select()}
-            aria-label="Répétitions"
+            aria-label={kind === 'duration' ? 'Durée en secondes' : 'Répétitions'}
           />
-          <button className="stepper-btn" onClick={() => bumpReps(1)} aria-label="Une répétition de plus">
+          <button className="stepper-btn" onClick={() => bumpReps(repStep)} aria-label="Augmenter">
             +
           </button>
         </div>

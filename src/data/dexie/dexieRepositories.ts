@@ -63,9 +63,7 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
   const exercises: ExerciseRepository = {
     watchAll: () =>
       liveQuery(async () =>
-        (await db.exercises.toArray())
-          .filter((e) => !e.deletedAt)
-          .sort((a, b) => a.name.localeCompare(b.name, 'fr')),
+        (await db.exercises.toArray()).filter((e) => !e.deletedAt).sort((a, b) => a.name.localeCompare(b.name, 'fr')),
       ),
     get: (id) => db.exercises.get(id),
     async create(data) {

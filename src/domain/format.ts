@@ -8,10 +8,16 @@ export function formatKg(value: number): string {
   return numberFormat.format(value);
 }
 
-/** Libellé de la charge d'une série : "60 kg", "PDC" ou "PDC +10 kg". */
-export function formatLoad(weightKg: number, kind: ExerciseKind): string {
-  if (kind === 'bodyweight') return weightKg > 0 ? `PDC +${formatKg(weightKg)} kg` : 'PDC';
-  return `${formatKg(weightKg)} kg`;
+/** Objectif d'un exercice : "6–8 reps", "45 s", "8–10 reps par jambe". */
+export function formatTarget(
+  target: { repMin?: number; repMax?: number; note?: string },
+  kind: ExerciseKind,
+): string | null {
+  const { repMin, repMax, note } = target;
+  if (repMin === undefined && repMax === undefined) return null;
+  const range =
+    repMin !== undefined && repMax !== undefined && repMin !== repMax ? `${repMin}–${repMax}` : `${repMin ?? repMax}`;
+  return `${range} ${kind === 'duration' ? 's' : 'reps'}${note ? ` ${note}` : ''}`;
 }
 
 /**
@@ -25,10 +31,15 @@ export function formatLastTime(
   const work = workingSets(sets);
   if (work.length === 0) return null;
   const allSame = work.every((s) => s.weightKg === work[0].weightKg && s.reps === work[0].reps);
+  if (kind === 'duration') {
+    return allSame ? `${work.length}×${work[0].reps} s` : work.map((s) => `${s.reps} s`).join(', ');
+  }
   if (allSame) {
     const { weightKg, reps } = work[0];
     if (kind === 'bodyweight') {
-      return weightKg > 0 ? `${work.length}×${reps} à +${formatKg(weightKg)} kg` : `${work.length}×${reps} au poids du corps`;
+      return weightKg > 0
+        ? `${work.length}×${reps} à +${formatKg(weightKg)} kg`
+        : `${work.length}×${reps} au poids du corps`;
     }
     return `${work.length}×${reps} à ${formatKg(weightKg)} kg`;
   }

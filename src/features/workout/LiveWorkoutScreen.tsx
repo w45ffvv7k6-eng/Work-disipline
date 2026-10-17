@@ -193,12 +193,25 @@ function NotesField({ workoutId, initial }: { workoutId: string; initial: string
   );
 }
 
-function RenameSheet({ initial, onClose, onSave }: { initial: string; onClose: () => void; onSave: (name: string) => void }) {
+function RenameSheet({
+  initial,
+  onClose,
+  onSave,
+}: {
+  initial: string;
+  onClose: () => void;
+  onSave: (name: string) => void;
+}) {
   const [name, setName] = useState(initial);
   return (
     <Sheet onClose={onClose} title="Nom de la séance">
       <input className="search" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
-      <button className="btn btn-primary btn-block" style={{ marginTop: 16 }} disabled={!name.trim()} onClick={() => onSave(name.trim())}>
+      <button
+        className="btn btn-primary btn-block"
+        style={{ marginTop: 16 }}
+        disabled={!name.trim()}
+        onClick={() => onSave(name.trim())}
+      >
         Enregistrer
       </button>
     </Sheet>

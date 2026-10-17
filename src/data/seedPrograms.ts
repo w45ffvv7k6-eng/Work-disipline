@@ -1,0 +1,125 @@
+import type { Program, Template, TemplateExercise } from '../domain/types';
+
+// Programmes livrés avec l'appli (repris du PDF « Programme musculation – Prise de masse & Full body »).
+// Identifiants fixes pour qu'un même modèle soit reconnu d'un téléphone à l'autre.
+
+/** [exercice, séries, reps min, reps max, repos en s, précision] — "2–3 min" devient 150 s. */
+type Row = [exerciseId: string, sets: number, repMin: number, repMax: number, restSec: number, note?: string];
+
+const ex = ([id, plannedSets, repMin, repMax, restSec, note]: Row): TemplateExercise => ({
+  exerciseId: `ex-${id}`,
+  plannedSets,
+  repMin,
+  repMax,
+  restSec,
+  ...(note ? { note } : {}),
+});
+
+const PROGRAMS: { program: Omit<Program, 'updatedAt'>; templates: [id: string, name: string, rows: Row[]][] }[] = [
+  {
+    program: {
+      id: 'prog-prise-de-masse',
+      name: 'Prise de masse (4 séances)',
+      description: 'Haut / bas du corps : lundi Haut A, mardi Bas A, jeudi Haut B, vendredi Bas B. 60 à 75 min.',
+    },
+    templates: [
+      [
+        'tpl-haut-a',
+        'Haut A (force)',
+        [
+          ['dev-couche', 4, 6, 8, 150],
+          ['rowing-barre', 4, 6, 8, 150],
+          ['dev-epaules-halteres', 3, 8, 10, 120],
+          ['tractions-pronation', 3, 8, 10, 120, '(ou tirage vertical)'],
+          ['curl-barre', 3, 10, 12, 75],
+          ['extension-poulie', 3, 10, 12, 75],
+        ],
+      ],
+      [
+        'tpl-bas-a',
+        'Bas A (force)',
+        [
+          ['squat', 4, 6, 8, 180],
+          ['sdt-roumain', 3, 8, 10, 150],
+          ['presse', 3, 10, 12, 120],
+          ['leg-curl-allonge', 3, 10, 12, 75],
+          ['mollets-debout', 4, 12, 15, 60],
+          ['gainage', 3, 45, 45, 60],
+        ],
+      ],
+      [
+        'tpl-haut-b',
+        'Haut B (volume)',
+        [
+          ['dev-incline-halteres', 4, 8, 12, 120],
+          ['tirage-horizontal', 4, 8, 12, 120],
+          ['dips', 3, 8, 12, 120, '(ou développé serré)'],
+          ['elevations-laterales', 4, 12, 15, 60],
+          ['curl-incline', 3, 10, 12, 75],
+          ['face-pull', 3, 12, 15, 60],
+        ],
+      ],
+      [
+        'tpl-bas-b',
+        'Bas B (volume)',
+        [
+          ['souleve-de-terre', 3, 5, 6, 180, '(ou trap bar)'],
+          ['fentes-bulgares', 3, 8, 10, 120, 'par jambe'],
+          ['leg-extension', 3, 12, 15, 75],
+          ['hip-thrust', 3, 10, 12, 120],
+          ['mollets-assis', 4, 12, 15, 60],
+          ['releves-jambes', 3, 10, 15, 60],
+        ],
+      ],
+    ],
+  },
+  {
+    program: {
+      id: 'prog-full-body',
+      name: 'Full body (3 séances)',
+      description: 'En alternance : lundi A, mercredi B, vendredi A, puis B, A, B la semaine suivante. 50 à 60 min.',
+    },
+    templates: [
+      [
+        'tpl-full-a',
+        'Full body A',
+        [
+          ['squat', 3, 6, 8, 150],
+          ['dev-couche', 3, 6, 8, 150],
+          ['rowing-barre', 3, 8, 10, 120],
+          ['sdt-roumain', 3, 8, 10, 120],
+          ['elevations-laterales', 3, 12, 15, 60],
+          ['curl-halteres', 2, 10, 12, 60],
+        ],
+      ],
+      [
+        'tpl-full-b',
+        'Full body B',
+        [
+          ['souleve-de-terre', 3, 5, 6, 180, '(ou trap bar)'],
+          ['dev-militaire', 3, 6, 8, 150],
+          ['tractions-pronation', 3, 8, 10, 120, '(ou tirage vertical)'],
+          ['fentes-marchees', 3, 10, 10, 120, 'par jambe'],
+          ['dev-incline-halteres', 3, 10, 12, 90],
+          ['extension-poulie', 2, 10, 12, 60],
+        ],
+      ],
+    ],
+  },
+];
+
+export function seedPrograms(now = Date.now()): { programs: Program[]; templates: Template[] } {
+  return {
+    programs: PROGRAMS.map(({ program }) => ({ ...program, updatedAt: now })),
+    templates: PROGRAMS.flatMap(({ program, templates }) =>
+      templates.map(([id, name, rows], index) => ({
+        id,
+        name,
+        exercises: rows.map(ex),
+        programId: program.id,
+        programOrder: index,
+        updatedAt: now,
+      })),
+    ),
+  };
+}

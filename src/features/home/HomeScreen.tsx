@@ -33,9 +33,7 @@ export function HomeScreen() {
       )}
 
       <h2 className="section-title">Mes modèles</h2>
-      <div className="card muted">
-        Les modèles de séance (« Push », « Jambes »…) arriveront à une prochaine étape.
-      </div>
+      <div className="card muted">Les modèles de séance (« Push », « Jambes »…) arriveront à une prochaine étape.</div>
     </div>
   );
 }

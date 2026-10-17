@@ -66,6 +66,7 @@ export function ExercisePicker({ onClose, onPick }: Props) {
               <div className="subtitle">
                 {MUSCLE_GROUP_LABELS[e.muscleGroup]}
                 {e.kind === 'bodyweight' && ' · poids du corps'}
+                {e.kind === 'duration' && ' · durée'}
                 {e.isCustom && ' · perso'}
               </div>
             </div>
@@ -111,10 +112,13 @@ function CreateExerciseSheet({
         <label>Type</label>
         <div className="segmented">
           <button className={kind === 'weighted' ? 'active' : ''} onClick={() => setKind('weighted')}>
-            Avec charge
+            Charge
           </button>
           <button className={kind === 'bodyweight' ? 'active' : ''} onClick={() => setKind('bodyweight')}>
             Poids du corps
+          </button>
+          <button className={kind === 'duration' ? 'active' : ''} onClick={() => setKind('duration')}>
+            Durée
           </button>
         </div>
       </div>

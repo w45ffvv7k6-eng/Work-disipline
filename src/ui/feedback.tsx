@@ -58,7 +58,12 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
     <FeedbackContext.Provider value={{ toast: showToast, confirm }}>
       {children}
       {toast && (
-        <div key={toast.id} className={`toast${toast.tone === 'gold' ? ' gold' : ''}`} role="status" onClick={() => setToast(null)}>
+        <div
+          key={toast.id}
+          className={`toast${toast.tone === 'gold' ? ' gold' : ''}`}
+          role="status"
+          onClick={() => setToast(null)}
+        >
           {toast.text}
         </div>
       )}
@@ -66,7 +71,10 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
         <Sheet onClose={() => closeConfirm(false)} title={confirmState.title}>
           {confirmState.message && <p className="muted">{confirmState.message}</p>}
           <div className="stack" style={{ marginTop: 16 }}>
-            <button className={`btn btn-block ${confirmState.danger ? 'btn-danger' : 'btn-primary'}`} onClick={() => closeConfirm(true)}>
+            <button
+              className={`btn btn-block ${confirmState.danger ? 'btn-danger' : 'btn-primary'}`}
+              onClick={() => closeConfirm(true)}
+            >
               {confirmState.confirmLabel}
             </button>
             <button className="btn btn-block btn-ghost" onClick={() => closeConfirm(false)}>

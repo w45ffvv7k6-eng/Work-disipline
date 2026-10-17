@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useRepositories } from '../../data';
 import type { WorkoutExerciseDetail } from '../../data/repositories';
-import { formatKg, formatLastTime } from '../../domain/format';
-import { RECORD_LABELS, type RecordHit } from '../../domain/records';
+import { formatKg, formatLastTime, formatTarget } from '../../domain/format';
+import { RECORD_LABELS, RECORD_UNITS, type RecordHit } from '../../domain/records';
 import type { WorkoutSet } from '../../domain/types';
 import { haptic, useFeedback } from '../../ui/feedback';
 import { CheckIcon, MoreIcon } from '../../ui/icons';
@@ -15,10 +15,7 @@ interface Props {
 }
 
 export function recordMessage(hits: RecordHit[]): string {
-  const parts = hits.map((h) => {
-    const unit = h.type === 'maxReps' ? ' reps' : ' kg';
-    return `${RECORD_LABELS[h.type]} : ${formatKg(h.value)}${unit}`;
-  });
+  const parts = hits.map((h) => `${RECORD_LABELS[h.type]} : ${formatKg(h.value)} ${RECORD_UNITS[h.type]}`);
   return `🏆 Nouveau record ! ${parts.join(' · ')}`;
 }
 
@@ -30,6 +27,7 @@ export function ExerciseCard({ detail, weightStep }: Props) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const lastTimeText = formatLastTime(lastTime, exercise.kind);
+  const targetText = formatTarget(workoutExercise, exercise.kind);
   let workingIndex = 0;
 
   const toggle = async (set: WorkoutSet) => {
@@ -67,6 +65,11 @@ export function ExerciseCard({ detail, weightStep }: Props) {
           <MoreIcon />
         </button>
       </div>
+      {targetText && (
+        <p className="last-time">
+          Objectif : <b>{targetText}</b>
+        </p>
+      )}
       <p className="last-time">
         {lastTimeText ? (
           <>
@@ -82,27 +85,14 @@ export function ExerciseCard({ detail, weightStep }: Props) {
         const hits = records.get(set.id);
         return (
           <div key={set.id} className={`set-row${set.completed ? ' done' : ''}${set.isWarmup ? ' warmup-row' : ''}`}>
-            <div className={`set-badge${set.isWarmup ? ' warmup' : ''}`} aria-label={set.isWarmup ? 'Échauffement' : `Série ${label}`}>
+            <div
+              className={`set-badge${set.isWarmup ? ' warmup' : ''}`}
+              aria-label={set.isWarmup ? 'Échauffement' : `Série ${label}`}
+            >
               {label}
             </div>
             <button className="set-values" onClick={() => setEditing(set)} aria-label="Modifier la série">
-              {exercise.kind === 'bodyweight' ? (
-                set.weightKg > 0 ? (
-                  <span>
-                    +{formatKg(set.weightKg)} <span className="unit">kg</span>
-                  </span>
-                ) : (
-                  <span className="unit">PDC</span>
-                )
-              ) : (
-                <span>
-                  {formatKg(set.weightKg)} <span className="unit">kg</span>
-                </span>
-              )}
-              <span className="times">×</span>
-              <span>
-                {set.reps} <span className="unit">reps</span>
-              </span>
+              <SetValues set={set} kind={exercise.kind} />
               {hits && <span className="pr-badge">🏆 PR</span>}
             </button>
             <button
@@ -152,5 +142,36 @@ export function ExerciseCard({ detail, weightStep }: Props) {
         </Sheet>
       )}
     </div>
+  );
+}
+
+function SetValues({ set, kind }: { set: WorkoutSet; kind: WorkoutExerciseDetail['exercise']['kind'] }) {
+  if (kind === 'duration') {
+    return (
+      <span>
+        {set.reps} <span className="unit">s</span>
+      </span>
+    );
+  }
+  return (
+    <>
+      {kind === 'bodyweight' ? (
+        set.weightKg > 0 ? (
+          <span>
+            +{formatKg(set.weightKg)} <span className="unit">kg</span>
+          </span>
+        ) : (
+          <span className="unit">PDC</span>
+        )
+      ) : (
+        <span>
+          {formatKg(set.weightKg)} <span className="unit">kg</span>
+        </span>
+      )}
+      <span className="times">×</span>
+      <span>
+        {set.reps} <span className="unit">reps</span>
+      </span>
+    </>
   );
 }

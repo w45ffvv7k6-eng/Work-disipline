@@ -4,16 +4,7 @@
 // une synchronisation cloud plus tard sans changer la structure.
 
 export type MuscleGroup =
-  | 'pectoraux'
-  | 'dos'
-  | 'epaules'
-  | 'biceps'
-  | 'triceps'
-  | 'jambes'
-  | 'fessiers'
-  | 'mollets'
-  | 'abdos'
-  | 'avant-bras';
+  'pectoraux' | 'dos' | 'epaules' | 'biceps' | 'triceps' | 'jambes' | 'fessiers' | 'mollets' | 'abdos' | 'avant-bras';
 
 export const MUSCLE_GROUP_LABELS: Record<MuscleGroup, string> = {
   pectoraux: 'Pectoraux',
@@ -28,8 +19,12 @@ export const MUSCLE_GROUP_LABELS: Record<MuscleGroup, string> = {
   'avant-bras': 'Avant-bras',
 };
 
-/** weighted : charge en kg. bodyweight : poids du corps, weightKg = lest (0 = sans lest). */
-export type ExerciseKind = 'weighted' | 'bodyweight';
+/**
+ * weighted : charge en kg.
+ * bodyweight : poids du corps, weightKg = lest (0 = sans lest).
+ * duration : exercice chronométré (gainage…), `reps` contient des secondes.
+ */
+export type ExerciseKind = 'weighted' | 'bodyweight' | 'duration';
 
 export interface Exercise {
   id: string;
@@ -57,8 +52,19 @@ export interface Workout {
   deletedAt?: number;
 }
 
+/** Consignes d'un exercice dans un modèle (reprises dans la séance démarrée depuis ce modèle). */
+export interface ExerciseTarget {
+  /** Fourchette de répétitions (ou de secondes pour un exercice « durée »). */
+  repMin?: number;
+  repMax?: number;
+  /** Repos après chaque série, prioritaire sur celui de l'exercice. */
+  restSec?: number;
+  /** Précision libre, ex. « par jambe ». */
+  note?: string;
+}
+
 /** Un exercice à l'intérieur d'une séance. */
-export interface WorkoutExercise {
+export interface WorkoutExercise extends ExerciseTarget {
   id: string;
   workoutId: string;
   exerciseId: string;
@@ -81,7 +87,7 @@ export interface WorkoutSet {
   updatedAt: number;
 }
 
-export interface TemplateExercise {
+export interface TemplateExercise extends ExerciseTarget {
   exerciseId: string;
   plannedSets: number;
 }
@@ -90,6 +96,18 @@ export interface Template {
   id: string;
   name: string;
   exercises: TemplateExercise[];
+  /** Programme auquel appartient le modèle, et sa place dans la rotation. */
+  programId?: string;
+  programOrder?: number;
+  updatedAt: number;
+  deletedAt?: number;
+}
+
+/** Groupe de modèles qui s'enchaînent (ex. Haut A → Bas A → Haut B → Bas B). */
+export interface Program {
+  id: string;
+  name: string;
+  description: string;
   updatedAt: number;
   deletedAt?: number;
 }

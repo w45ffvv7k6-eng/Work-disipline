@@ -24,7 +24,12 @@ export function Sheet({ onClose, title, full, children }: SheetProps) {
 
   return createPortal(
     <div className="sheet-backdrop" onClick={onClose}>
-      <div className={`sheet${full ? ' sheet-full' : ''}`} onClick={(e) => e.stopPropagation()} role="dialog" aria-modal="true">
+      <div
+        className={`sheet${full ? ' sheet-full' : ''}`}
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+      >
         <div className="sheet-handle" />
         {title && <h2 className="sheet-title">{title}</h2>}
         {children}

@@ -57,6 +57,7 @@ const SEED: [id: string, name: string, group: MuscleGroup, kind?: ExerciseKind][
   ['presse', 'Presse à cuisses', 'jambes'],
   ['fentes', 'Fentes haltères', 'jambes'],
   ['fentes-bulgares', 'Fentes bulgares', 'jambes'],
+  ['fentes-marchees', 'Fentes marchées haltères', 'jambes'],
   ['leg-extension', 'Leg extension', 'jambes'],
   ['leg-curl-allonge', 'Leg curl allongé', 'jambes'],
   ['leg-curl-assis', 'Leg curl assis', 'jambes'],
@@ -76,6 +77,7 @@ const SEED: [id: string, name: string, group: MuscleGroup, kind?: ExerciseKind][
   ['releves-jambes', 'Relevés de jambes suspendu', 'abdos', 'bodyweight'],
   ['roue-abdos', 'Roue abdominale', 'abdos', 'bodyweight'],
   ['russian-twist', 'Russian twist', 'abdos', 'bodyweight'],
+  ['gainage', 'Gainage (planche)', 'abdos', 'duration'],
   // Avant-bras
   ['curl-poignets', 'Curl poignets', 'avant-bras'],
 ];

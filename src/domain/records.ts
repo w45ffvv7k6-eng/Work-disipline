@@ -1,13 +1,22 @@
 import { epley1RM } from './oneRepMax';
 import type { ExerciseKind } from './types';
 
-export type RecordType = 'maxWeight' | 'est1RM' | 'maxReps' | 'maxLest';
+export type RecordType = 'maxWeight' | 'est1RM' | 'maxReps' | 'maxLest' | 'maxDuration';
 
 export const RECORD_LABELS: Record<RecordType, string> = {
   maxWeight: 'Charge max',
   est1RM: '1RM estimé',
   maxReps: 'Répétitions max',
   maxLest: 'Lest max',
+  maxDuration: 'Durée max',
+};
+
+export const RECORD_UNITS: Record<RecordType, string> = {
+  maxWeight: 'kg',
+  est1RM: 'kg',
+  maxReps: 'reps',
+  maxLest: 'kg',
+  maxDuration: 's',
 };
 
 export interface RecordInput {
@@ -29,6 +38,7 @@ function valuesFor(kind: ExerciseKind, set: RecordInput): Partial<Record<RecordT
   if (kind === 'weighted') {
     return { maxWeight: set.weightKg, est1RM: epley1RM(set.weightKg, set.reps) };
   }
+  if (kind === 'duration') return { maxDuration: set.reps };
   return { maxReps: set.reps, maxLest: set.weightKg };
 }
 
