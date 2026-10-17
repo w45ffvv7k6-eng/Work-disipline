@@ -1,7 +1,7 @@
 import { HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom';
 import { HomeScreen } from './features/home/HomeScreen';
 import { ComingSoon } from './features/placeholder/ComingSoon';
-import { SettingsScreen } from './features/settings/SettingsScreen';
+import { ProfileScreen } from './features/profile/ProfileScreen';
 import { LiveWorkoutScreen } from './features/workout/LiveWorkoutScreen';
 import { FeedbackProvider } from './ui/feedback';
 import { DumbbellIcon, HistoryIcon, ListIcon, TemplateIcon, UserIcon } from './ui/icons';
@@ -46,7 +46,7 @@ export function App() {
             <Route path="/historique" element={<ComingSoon title="Historique" step="Historique et graphiques" />} />
             <Route path="/exercices" element={<ComingSoon title="Exercices" step="Bibliothèque" />} />
             <Route path="/modeles" element={<ComingSoon title="Modèles" step="Modèles" />} />
-            <Route path="/profil" element={<SettingsScreen />} />
+            <Route path="/profil" element={<ProfileScreen />} />
             <Route path="*" element={<HomeScreen />} />
           </Routes>
           <TabBar />

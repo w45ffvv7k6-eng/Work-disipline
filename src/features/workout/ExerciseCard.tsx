@@ -33,6 +33,9 @@ export function ExerciseCard({ detail, settings }: Props) {
 
   const lastTimeText = formatLastTime(lastTime, exercise.kind);
   const targetText = formatTarget(workoutExercise, exercise.kind);
+  const workSets = sets.filter((s) => !s.isWarmup);
+  const plannedCount = workSets.length;
+  const doneCount = workSets.filter((s) => s.completed).length;
   let workingIndex = 0;
 
   const toggle = async (set: WorkoutSet) => {
@@ -73,11 +76,15 @@ export function ExerciseCard({ detail, settings }: Props) {
           <MoreIcon />
         </button>
       </div>
-      {targetText && (
-        <p className="last-time">
-          Objectif : <b>{targetText}</b>
-        </p>
-      )}
+      <p className="exercise-plan">
+        <span className="plan-sets">
+          {plannedCount} série{plannedCount > 1 ? 's' : ''}
+          {targetText ? ` × ${targetText}` : ''}
+        </span>
+        <span className={`plan-progress${doneCount >= plannedCount && plannedCount > 0 ? ' complete' : ''}`}>
+          {doneCount}/{plannedCount}
+        </span>
+      </p>
       <p className="last-time">
         {lastTimeText ? (
           <>

@@ -8,7 +8,8 @@ import { RestPickerSheet } from '../timer/RestPickerSheet';
 
 const WEIGHT_STEPS = [1, 1.25, 2.5, 5];
 
-export function SettingsScreen() {
+/** Réglages de l'appli (affichés dans l'onglet Profil). */
+export function SettingsSection() {
   const { settings: repo } = useRepositories();
   const settings = useSubscribable(() => repo.watch(), []);
   const [pickingRest, setPickingRest] = useState(false);
@@ -18,9 +19,7 @@ export function SettingsScreen() {
     repo.update({ [key]: !settings[key] });
 
   return (
-    <div className="screen">
-      <h1 className="screen-title">Réglages</h1>
-
+    <>
       <h2 className="section-title">Minuteur de repos</h2>
       <div className="card stack">
         <button className="toggle-row" onClick={() => setPickingRest(true)}>
@@ -80,10 +79,6 @@ export function SettingsScreen() {
         </div>
       </div>
 
-      <p className="muted small" style={{ marginTop: 24 }}>
-        Le profil (poids, taille, contrôles réguliers) arrivera dans cet onglet à une prochaine étape.
-      </p>
-
       {pickingRest && (
         <RestPickerSheet
           title="Repos par défaut"
@@ -95,7 +90,7 @@ export function SettingsScreen() {
           }}
         />
       )}
-    </div>
+    </>
   );
 }
 

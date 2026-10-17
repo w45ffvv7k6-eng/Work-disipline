@@ -31,9 +31,14 @@ export function workingSets<T extends SetLike>(sets: T[]): T[] {
  * 1. la série de même rang la dernière fois (2e série ← 2e série de la dernière fois) ;
  * 2. la série précédente de la séance en cours (on continue sur sa lancée) ;
  * 3. la dernière série de la dernière fois ;
- * 4. des valeurs par défaut.
+ * 4. des valeurs par défaut (répétitions = bas de la fourchette d'objectif si elle existe).
  */
-export function prefillValues(lastTime: SetLike[], current: SetLike[], kind: ExerciseKind): SetValues {
+export function prefillValues(
+  lastTime: SetLike[],
+  current: SetLike[],
+  kind: ExerciseKind,
+  target: { repMin?: number } = {},
+): SetValues {
   const previous = workingSets(lastTime);
   const currentWork = current.filter((s) => !s.isWarmup).sort((a, b) => a.order - b.order);
   const index = currentWork.length;
@@ -42,7 +47,8 @@ export function prefillValues(lastTime: SetLike[], current: SetLike[], kind: Exe
   const lastCurrent = currentWork[currentWork.length - 1];
   if (lastCurrent) return pick(lastCurrent);
   if (previous.length > 0) return pick(previous[previous.length - 1]);
-  return { ...DEFAULT_VALUES[kind] };
+  // Première fois : on part du bas de la fourchette d'objectif, s'il y en a une.
+  return { ...DEFAULT_VALUES[kind], ...(target.repMin ? { reps: target.repMin } : {}) };
 }
 
 function pick(s: SetValues): SetValues {

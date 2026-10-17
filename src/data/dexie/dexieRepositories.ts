@@ -15,6 +15,8 @@ import {
 import type {
   ExerciseRepository,
   Repositories,
+  ProfileRepository,
+  ProgramRepository,
   SettingsRepository,
   TimerRepository,
   WorkoutDetail,
@@ -111,6 +113,25 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
         return { workout, exercises: details.filter((d) => d !== undefined) };
       }),
 
+    watchFinished: () =>
+      liveQuery(async () =>
+        (await db.workouts.where('status').equals('finished').toArray())
+          .filter((w) => !w.deletedAt)
+          .sort((a, b) => b.startedAt - a.startedAt),
+      ),
+
+    async startFromTemplate(templateId) {
+      const template = await db.templates.get(templateId);
+      if (!template) throw new Error('Modèle introuvable');
+      const workout = await workouts.start(template.name);
+      await db.workouts.update(workout.id, { templateId });
+      for (const { exerciseId, plannedSets, ...target } of template.exercises) {
+        if (!(await db.exercises.get(exerciseId))) continue;
+        await workouts.addExercise(workout.id, exerciseId, plannedSets, target);
+      }
+      return { ...workout, templateId };
+    },
+
     async start(name) {
       const t = now();
       const workout: Workout = { id: newId(), name, status: 'active', startedAt: t, notes: '', updatedAt: t };
@@ -148,13 +169,14 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
       });
     },
 
-    async addExercise(workoutId, exerciseId, setCount) {
+    async addExercise(workoutId, exerciseId, setCount, target = {}) {
       const existing = await db.workoutExercises.where('workoutId').equals(workoutId).toArray();
       const we: WorkoutExercise = {
         id: newId(),
         workoutId,
         exerciseId,
         order: existing.reduce((max, e) => Math.max(max, e.order + 1), 0),
+        ...target,
         updatedAt: now(),
       };
       await db.workoutExercises.add(we);
@@ -184,7 +206,7 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
       const exercise = await db.exercises.get(we.exerciseId);
       const current = await db.sets.where('workoutExerciseId').equals(workoutExerciseId).toArray();
       const last = await lastTimeSets(we.exerciseId, we.workoutId);
-      const values = prefillValues(last, current, exercise?.kind ?? 'weighted');
+      const values = prefillValues(last, current, exercise?.kind ?? 'weighted', we);
       const set: WorkoutSet = {
         id: newId(),
         workoutId: we.workoutId,
@@ -258,5 +280,38 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
     },
   };
 
-  return { exercises, workouts, settings, timer };
+  // ---------- Programmes ----------
+
+  const programs: ProgramRepository = {
+    watchAll: () =>
+      liveQuery(async () => {
+        const list = (await db.programs.toArray()).filter((p) => !p.deletedAt);
+        const templates = (await db.templates.toArray()).filter((t) => !t.deletedAt);
+        return list.map((program) => ({
+          program,
+          templates: templates
+            .filter((t) => t.programId === program.id)
+            .sort((a, b) => (a.programOrder ?? 0) - (b.programOrder ?? 0)),
+        }));
+      }),
+  };
+
+  // ---------- Profil et suivi corporel ----------
+
+  const profile: ProfileRepository = {
+    watch: () => liveQuery(async () => (await db.profile.get('profile')) ?? null),
+    async save(data) {
+      await db.profile.put({ ...data, id: 'profile', updatedAt: now() });
+    },
+    watchChecks: () =>
+      liveQuery(async () => (await db.bodyChecks.orderBy('date').reverse().toArray()).filter((c) => !c.deletedAt)),
+    async addCheck(data) {
+      await db.bodyChecks.add({ ...data, id: newId(), updatedAt: now() });
+    },
+    async deleteCheck(id) {
+      await db.bodyChecks.update(id, { deletedAt: now(), updatedAt: now() });
+    },
+  };
+
+  return { exercises, workouts, settings, timer, programs, profile };
 }

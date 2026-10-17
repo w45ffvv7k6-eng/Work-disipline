@@ -829,3 +829,192 @@ button:disabled {
   font-weight: 800;
   font-variant-numeric: tabular-nums;
 }
+
+.exercise-plan {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0 0 6px 4px;
+}
+.plan-sets {
+  font-weight: 700;
+  color: var(--accent);
+}
+.plan-progress {
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: var(--text-dim);
+  background: var(--surface-2);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-variant-numeric: tabular-nums;
+}
+.plan-progress.complete {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+/* ---------- Accueil : programme et semaine ---------- */
+
+.program-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 12px;
+}
+.program-name {
+  font-weight: 800;
+  font-size: 1.1rem;
+}
+.program-choice.selected {
+  outline: 2px solid var(--accent);
+}
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 8px 2px;
+  border-radius: 12px;
+  background: var(--surface);
+  min-width: 0;
+}
+.week-name {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.week-date {
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+.week-mark {
+  height: 16px;
+  font-size: 0.8rem;
+  line-height: 16px;
+}
+.week-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.week-day.planned .week-mark,
+.week-day.planned .week-label {
+  color: var(--accent);
+}
+.week-day.done {
+  background: var(--accent-soft);
+}
+.week-day.done .week-mark {
+  color: var(--accent);
+  font-weight: 800;
+}
+.week-day.done .week-label {
+  color: var(--text);
+}
+.week-day.missed {
+  opacity: 0.6;
+}
+.week-day.rest {
+  opacity: 0.6;
+}
+.week-day.today {
+  outline: 2px solid var(--accent);
+  opacity: 1;
+}
+
+.today-card {
+  border: 1px solid var(--border);
+}
+.today-title {
+  font-size: 1.4rem;
+  font-weight: 800;
+  margin: 2px 0 10px;
+}
+
+.tpl-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.tpl-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.95rem;
+}
+.tpl-list li:last-child {
+  border-bottom: none;
+}
+.tpl-sets {
+  font-weight: 800;
+  color: var(--accent);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Profil ---------- */
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.stat {
+  background: var(--surface);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.stat-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin: 2px 0;
+  font-variant-numeric: tabular-nums;
+}
+.stat-hint {
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+.stat-value.up,
+.delta.up {
+  color: var(--accent);
+}
+.stat-value.down,
+.delta.down {
+  color: var(--gold);
+}
+.delta {
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-dim);
+}
+
+.tpl-note {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+.tpl-list .grow {
+  min-width: 0;
+}

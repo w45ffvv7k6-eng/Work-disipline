@@ -99,6 +99,8 @@ export interface Template {
   /** Programme auquel appartient le modèle, et sa place dans la rotation. */
   programId?: string;
   programOrder?: number;
+  /** Jour fixe de la séance (1 = lundi … 7 = dimanche). Sans jour fixe, le programme tourne en rotation. */
+  weekday?: number;
   updatedAt: number;
   deletedAt?: number;
 }
@@ -108,6 +110,8 @@ export interface Program {
   id: string;
   name: string;
   description: string;
+  /** Jours d'entraînement (1 = lundi … 7 = dimanche). */
+  trainingDays: number[];
   updatedAt: number;
   deletedAt?: number;
 }
@@ -120,6 +124,8 @@ export interface Settings {
   vibration: boolean;
   /** Empêche l'écran de se mettre en veille pendant une séance. */
   keepAwake: boolean;
+  /** Programme suivi (affiché sur l'accueil). */
+  activeProgramId?: string;
 }
 
 export const DEFAULT_SETTINGS: Settings = {

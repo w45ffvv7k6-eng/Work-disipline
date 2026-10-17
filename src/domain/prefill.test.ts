@@ -42,6 +42,12 @@ describe('prefillValues', () => {
     expect(prefillValues([], [], 'bodyweight')).toEqual({ weightKg: 0, reps: 10 });
   });
 
+  it('première fois avec un objectif : part du bas de la fourchette', () => {
+    expect(prefillValues([], [], 'weighted', { repMin: 6 })).toEqual({ weightKg: 20, reps: 6 });
+    expect(prefillValues([], [], 'duration', { repMin: 45 })).toEqual({ weightKg: 0, reps: 45 });
+    expect(prefillValues(lastTime, [], 'weighted', { repMin: 6 })).toEqual({ weightKg: 60, reps: 10 });
+  });
+
   it('première fois : la 2e série reprend la 1re', () => {
     expect(prefillValues([], [s(0, 40, 12, { completed: false })], 'weighted')).toEqual({ weightKg: 40, reps: 12 });
   });

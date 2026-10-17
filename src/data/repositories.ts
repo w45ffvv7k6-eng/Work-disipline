@@ -3,7 +3,19 @@
 // cloud (ex. Supabase), on écrira une autre implémentation sans toucher aux écrans.
 
 import type { RecordHit } from '../domain/records';
-import type { ActiveTimer, Exercise, Settings, Workout, WorkoutExercise, WorkoutSet } from '../domain/types';
+import type {
+  ActiveTimer,
+  BodyCheck,
+  Exercise,
+  ExerciseTarget,
+  Profile,
+  Program,
+  Settings,
+  Template,
+  Workout,
+  WorkoutExercise,
+  WorkoutSet,
+} from '../domain/types';
 
 /** Flux de données qui se met à jour tout seul quand la base change. */
 export interface Subscribable<T> {
@@ -36,7 +48,11 @@ export interface WorkoutRepository {
   watchActive(): Subscribable<Workout | null>;
   /** null : séance introuvable. */
   watchDetail(workoutId: string): Subscribable<WorkoutDetail | null>;
+  /** Séances terminées, de la plus récente à la plus ancienne. */
+  watchFinished(): Subscribable<Workout[]>;
   start(name: string): Promise<Workout>;
+  /** Démarre une séance préparée à partir d'un modèle (exercices, séries prévues, objectifs, repos). */
+  startFromTemplate(templateId: string): Promise<Workout>;
   rename(workoutId: string, name: string): Promise<void>;
   updateNotes(workoutId: string, notes: string): Promise<void>;
   /** Termine la séance (les séries non validées sont supprimées). */
@@ -48,7 +64,12 @@ export interface WorkoutRepository {
    * Ajoute un exercice avec ses séries déjà préparées et pré-remplies :
    * `setCount` séries, ou par défaut autant que la dernière fois (au moins une).
    */
-  addExercise(workoutId: string, exerciseId: string, setCount?: number): Promise<WorkoutExercise>;
+  addExercise(
+    workoutId: string,
+    exerciseId: string,
+    setCount?: number,
+    target?: ExerciseTarget,
+  ): Promise<WorkoutExercise>;
   removeExercise(workoutExerciseId: string): Promise<void>;
   /** Change le repos d'un exercice pour cette séance. */
   setRest(workoutExerciseId: string, restSec: number): Promise<void>;
@@ -59,6 +80,25 @@ export interface WorkoutRepository {
   /** Valide / dévalide une série. Renvoie les records battus si la série vient d'être validée. */
   toggleSetCompleted(setId: string): Promise<RecordHit[]>;
   deleteSet(setId: string): Promise<void>;
+}
+
+export interface ProgramWithTemplates {
+  program: Program;
+  templates: Template[];
+}
+
+export interface ProgramRepository {
+  watchAll(): Subscribable<ProgramWithTemplates[]>;
+}
+
+export interface ProfileRepository {
+  /** null tant que le profil n'a pas été créé. */
+  watch(): Subscribable<Profile | null>;
+  save(data: Omit<Profile, 'id' | 'updatedAt'>): Promise<void>;
+  /** Pesées et mesures, de la plus récente à la plus ancienne. */
+  watchChecks(): Subscribable<BodyCheck[]>;
+  addCheck(data: Omit<BodyCheck, 'id' | 'updatedAt'>): Promise<void>;
+  deleteCheck(id: string): Promise<void>;
 }
 
 /** Minuteur de repos (un seul à la fois), conservé même si l'appli est fermée. */
@@ -80,4 +120,6 @@ export interface Repositories {
   workouts: WorkoutRepository;
   settings: SettingsRepository;
   timer: TimerRepository;
+  programs: ProgramRepository;
+  profile: ProfileRepository;
 }

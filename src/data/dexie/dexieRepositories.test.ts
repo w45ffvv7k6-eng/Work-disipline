@@ -91,4 +91,18 @@ describe('dépôt Dexie des séances', () => {
     const active = await first(reopened.workouts.watchActive());
     expect(active?.id).toBe(w.id);
   });
+
+  it('démarre une séance programmée avec ses exercices, séries prévues et objectifs', async () => {
+    const w = await repos.workouts.startFromTemplate('tpl-haut-a');
+    const detail = await first(repos.workouts.watchDetail(w.id));
+    expect(detail!.workout.name).toBe('Haut A (force)');
+    expect(detail!.workout.templateId).toBe('tpl-haut-a');
+    const bench = detail!.exercises[0];
+    expect(bench.exercise.id).toBe('ex-dev-couche');
+    expect(bench.sets).toHaveLength(4);
+    expect(bench.workoutExercise).toMatchObject({ repMin: 6, repMax: 8, restSec: 150 });
+    expect(detail!.exercises.map((e) => e.sets.length)).toEqual([4, 4, 3, 3, 3, 3]);
+    // Première fois : répétitions pré-remplies au bas de la fourchette (6–8 → 6).
+    expect(bench.sets[0].reps).toBe(6);
+  });
 });

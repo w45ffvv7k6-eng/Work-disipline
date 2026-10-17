@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import { formatClock } from '../../domain/format';
@@ -124,9 +124,6 @@ export function LiveWorkoutScreen() {
             + Ajouter un exercice
           </button>
         </div>
-
-        <h2 className="section-title">Notes de séance</h2>
-        <NotesField workoutId={workout.id} initial={workout.notes} />
       </div>
 
       <RestTimerBar labelFor={(weId) => exercises.find((e) => e.workoutExercise.id === weId)?.exercise.name} />
@@ -163,38 +160,6 @@ export function LiveWorkoutScreen() {
         />
       )}
     </>
-  );
-}
-
-/** Notes enregistrées automatiquement pendant la frappe. */
-function NotesField({ workoutId, initial }: { workoutId: string; initial: string }) {
-  const { workouts } = useRepositories();
-  const [value, setValue] = useState(initial);
-  const timer = useRef<number | undefined>(undefined);
-  const latest = useRef(value);
-
-  useEffect(
-    () => () => {
-      // En quittant l'écran, on enregistre ce qui n'a pas encore été sauvegardé.
-      window.clearTimeout(timer.current);
-      workouts.updateNotes(workoutId, latest.current);
-    },
-    [workoutId, workouts],
-  );
-
-  return (
-    <textarea
-      className="notes"
-      placeholder="Ressenti, réglages machine, douleur…"
-      value={value}
-      onChange={(e) => {
-        setValue(e.target.value);
-        latest.current = e.target.value;
-        window.clearTimeout(timer.current);
-        timer.current = window.setTimeout(() => workouts.updateNotes(workoutId, latest.current), 400);
-      }}
-      onBlur={() => workouts.updateNotes(workoutId, latest.current)}
-    />
   );
 }
 

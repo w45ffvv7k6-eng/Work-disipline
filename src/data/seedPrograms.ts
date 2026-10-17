@@ -21,6 +21,7 @@ const PROGRAMS: { program: Omit<Program, 'updatedAt'>; templates: [id: string, n
       id: 'prog-prise-de-masse',
       name: 'Prise de masse (4 séances)',
       description: 'Haut / bas du corps : lundi Haut A, mardi Bas A, jeudi Haut B, vendredi Bas B. 60 à 75 min.',
+      trainingDays: [1, 2, 4, 5],
     },
     templates: [
       [
@@ -78,6 +79,7 @@ const PROGRAMS: { program: Omit<Program, 'updatedAt'>; templates: [id: string, n
       id: 'prog-full-body',
       name: 'Full body (3 séances)',
       description: 'En alternance : lundi A, mercredi B, vendredi A, puis B, A, B la semaine suivante. 50 à 60 min.',
+      trainingDays: [1, 3, 5],
     },
     templates: [
       [
@@ -108,6 +110,9 @@ const PROGRAMS: { program: Omit<Program, 'updatedAt'>; templates: [id: string, n
   },
 ];
 
+/** Jours fixes (1 = lundi). Les séances absentes d'ici tournent en rotation (Full body A / B). */
+const WEEKDAYS: Record<string, number> = { 'tpl-haut-a': 1, 'tpl-bas-a': 2, 'tpl-haut-b': 4, 'tpl-bas-b': 5 };
+
 export function seedPrograms(now = Date.now()): { programs: Program[]; templates: Template[] } {
   return {
     programs: PROGRAMS.map(({ program }) => ({ ...program, updatedAt: now })),
@@ -118,6 +123,7 @@ export function seedPrograms(now = Date.now()): { programs: Program[]; templates
         exercises: rows.map(ex),
         programId: program.id,
         programOrder: index,
+        ...(WEEKDAYS[id] ? { weekday: WEEKDAYS[id] } : {}),
         updatedAt: now,
       })),
     ),
