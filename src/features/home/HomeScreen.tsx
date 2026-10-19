@@ -20,6 +20,7 @@ import { haptic, useFeedback } from '../../ui/feedback';
 import { MUSCLE_COLORS } from '../../ui/muscles';
 import { ProgressRing } from '../../ui/ProgressRing';
 import { Sheet } from '../../ui/Sheet';
+import { splashPhotoUrl } from '../../ui/splashPhotos';
 import { useNow } from '../../ui/useNow';
 
 /** "Haut A (force)" → "Haut A", "Full body A" → "FB A". */
@@ -103,7 +104,8 @@ export function HomeScreen() {
 
   return (
     <div className="screen">
-      <div className="hello">
+      <div className="hello" style={{ backgroundImage: `url("${splashPhotoUrl('salle.webp')}")` }}>
+        <div className="brand-mini">WORK &amp; DISCIPLINE</div>
         <h1 className="screen-title" style={{ margin: 0 }}>
           {greeting(today)}
           {me?.firstName ? ` ${me.firstName}` : ''} 👋

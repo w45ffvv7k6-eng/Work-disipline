@@ -1,20 +1,22 @@
 /* Thème sombre par défaut, pensé pour une utilisation à une main en salle. */
 :root {
   color-scheme: dark;
-  --bg: #0f1115;
-  --surface: #181b22;
-  --surface-2: #222631;
-  --surface-3: #2c3140;
-  --border: #2f3442;
-  --text: #f1f3f7;
-  --text-dim: #9aa3b5;
-  --accent: #4ade80;
-  --accent-text: #06210f;
-  --accent-soft: rgba(74, 222, 128, 0.14);
+  /* Couleurs tirées de la photo d'accueil : noir chaud, bruns, lueur ambrée. */
+  --bg: #0b0a09;
+  --surface: #17130f;
+  --surface-2: #221c17;
+  --surface-3: #30281f;
+  --border: #372d24;
+  --text: #f6f0e8;
+  --text-dim: #ab9c8c;
+  --accent: #f2a03d;
+  --accent-2: #e8642c;
+  --accent-text: #1c1105;
+  --accent-soft: rgba(242, 160, 61, 0.15);
   --danger: #f87171;
   --danger-soft: rgba(248, 113, 113, 0.14);
-  --gold: #fbbf24;
-  --gold-soft: rgba(251, 191, 36, 0.16);
+  --gold: #ffd166;
+  --gold-soft: rgba(255, 209, 102, 0.16);
   --radius: 14px;
   --tap: 56px;
   --nav-h: 64px;
@@ -129,7 +131,7 @@ button:disabled {
   display: flex;
   height: calc(var(--nav-h) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
-  background: rgba(15, 17, 21, 0.96);
+  background: rgba(11, 10, 9, 0.96);
   border-top: 1px solid var(--border);
   backdrop-filter: blur(10px);
 }
@@ -266,7 +268,7 @@ button:disabled {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(15, 17, 21, 0.96);
+  background: rgba(11, 10, 9, 0.96);
   backdrop-filter: blur(10px);
   padding: calc(10px + var(--safe-top)) 16px 10px;
   border-bottom: 1px solid var(--border);
@@ -704,7 +706,7 @@ button:disabled {
   animation: slide-down 0.25s ease;
 }
 .toast.gold {
-  background: #3a2f0b;
+  background: #3a2c0e;
   color: var(--gold);
   border: 1px solid var(--gold);
 }
@@ -736,7 +738,7 @@ button:disabled {
   z-index: 30;
   display: block;
   width: 100%;
-  background: #1d2a22;
+  background: #2a1f15;
   border-top: 2px solid var(--accent);
   overflow: hidden;
   animation: slide-up 0.2s ease;
@@ -1022,7 +1024,32 @@ button:disabled {
 /* ---------- Programme (accueil) ---------- */
 
 .hello {
-  margin-bottom: 16px;
+  position: relative;
+  margin: calc(-16px - var(--safe-top)) -16px 16px;
+  padding: calc(28px + var(--safe-top)) 16px 22px;
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-size: cover;
+  background-position: center 38%;
+  overflow: hidden;
+}
+.hello::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(11, 10, 9, 0.2), rgba(11, 10, 9, 0.75) 70%, var(--bg));
+}
+.hello > * {
+  position: relative;
+}
+.hello .brand-mini {
+  font-size: 0.75rem;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  margin-bottom: 6px;
 }
 .quote {
   margin: 6px 0 0;
@@ -1038,8 +1065,8 @@ button:disabled {
   padding: 14px 16px;
   margin: 12px 0 14px;
   border-radius: var(--radius);
-  background: linear-gradient(135deg, rgba(74, 222, 128, 0.16), rgba(96, 165, 250, 0.12));
-  border: 1px solid rgba(74, 222, 128, 0.25);
+  background: linear-gradient(135deg, rgba(242, 160, 61, 0.16), rgba(232, 100, 44, 0.12));
+  border: 1px solid rgba(242, 160, 61, 0.25);
 }
 .ring-text {
   fill: var(--text);
@@ -1179,7 +1206,7 @@ button:disabled {
   animation: pulse 2s ease-in-out infinite;
 }
 .glow {
-  box-shadow: 0 6px 24px rgba(74, 222, 128, 0.35);
+  box-shadow: 0 6px 24px rgba(242, 160, 61, 0.35);
 }
 
 @keyframes rise {
@@ -1190,7 +1217,7 @@ button:disabled {
 }
 @keyframes pulse {
   50% {
-    box-shadow: 0 0 0 6px rgba(74, 222, 128, 0.15);
+    box-shadow: 0 0 0 6px rgba(242, 160, 61, 0.15);
   }
 }
 
@@ -1327,7 +1354,7 @@ button:disabled {
 }
 .workout-progress div {
   height: 100%;
-  background: linear-gradient(90deg, var(--accent), #60a5fa);
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
   transform-origin: left;
   transition: transform 0.4s ease;
 }
@@ -1498,12 +1525,38 @@ button:disabled {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: #07090c;
+  background: #0b0a09;
   overflow: hidden;
   transition:
     opacity 0.5s ease,
     transform 0.5s ease;
 }
+.splash.with-photo {
+  justify-content: flex-start;
+  padding-top: calc(11vh + var(--safe-top));
+}
+/* La photo est déjà sombre : voile léger, plus marqué en haut et en bas pour le texte. */
+.with-photo .splash-shade {
+  background: linear-gradient(
+    180deg,
+    rgba(11, 10, 9, 0.6) 0%,
+    rgba(11, 10, 9, 0.15) 45%,
+    rgba(11, 10, 9, 0.15) 65%,
+    rgba(11, 10, 9, 0.85) 100%
+  );
+}
+.with-photo .splash-welcome,
+.with-photo .splash-tagline {
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+.with-photo .splash-name {
+  filter: drop-shadow(0 3px 14px rgba(0, 0, 0, 0.8));
+}
+.with-photo .splash-content {
+  gap: 28px;
+}
+
 .splash-out {
   opacity: 0;
   transform: scale(1.08);
@@ -1526,12 +1579,12 @@ button:disabled {
   opacity: 0;
   animation: photo 2.1s ease-in-out both;
 }
-.splash-photo:last-of-type {
+.splash-photo.last {
   animation: photo-last 2.1s ease-in-out both;
 }
 
 .splash-bg.no-photo .splash-shade {
-  background: radial-gradient(ellipse at 50% 45%, rgba(7, 9, 12, 0.1), rgba(7, 9, 12, 0.6) 80%);
+  background: radial-gradient(ellipse at 50% 45%, rgba(11, 10, 9, 0.1), rgba(11, 10, 9, 0.6) 80%);
 }
 
 .splash-shade {
@@ -1539,8 +1592,8 @@ button:disabled {
   inset: 0;
   z-index: 10;
   background:
-    radial-gradient(ellipse at 50% 40%, rgba(7, 9, 12, 0.25), rgba(7, 9, 12, 0.85) 75%),
-    linear-gradient(180deg, rgba(7, 9, 12, 0.35), rgba(7, 9, 12, 0.92));
+    radial-gradient(ellipse at 50% 40%, rgba(11, 10, 9, 0.25), rgba(11, 10, 9, 0.85) 75%),
+    linear-gradient(180deg, rgba(11, 10, 9, 0.35), rgba(11, 10, 9, 0.92));
 }
 
 .blob {
@@ -1552,7 +1605,7 @@ button:disabled {
 .blob-1 {
   width: 340px;
   height: 340px;
-  background: #22c55e;
+  background: #f2a03d;
   top: -60px;
   left: -80px;
   animation: drift-1 6s ease-in-out infinite alternate;
@@ -1560,7 +1613,7 @@ button:disabled {
 .blob-2 {
   width: 300px;
   height: 300px;
-  background: #3b82f6;
+  background: #e8642c;
   bottom: -40px;
   right: -90px;
   animation: drift-2 7s ease-in-out infinite alternate;
@@ -1568,7 +1621,7 @@ button:disabled {
 .blob-3 {
   width: 220px;
   height: 220px;
-  background: #f59e0b;
+  background: #7a5236;
   top: 45%;
   left: 55%;
   opacity: 0.3;
@@ -1603,7 +1656,7 @@ button:disabled {
   justify-content: center;
   background: var(--accent);
   color: var(--accent-text);
-  box-shadow: 0 12px 40px rgba(74, 222, 128, 0.5);
+  box-shadow: 0 12px 40px rgba(242, 160, 61, 0.5);
   animation: splash-icon 0.8s cubic-bezier(0.2, 1.6, 0.4, 1) both;
 }
 .splash-icon svg {
@@ -1657,7 +1710,7 @@ button:disabled {
 }
 .splash-name span {
   display: inline-block;
-  background: linear-gradient(135deg, var(--accent), #60a5fa);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1670,23 +1723,6 @@ button:disabled {
   font-style: italic;
   color: rgba(255, 255, 255, 0.6);
   animation: rise 0.6s ease 1.6s both;
-}
-
-.splash-bar {
-  position: absolute;
-  z-index: 1;
-  bottom: calc(48px + var(--safe-bottom));
-  width: 120px;
-  height: 4px;
-  border-radius: 2px;
-  background: rgba(255, 255, 255, 0.15);
-  overflow: hidden;
-}
-.splash-bar div {
-  height: 100%;
-  background: var(--accent);
-  transform-origin: left;
-  animation: splash-progress 3.2s linear both;
 }
 
 @keyframes splash-icon {
@@ -1717,11 +1753,6 @@ button:disabled {
   from {
     transform: scale(0);
     opacity: 0;
-  }
-}
-@keyframes splash-progress {
-  from {
-    transform: scaleX(0);
   }
 }
 @keyframes photo {

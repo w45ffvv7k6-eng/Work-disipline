@@ -6,7 +6,7 @@ import { RECORD_LABELS, RECORD_UNITS } from '../../domain/records';
 import { summarizeWorkout } from '../../domain/summary';
 import { haptic } from '../../ui/feedback';
 
-const CONFETTI_COLORS = ['#4ade80', '#fbbf24', '#60a5fa', '#f472b6', '#a78bfa', '#f87171'];
+const CONFETTI_COLORS = ['#f2a03d', '#ffd166', '#e8642c', '#f6f0e8', '#c27b4a', '#fb923c'];
 
 /** Écran de fin de séance : bravo, bilan et records. */
 export function WorkoutSummaryScreen() {

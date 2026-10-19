@@ -34,7 +34,7 @@ export function WelcomeSplash() {
 
   return (
     <div
-      className={`splash${phase === 'out' ? ' splash-out' : ''}`}
+      className={`splash${photos.length > 0 ? ' with-photo' : ''}${phase === 'out' ? ' splash-out' : ''}`}
       onClick={() => setPhase('out')}
       role="status"
       aria-label={`Work & Discipline. Bienvenue${name ? ` ${name}` : ''}`}
@@ -45,7 +45,7 @@ export function WelcomeSplash() {
           photos.map((file, i) => (
             <div
               key={file}
-              className="splash-photo"
+              className={`splash-photo${i === photos.length - 1 ? ' last' : ''}`}
               style={{
                 backgroundImage: `url("${splashPhotoUrl(file)}")`,
                 animationDelay: `${i * (VISIBLE_MS / PHOTOS_SHOWN)}ms`,
@@ -86,12 +86,8 @@ export function WelcomeSplash() {
               ))}
             </div>
           )}
-          <div className="splash-tagline">Chaque séance compte.</div>
+          <div className="splash-tagline">On n’aime pas, mais on n’a pas le choix !</div>
         </div>
-      </div>
-
-      <div className="splash-bar">
-        <div />
       </div>
     </div>
   );
