@@ -1,7 +1,8 @@
+import { speedKmh, formatPace } from './cardio';
 import { epley1RM } from './oneRepMax';
 import type { ExerciseKind } from './types';
 
-export type RecordType = 'maxWeight' | 'est1RM' | 'maxReps' | 'maxLest' | 'maxDuration';
+export type RecordType = 'maxWeight' | 'est1RM' | 'maxReps' | 'maxLest' | 'maxDuration' | 'maxDistance' | 'bestSpeed';
 
 export const RECORD_LABELS: Record<RecordType, string> = {
   maxWeight: 'Charge max',
@@ -9,6 +10,8 @@ export const RECORD_LABELS: Record<RecordType, string> = {
   maxReps: 'Répétitions max',
   maxLest: 'Lest max',
   maxDuration: 'Durée max',
+  maxDistance: 'Distance max',
+  bestSpeed: 'Meilleure allure',
 };
 
 export const RECORD_UNITS: Record<RecordType, string> = {
@@ -17,6 +20,8 @@ export const RECORD_UNITS: Record<RecordType, string> = {
   maxReps: 'reps',
   maxLest: 'kg',
   maxDuration: 's',
+  maxDistance: 'km',
+  bestSpeed: 'km/h',
 };
 
 export interface RecordInput {
@@ -24,6 +29,7 @@ export interface RecordInput {
   workoutId: string;
   weightKg: number;
   reps: number;
+  distanceKm?: number;
   isWarmup: boolean;
   completed: boolean;
   completedAt?: number;
@@ -39,6 +45,8 @@ function valuesFor(kind: ExerciseKind, set: RecordInput): Partial<Record<RecordT
     return { maxWeight: set.weightKg, est1RM: epley1RM(set.weightKg, set.reps) };
   }
   if (kind === 'duration') return { maxDuration: set.reps };
+  // Cardio : la meilleure allure est mémorisée comme vitesse (plus c'est haut, mieux c'est).
+  if (kind === 'cardio') return { maxDistance: set.distanceKm ?? 0, bestSpeed: speedKmh(set.distanceKm, set.reps) };
   return { maxReps: set.reps, maxLest: set.weightKg };
 }
 
@@ -85,4 +93,13 @@ export function bestValues(sets: RecordInput[], kind: ExerciseKind): Partial<Rec
     }
   }
   return best;
+}
+
+/** Texte d'un record : "Charge max : 62,5 kg", "Meilleure allure : 5:42 /km". */
+export function formatRecord(hit: RecordHit, formatNumber: (n: number) => string): string {
+  const value =
+    hit.type === 'bestSpeed'
+      ? formatPace(hit.value > 0 ? Math.round(3600 / hit.value) : null)
+      : `${formatNumber(hit.value)} ${RECORD_UNITS[hit.type]}`;
+  return `${RECORD_LABELS[hit.type]} : ${value}`;
 }

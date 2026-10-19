@@ -63,9 +63,11 @@ export function SessionEditorScreen() {
   const add = async (exercise: Exercise) => {
     setPicking(false);
     const defaults: TemplateExercise =
-      exercise.kind === 'duration'
-        ? { exerciseId: exercise.id, plannedSets: 3, repMin: 30, repMax: 45 }
-        : { exerciseId: exercise.id, plannedSets: 3, repMin: 8, repMax: 12 };
+      exercise.kind === 'cardio'
+        ? { exerciseId: exercise.id, plannedSets: 1 }
+        : exercise.kind === 'duration'
+          ? { exerciseId: exercise.id, plannedSets: 3, repMin: 30, repMax: 45 }
+          : { exerciseId: exercise.id, plannedSets: 3, repMin: 8, repMax: 12 };
     await save([...list, defaults]);
   };
 
@@ -182,25 +184,29 @@ export function SessionEditorScreen() {
 
                 <div className="edit-grid">
                   <MiniStepper
-                    label="Séries"
+                    label={exercise?.kind === 'cardio' ? 'Fois' : 'Séries'}
                     value={item.plannedSets}
                     min={1}
                     onChange={(v) => patch(index, { plannedSets: v })}
                   />
-                  <MiniStepper
-                    label={`${unit === 's' ? 'Durée' : 'Reps'} min`}
-                    value={item.repMin ?? item.repMax ?? 10}
-                    min={1}
-                    step={step}
-                    onChange={(v) => patch(index, { repMin: v, repMax: Math.max(v, item.repMax ?? v) })}
-                  />
-                  <MiniStepper
-                    label={`${unit === 's' ? 'Durée' : 'Reps'} max`}
-                    value={item.repMax ?? item.repMin ?? 10}
-                    min={1}
-                    step={step}
-                    onChange={(v) => patch(index, { repMax: v, repMin: Math.min(v, item.repMin ?? v) })}
-                  />
+                  {exercise?.kind !== 'cardio' && (
+                    <>
+                      <MiniStepper
+                        label={`${unit === 's' ? 'Durée' : 'Reps'} min`}
+                        value={item.repMin ?? item.repMax ?? 10}
+                        min={1}
+                        step={step}
+                        onChange={(v) => patch(index, { repMin: v, repMax: Math.max(v, item.repMax ?? v) })}
+                      />
+                      <MiniStepper
+                        label={`${unit === 's' ? 'Durée' : 'Reps'} max`}
+                        value={item.repMax ?? item.repMin ?? 10}
+                        min={1}
+                        step={step}
+                        onChange={(v) => patch(index, { repMax: v, repMin: Math.min(v, item.repMin ?? v) })}
+                      />
+                    </>
+                  )}
                   <div className="mini-stepper">
                     <div className="mini-label">Repos</div>
                     <button className="mini-value-btn" onClick={() => setRestFor(index)}>

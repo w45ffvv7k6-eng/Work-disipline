@@ -9,9 +9,8 @@ type Row = [exerciseId: string, sets: number, repMin: number, repMax: number, re
 const ex = ([id, plannedSets, repMin, repMax, restSec, note]: Row): TemplateExercise => ({
   exerciseId: `ex-${id}`,
   plannedSets,
-  repMin,
-  repMax,
-  restSec,
+  ...(repMin > 0 ? { repMin, repMax } : {}),
+  ...(restSec > 0 ? { restSec } : {}),
   ...(note ? { note } : {}),
 });
 
@@ -113,11 +112,29 @@ const PROGRAMS: { program: Omit<Program, 'updatedAt'>; templates: [id: string, n
 /** Jours fixes (1 = lundi). Les séances absentes d'ici tournent en rotation (Full body A / B). */
 const WEEKDAYS: Record<string, number> = { 'tpl-haut-a': 1, 'tpl-bas-a': 2, 'tpl-haut-b': 4, 'tpl-bas-b': 5 };
 
+/** Séances de course « en plus », proposées dans chaque programme (préfixe d'identifiant par programme). */
+const RUNNING: [suffix: string, name: string, rows: Row[]][] = [
+  [
+    'course-footing',
+    'Course – Footing',
+    [['course-exterieur', 1, 0, 0, 0, 'Footing 30 à 40 min, allure où tu peux parler']],
+  ],
+  [
+    'course-fractionne',
+    'Course – Fractionné',
+    [
+      ['course-exterieur', 1, 0, 0, 0, 'Échauffement : 10 min tranquille'],
+      ['course-exterieur', 8, 0, 0, 90, '400 m rapides, 1 min 30 de récupération'],
+    ],
+  ],
+];
+const RUNNING_PREFIX: Record<string, string> = { 'prog-prise-de-masse': 'tpl-pdm', 'prog-full-body': 'tpl-fb' };
+
 export function seedPrograms(now = Date.now()): { programs: Program[]; templates: Template[] } {
   return {
     programs: PROGRAMS.map(({ program }) => ({ ...program, updatedAt: now })),
-    templates: PROGRAMS.flatMap(({ program, templates }) =>
-      templates.map(([id, name, rows], index) => ({
+    templates: PROGRAMS.flatMap(({ program, templates }) => [
+      ...templates.map(([id, name, rows], index) => ({
         id,
         name,
         exercises: rows.map(ex),
@@ -126,6 +143,15 @@ export function seedPrograms(now = Date.now()): { programs: Program[]; templates
         ...(WEEKDAYS[id] ? { weekday: WEEKDAYS[id] } : {}),
         updatedAt: now,
       })),
-    ),
+      ...RUNNING.map(([suffix, name, rows], index) => ({
+        id: `${RUNNING_PREFIX[program.id]}-${suffix}`,
+        name,
+        exercises: rows.map(ex),
+        programId: program.id,
+        programOrder: templates.length + index,
+        extra: true,
+        updatedAt: now,
+      })),
+    ]),
   };
 }

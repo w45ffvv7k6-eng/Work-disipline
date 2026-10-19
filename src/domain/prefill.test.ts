@@ -53,6 +53,18 @@ describe('prefillValues', () => {
   });
 });
 
+describe('course', () => {
+  it('reprend distance et durée de la dernière fois', () => {
+    const last = [s(0, 0, 1710, { distanceKm: 5 })];
+    expect(prefillValues(last, [], 'cardio')).toEqual({ weightKg: 0, reps: 1710, distanceKm: 5 });
+    expect(prefillValues([], [], 'cardio')).toEqual({ weightKg: 0, reps: 1800, distanceKm: 5 });
+  });
+
+  it('résume la dernière sortie avec l’allure', () => {
+    expect(formatLastTime([s(0, 0, 1710, { distanceKm: 5 })], 'cardio')).toBe('5 km en 28:30 (5:42 /km)');
+  });
+});
+
 describe('formatLastTime', () => {
   it('résume des séries identiques', () => {
     expect(formatLastTime([s(0, 60, 8), s(1, 60, 8), s(2, 60, 8)], 'weighted')).toBe('3×8 à 60 kg');

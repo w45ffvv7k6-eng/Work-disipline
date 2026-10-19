@@ -60,8 +60,9 @@ export function weekPlan(
 ): DayPlan[] {
   const today = startOfDay(now);
   const monday = addDays(today, 1 - isoWeekday(today));
-  const rotation = [...templates].sort((a, b) => (a.programOrder ?? 0) - (b.programOrder ?? 0));
-  const byId = new Map(rotation.map((t) => [t.id, t]));
+  // Les séances « en plus » (course…) ne sont placées que si l'utilisateur les ajoute à sa semaine.
+  const rotation = templates.filter((t) => !t.extra).sort((a, b) => (a.programOrder ?? 0) - (b.programOrder ?? 0));
+  const byId = new Map(templates.map((t) => [t.id, t]));
   const fixed = rotation.some((t) => t.weekday !== undefined);
   const next = nextTemplateInProgram(rotation, finishedWorkouts);
   let cursor = next ? rotation.indexOf(next) : 0;

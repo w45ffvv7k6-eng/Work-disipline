@@ -9,7 +9,8 @@ export function nextTemplateInProgram(
   templates: Template[],
   finishedWorkouts: Pick<Workout, 'templateId' | 'startedAt'>[],
 ): Template | undefined {
-  const rotation = [...templates].sort((a, b) => (a.programOrder ?? 0) - (b.programOrder ?? 0));
+  // Les séances « en plus » (course…) ne font pas partie de la rotation.
+  const rotation = templates.filter((t) => !t.extra).sort((a, b) => (a.programOrder ?? 0) - (b.programOrder ?? 0));
   if (rotation.length === 0) return undefined;
   const ids = new Set(rotation.map((t) => t.id));
   const last = finishedWorkouts

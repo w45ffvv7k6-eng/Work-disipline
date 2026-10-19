@@ -77,7 +77,10 @@ export interface WorkoutRepository {
 
   /** Ajoute une série pré-remplie avec les valeurs de la dernière fois. */
   addSet(workoutExerciseId: string): Promise<WorkoutSet>;
-  updateSet(setId: string, patch: Partial<Pick<WorkoutSet, 'weightKg' | 'reps' | 'isWarmup'>>): Promise<void>;
+  updateSet(
+    setId: string,
+    patch: Partial<Pick<WorkoutSet, 'weightKg' | 'reps' | 'distanceKm' | 'isWarmup'>>,
+  ): Promise<void>;
   /** Valide / dévalide une série. Renvoie les records battus si la série vient d'être validée. */
   toggleSetCompleted(setId: string): Promise<RecordHit[]>;
   deleteSet(setId: string): Promise<void>;

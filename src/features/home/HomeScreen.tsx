@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import { people } from '../../data/people';
 import type { ProgramWithTemplates } from '../../data/repositories';
-import { defaultWorkoutName, formatClock, formatDuration, formatTarget } from '../../domain/format';
+import { defaultWorkoutName, formatClock, formatDuration, formatTarget, plural } from '../../domain/format';
 import { quoteOfTheDay } from '../../domain/summary';
 import type { Exercise, Template } from '../../domain/types';
 import {
@@ -258,7 +258,7 @@ function DayRow({
     : status === 'missed'
       ? 'Pas faite'
       : template
-        ? `${template.exercises.length} exercices`
+        ? plural(template.exercises.length, 'exercice')
         : isEditable(day)
           ? 'Récupération 😴 · touche pour ajouter une séance'
           : 'Récupération 😴';
@@ -349,7 +349,7 @@ function DaySheet({
             .map((t) => (
               <button key={t.id} className="card-button" onClick={() => onSet(t.id)}>
                 <div style={{ fontWeight: 800 }}>{t.name}</div>
-                <div className="muted small">{t.exercises.length} exercices</div>
+                <div className="muted small">{plural(t.exercises.length, 'exercice')}</div>
               </button>
             ))}
         </div>

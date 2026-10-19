@@ -7,19 +7,46 @@ import { useFeedback } from '../../ui/feedback';
 import { initials } from '../../ui/PageHeader';
 import { splashPhotoUrl } from '../../ui/splashPhotos';
 
-/** Passe à une autre personne : sa base de données est chargée au redémarrage de l'appli. */
-export function switchPerson(id: string | undefined) {
-  people.select(id);
-  // Redémarre l'appli sur l'onglet Programme (adresse sans « # » : rechargement complet).
+// Personne choisie pour cette ouverture de l'appli (oublié quand l'appli est fermée).
+const CHOSEN_KEY = 'wd-chosen';
+
+function chosenThisSession(): string | null {
+  try {
+    return sessionStorage.getItem(CHOSEN_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function rememberChoice(id: string | null) {
+  try {
+    if (id) sessionStorage.setItem(CHOSEN_KEY, id);
+    else sessionStorage.removeItem(CHOSEN_KEY);
+  } catch {
+    // stockage indisponible : on redemandera
+  }
+}
+
+/** Redémarre l'appli (adresse sans « # » : rechargement complet, sur l'onglet Programme). */
+function restart() {
   window.location.href = window.location.pathname + window.location.search;
 }
 
+/** Revient à l'écran « Qui s'entraîne ? ». */
+export function switchPerson() {
+  rememberChoice(null);
+  restart();
+}
+
 /**
- * Tant que personne n'est identifié sur ce téléphone, affiche « Qui s'entraîne ? ».
- * Une fois une personne choisie, elle le reste jusqu'à « Changer de personne ».
+ * À chaque ouverture : « Qui s'entraîne ? », puis l'écran « Bienvenue <prénom> » avec le bouton GO,
+ * puis l'appli avec les données de la personne choisie.
  */
-export function PersonGate({ children }: { children: ReactNode }) {
-  const [activeId, setActiveId] = useState(people.activeId());
+export function PersonGate({ children, welcome }: { children: ReactNode; welcome: ReactNode }) {
+  const [chosen, setChosen] = useState(() => {
+    const id = chosenThisSession();
+    return !!id && id === people.activeId() && !!people.active();
+  });
   const [ready, setReady] = useState(false);
 
   // Données saisies avant l'arrivée des personnes : elles deviennent celles de la personne d'origine.
@@ -34,16 +61,21 @@ export function PersonGate({ children }: { children: ReactNode }) {
   }, []);
 
   if (!ready) return null;
-  if (activeId && people.active()) return <>{children}</>;
+  if (chosen) {
+    return (
+      <>
+        {children}
+        {welcome}
+      </>
+    );
+  }
 
   const choose = (person: Person) => {
+    people.select(person.id);
+    rememberChoice(person.id);
     // La base déjà ouverte est celle de cette personne : pas besoin de redémarrer.
-    if (dbNameFor(person.id) === db.name) {
-      people.select(person.id);
-      setActiveId(person.id);
-    } else {
-      switchPerson(person.id);
-    }
+    if (dbNameFor(person.id) === db.name) setChosen(true);
+    else restart();
   };
 
   return <PersonPicker onChoose={choose} />;

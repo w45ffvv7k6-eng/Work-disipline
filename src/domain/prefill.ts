@@ -3,6 +3,8 @@ import type { ExerciseKind } from './types';
 export interface SetValues {
   weightKg: number;
   reps: number;
+  /** Distance (exercices cardio). */
+  distanceKm?: number;
 }
 
 interface SetLike extends SetValues {
@@ -15,6 +17,7 @@ export const DEFAULT_VALUES: Record<ExerciseKind, SetValues> = {
   weighted: { weightKg: 20, reps: 10 },
   bodyweight: { weightKg: 0, reps: 10 },
   duration: { weightKg: 0, reps: 30 },
+  cardio: { weightKg: 0, reps: 1800, distanceKm: 5 },
 };
 
 /** Séries « de travail » (validées, hors échauffement) d'une séance, dans l'ordre. */
@@ -48,9 +51,12 @@ export function prefillValues(
   if (lastCurrent) return pick(lastCurrent);
   if (previous.length > 0) return pick(previous[previous.length - 1]);
   // Première fois : on part du bas de la fourchette d'objectif, s'il y en a une.
+  if (kind === 'cardio') return { ...DEFAULT_VALUES.cardio };
   return { ...DEFAULT_VALUES[kind], ...(target.repMin ? { reps: target.repMin } : {}) };
 }
 
 function pick(s: SetValues): SetValues {
-  return { weightKg: s.weightKg, reps: s.reps };
+  return s.distanceKm !== undefined
+    ? { weightKg: s.weightKg, reps: s.reps, distanceKm: s.distanceKm }
+    : { weightKg: s.weightKg, reps: s.reps };
 }

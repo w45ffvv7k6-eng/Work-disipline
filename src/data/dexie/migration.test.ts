@@ -25,7 +25,10 @@ describe('mise à jour de la base sur un téléphone déjà utilisé', () => {
 
     const db = new MuscuDB(name);
     await db.open();
-    expect(db.verno).toBe(2);
+    expect(db.verno).toBe(3);
+    // Version 3 : exercices cardio et séances de course ajoutés.
+    expect(await db.exercises.get('ex-course-exterieur')).toBeTruthy();
+    expect(await db.templates.get('tpl-pdm-course-footing')).toMatchObject({ extra: true });
     expect((await db.workouts.get('w1'))?.name).toBe('Ancienne séance');
     await db.weekPlans.put({ id: '2026-10-19', programId: 'p', days: {}, updatedAt: 0 });
     expect(await db.weekPlans.count()).toBe(1);

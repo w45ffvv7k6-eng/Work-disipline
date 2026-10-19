@@ -80,6 +80,11 @@ const SEED: [id: string, name: string, group: MuscleGroup, kind?: ExerciseKind][
   ['gainage', 'Gainage (planche)', 'abdos', 'duration'],
   // Avant-bras
   ['curl-poignets', 'Curl poignets', 'avant-bras'],
+  // Cardio
+  ['course-exterieur', 'Course à pied', 'cardio', 'cardio'],
+  ['course-tapis', 'Course sur tapis', 'cardio', 'cardio'],
+  ['velo', 'Vélo', 'cardio', 'cardio'],
+  ['rameur', 'Rameur', 'cardio', 'cardio'],
 ];
 
 export function seedExercises(now = Date.now()): Exercise[] {

@@ -1,3 +1,4 @@
+import { formatPace, formatRunDuration, paceSecPerKm } from './cardio';
 import { workingSets, type SetValues } from './prefill';
 import type { ExerciseKind } from './types';
 
@@ -14,6 +15,7 @@ export function formatTarget(
   kind: ExerciseKind,
 ): string | null {
   const { repMin, repMax, note } = target;
+  if (kind === 'cardio') return note ?? null;
   if (repMin === undefined && repMax === undefined) return null;
   const range =
     repMin !== undefined && repMax !== undefined && repMin !== repMax ? `${repMin}–${repMax}` : `${repMin ?? repMax}`;
@@ -31,6 +33,14 @@ export function formatLastTime(
   const work = workingSets(sets);
   if (work.length === 0) return null;
   const allSame = work.every((s) => s.weightKg === work[0].weightKg && s.reps === work[0].reps);
+  if (kind === 'cardio') {
+    return work
+      .map(
+        (s) =>
+          `${formatKg(s.distanceKm ?? 0)} km en ${formatRunDuration(s.reps)} (${formatPace(paceSecPerKm(s.distanceKm, s.reps))})`,
+      )
+      .join(', ');
+  }
   if (kind === 'duration') {
     return allSame ? `${work.length}×${work[0].reps} s` : work.map((s) => `${s.reps} s`).join(', ');
   }
@@ -74,4 +84,9 @@ export function defaultWorkoutName(date = new Date()): string {
   const hour = date.getHours();
   const moment = hour < 12 ? 'matin' : hour < 18 ? 'après-midi' : 'soir';
   return `Séance du ${day} ${moment}`;
+}
+
+/** "1 exercice", "6 exercices". */
+export function plural(count: number, word: string): string {
+  return `${count} ${word}${count > 1 ? 's' : ''}`;
 }

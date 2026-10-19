@@ -12,4 +12,5 @@ export const MUSCLE_COLORS: Record<MuscleGroup, string> = {
   mollets: '#2dd4bf',
   abdos: '#facc15',
   'avant-bras': '#94a3b8',
+  cardio: '#38bdf8',
 };

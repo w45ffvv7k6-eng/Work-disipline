@@ -115,7 +115,7 @@ describe('dépôt Dexie des séances', () => {
 
   it('crée une séance à la fin du programme et la supprime', async () => {
     const t = await repos.templates.create('Bras', 'prog-prise-de-masse');
-    expect(t.programOrder).toBe(4);
+    expect(t.programOrder).toBe(6);
     await repos.templates.delete(t.id);
     expect(await first(repos.templates.watch(t.id))).toBeNull();
   });

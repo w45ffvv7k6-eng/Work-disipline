@@ -4,6 +4,7 @@ interface SummarySet {
   id: string;
   weightKg: number;
   reps: number;
+  distanceKm?: number;
   isWarmup: boolean;
   completed: boolean;
 }
@@ -16,6 +17,10 @@ export interface WorkoutSummary {
   repCount: number;
   /** Volume soulevé (poids × répétitions) sur les exercices avec charge, en kg. */
   volumeKg: number;
+  /** Distance totale parcourue (cardio), en km. */
+  distanceKm: number;
+  /** Durée totale des sorties cardio, en secondes. */
+  cardioSec: number;
   recordCount: number;
 }
 
@@ -28,13 +33,19 @@ export function summarizeWorkout(
   let repCount = 0;
   let volumeKg = 0;
   let recordCount = 0;
+  let distanceKm = 0;
+  let cardioSec = 0;
   let exerciseCount = 0;
   for (const { kind, sets, recordSetIds } of exercises) {
     const work = sets.filter((s) => s.completed && !s.isWarmup);
     if (work.length > 0) exerciseCount++;
     for (const s of work) {
       setCount++;
-      if (kind !== 'duration') repCount += s.reps;
+      if (kind !== 'duration' && kind !== 'cardio') repCount += s.reps;
+      if (kind === 'cardio') {
+        distanceKm += s.distanceKm ?? 0;
+        cardioSec += s.reps;
+      }
       if (kind === 'weighted') volumeKg += s.weightKg * s.reps;
       if (recordSetIds.has(s.id)) recordCount++;
     }
@@ -45,6 +56,8 @@ export function summarizeWorkout(
     setCount,
     repCount,
     volumeKg: Math.round(volumeKg),
+    distanceKm: Math.round(distanceKm * 100) / 100,
+    cardioSec,
     recordCount,
   };
 }

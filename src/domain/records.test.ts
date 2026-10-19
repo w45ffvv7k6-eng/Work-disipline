@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { bestValues, computeRecords, type RecordInput } from './records';
+import { bestValues, computeRecords, formatRecord, type RecordInput } from './records';
 
 let t = 0;
 function set(workoutId: string, weightKg: number, reps: number, extra: Partial<RecordInput> = {}): RecordInput {
@@ -55,6 +55,22 @@ describe('computeRecords', () => {
     const records = computeRecords([a, b, c], 'bodyweight');
     expect(records.get(b.id)).toEqual([{ type: 'maxReps', value: 10 }]);
     expect(records.get(c.id)).toEqual([{ type: 'maxLest', value: 5 }]);
+  });
+});
+
+describe('records de course', () => {
+  it('distance max et meilleure allure', () => {
+    const a = set('w1', 0, 1800, { distanceKm: 5 });
+    const b = set('w2', 0, 1710, { distanceKm: 5 });
+    const c = set('w3', 0, 3600, { distanceKm: 8 });
+    const records = computeRecords([a, b, c], 'cardio');
+    expect(records.get(b.id)).toEqual([{ type: 'bestSpeed', value: 10.5 }]);
+    expect(records.get(c.id)).toEqual([{ type: 'maxDistance', value: 8 }]);
+  });
+
+  it('affiche la meilleure allure en minutes par kilomètre', () => {
+    expect(formatRecord({ type: 'bestSpeed', value: 10.5 }, String)).toBe('Meilleure allure : 5:43 /km');
+    expect(formatRecord({ type: 'maxDistance', value: 8 }, String)).toBe('Distance max : 8 km');
   });
 });
 

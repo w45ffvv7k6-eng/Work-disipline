@@ -45,6 +45,15 @@ export class MuscuDB extends Dexie {
     });
     // Version 2 : plannings de semaine personnalisés. Les données existantes sont conservées.
     this.version(2).stores({ weekPlans: 'id' });
+    // Version 3 : exercices cardio et séances de course ajoutés aux téléphones déjà utilisés.
+    this.version(3)
+      .stores({})
+      .upgrade(async (tx) => {
+        const exercises = tx.table('exercises');
+        const templates = tx.table('templates');
+        for (const e of seedExercises()) if (!(await exercises.get(e.id))) await exercises.add(e);
+        for (const t of seedPrograms().templates) if (t.extra && !(await templates.get(t.id))) await templates.add(t);
+      });
     // Au tout premier lancement : bibliothèque d'exercices et programmes fournis.
     this.on('populate', (tx) => {
       const { programs, templates } = seedPrograms();

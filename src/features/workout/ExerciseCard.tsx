@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { useRepositories } from '../../data';
 import type { WorkoutExerciseDetail } from '../../data/repositories';
 import { formatClock, formatKg, formatLastTime, formatTarget } from '../../domain/format';
-import { RECORD_LABELS, RECORD_UNITS, type RecordHit } from '../../domain/records';
+import { formatRecord, type RecordHit } from '../../domain/records';
+import { formatPace, formatRunDuration, paceSecPerKm } from '../../domain/cardio';
 import { resolveRestSec } from '../../domain/timer';
 import type { Settings, WorkoutSet } from '../../domain/types';
 import { unlockAudio } from '../../ui/alarm';
@@ -19,7 +20,7 @@ interface Props {
 }
 
 export function recordMessage(hits: RecordHit[]): string {
-  const parts = hits.map((h) => `${RECORD_LABELS[h.type]} : ${formatKg(h.value)} ${RECORD_UNITS[h.type]}`);
+  const parts = hits.map((h) => formatRecord(h, formatKg));
   return `🏆 Nouveau record ! ${parts.join(' · ')}`;
 }
 
@@ -44,7 +45,9 @@ export function ExerciseCard({ detail, settings }: Props) {
     // Le tap débloque le son sur iPhone pour la fin du repos.
     unlockAudio();
     const hits = await workouts.toggleSetCompleted(set.id);
-    if (!set.completed) await timer.start(workoutExercise.id, restSec);
+    // Pas de repos après une sortie cardio, sauf s'il reste des fractions à faire.
+    const remaining = workSets.some((s) => !s.completed && s.id !== set.id);
+    if (!set.completed && (exercise.kind !== 'cardio' || remaining)) await timer.start(workoutExercise.id, restSec);
     if (hits.length > 0) {
       haptic([60, 40, 60]);
       toast(recordMessage(hits), 'gold');
@@ -79,8 +82,9 @@ export function ExerciseCard({ detail, settings }: Props) {
       </div>
       <p className="exercise-plan">
         <span className="plan-sets">
-          {plannedCount} série{plannedCount > 1 ? 's' : ''}
-          {targetText ? ` × ${targetText}` : ''}
+          {exercise.kind === 'cardio'
+            ? `${plannedCount > 1 ? `${plannedCount} × ` : ''}${targetText ?? 'Cardio'}`
+            : `${plannedCount} série${plannedCount > 1 ? 's' : ''}${targetText ? ` × ${targetText}` : ''}`}
         </span>
         <span className={`plan-progress${doneCount >= plannedCount && plannedCount > 0 ? ' complete' : ''}`}>
           {doneCount}/{plannedCount}
@@ -185,6 +189,18 @@ export function ExerciseCard({ detail, settings }: Props) {
 }
 
 function SetValues({ set, kind }: { set: WorkoutSet; kind: WorkoutExerciseDetail['exercise']['kind'] }) {
+  if (kind === 'cardio') {
+    return (
+      <span className="cardio-values">
+        <span>
+          {formatKg(set.distanceKm ?? 0)} <span className="unit">km</span>
+        </span>
+        <span className="times">·</span>
+        <span>{formatRunDuration(set.reps)}</span>
+        <span className="pace">{formatPace(paceSecPerKm(set.distanceKm, set.reps))}</span>
+      </span>
+    );
+  }
   if (kind === 'duration') {
     return (
       <span>

@@ -120,6 +120,15 @@ function CreateExerciseSheet({
           <button className={kind === 'duration' ? 'active' : ''} onClick={() => setKind('duration')}>
             Durée
           </button>
+          <button
+            className={kind === 'cardio' ? 'active' : ''}
+            onClick={() => {
+              setKind('cardio');
+              setGroup('cardio');
+            }}
+          >
+            Cardio
+          </button>
         </div>
       </div>
       <div className="form-field">

@@ -58,7 +58,7 @@ export function App() {
     <HashRouter>
       <FeedbackProvider>
         <AuthProvider>
-          <PersonGate>
+          <PersonGate welcome={<WelcomeSplash />}>
             <AuthGate>
               <div className="app">
                 <Routes>
@@ -96,7 +96,6 @@ export function App() {
               </div>
             </AuthGate>
           </PersonGate>
-          <WelcomeSplash />
           <ThemeSync />
         </AuthProvider>
       </FeedbackProvider>

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
+import { plural } from '../../domain/format';
 import type { MuscleGroup } from '../../domain/types';
 import { WEEKDAY_LONG } from '../../domain/week';
 import { TemplateIcon } from '../../ui/icons';
@@ -44,8 +45,9 @@ export function SessionsScreen() {
                     <div className="grow">
                       <div className="session-name">{t.name}</div>
                       <div className="muted small">
+                        {t.extra ? 'En plus · à ajouter à ta semaine · ' : ''}
                         {t.weekday ? `Le ${WEEKDAY_LONG[t.weekday - 1]} · ` : ''}
-                        {t.exercises.length} exercices · {sets} séries
+                        {plural(t.exercises.length, 'exercice')} · {plural(sets, 'série')}
                       </div>
                     </div>
                     <span className="muted">›</span>

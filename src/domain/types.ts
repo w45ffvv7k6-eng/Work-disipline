@@ -4,7 +4,17 @@
 // une synchronisation cloud plus tard sans changer la structure.
 
 export type MuscleGroup =
-  'pectoraux' | 'dos' | 'epaules' | 'biceps' | 'triceps' | 'jambes' | 'fessiers' | 'mollets' | 'abdos' | 'avant-bras';
+  | 'pectoraux'
+  | 'dos'
+  | 'epaules'
+  | 'biceps'
+  | 'triceps'
+  | 'jambes'
+  | 'fessiers'
+  | 'mollets'
+  | 'abdos'
+  | 'avant-bras'
+  | 'cardio';
 
 export const MUSCLE_GROUP_LABELS: Record<MuscleGroup, string> = {
   pectoraux: 'Pectoraux',
@@ -17,14 +27,16 @@ export const MUSCLE_GROUP_LABELS: Record<MuscleGroup, string> = {
   mollets: 'Mollets',
   abdos: 'Abdos',
   'avant-bras': 'Avant-bras',
+  cardio: 'Cardio',
 };
 
 /**
  * weighted : charge en kg.
  * bodyweight : poids du corps, weightKg = lest (0 = sans lest).
  * duration : exercice chronométré (gainage…), `reps` contient des secondes.
+ * cardio : course, vélo… `distanceKm` contient la distance et `reps` la durée en secondes.
  */
-export type ExerciseKind = 'weighted' | 'bodyweight' | 'duration';
+export type ExerciseKind = 'weighted' | 'bodyweight' | 'duration' | 'cardio';
 
 export interface Exercise {
   id: string;
@@ -81,6 +93,8 @@ export interface WorkoutSet {
   /** Charge (ou lest pour un exercice au poids du corps), en kg. */
   weightKg: number;
   reps: number;
+  /** Distance en km (exercices cardio). */
+  distanceKm?: number;
   isWarmup: boolean;
   completed: boolean;
   completedAt?: number;
@@ -101,6 +115,8 @@ export interface Template {
   programOrder?: number;
   /** Jour fixe de la séance (1 = lundi … 7 = dimanche). Sans jour fixe, le programme tourne en rotation. */
   weekday?: number;
+  /** Séance « en plus » (ex. course) : jamais placée automatiquement, on l'ajoute au planning soi-même. */
+  extra?: boolean;
   updatedAt: number;
   deletedAt?: number;
 }

@@ -130,7 +130,7 @@ describe('synchronisation avec le compte', () => {
     await p.repos.profile.save({ firstName: 'Rafael', heightCm: 178, checkFrequencyDays: 7 });
     await p.engine.logout();
     expect(await firstName(p.db)).toBeUndefined();
-    expect(await p.db.templates.count()).toBe(6);
+    expect(await p.db.templates.count()).toBe(10);
     expect(cloud.snapshots.get(RAFAEL.id)?.data.data.profile).toHaveLength(1);
   });
 

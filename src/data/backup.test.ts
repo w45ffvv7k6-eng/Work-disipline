@@ -40,6 +40,6 @@ describe('sauvegarde complète', () => {
     await resetLocalData(db);
     expect(await hasPersonalData(db)).toBe(false);
     expect(await db.exercises.count()).toBeGreaterThanOrEqual(60);
-    expect(await db.templates.count()).toBe(6);
+    expect(await db.templates.count()).toBe(10);
   });
 });

@@ -303,7 +303,7 @@ function PersonSection() {
         <p className="muted small" style={{ margin: 0 }}>
           Plusieurs personnes peuvent utiliser l’appli sur ce téléphone, chacune avec ses propres séances.
         </p>
-        <button className="btn btn-block btn-small" onClick={() => switchPerson(undefined)}>
+        <button className="btn btn-block btn-small" onClick={() => switchPerson()}>
           👥 Changer de personne
         </button>
       </div>

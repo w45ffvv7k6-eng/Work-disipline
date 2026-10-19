@@ -2,7 +2,8 @@ import { useEffect, useMemo } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import { formatDuration, formatKg } from '../../domain/format';
-import { RECORD_LABELS, RECORD_UNITS } from '../../domain/records';
+import { formatRecord } from '../../domain/records';
+import { formatPace, paceSecPerKm } from '../../domain/cardio';
 import { summarizeWorkout } from '../../domain/summary';
 import { haptic } from '../../ui/feedback';
 
@@ -83,12 +84,31 @@ export function WorkoutSummaryScreen() {
           <div className="stat-value">{summary.setCount}</div>
         </div>
         <div className="stat pop" style={{ animationDelay: '0.3s' }}>
-          <div className="stat-label">Volume soulevé</div>
-          <div className="stat-value">{formatKg(summary.volumeKg)} kg</div>
+          {/* Séance de course : la distance remplace le volume soulevé. */}
+          {summary.distanceKm > 0 && summary.volumeKg === 0 ? (
+            <>
+              <div className="stat-label">Distance</div>
+              <div className="stat-value">{formatKg(summary.distanceKm)} km</div>
+            </>
+          ) : (
+            <>
+              <div className="stat-label">Volume soulevé</div>
+              <div className="stat-value">{formatKg(summary.volumeKg)} kg</div>
+            </>
+          )}
         </div>
         <div className="stat pop" style={{ animationDelay: '0.4s' }}>
-          <div className="stat-label">Répétitions</div>
-          <div className="stat-value">{summary.repCount}</div>
+          {summary.repCount === 0 && summary.distanceKm > 0 ? (
+            <>
+              <div className="stat-label">Allure moyenne</div>
+              <div className="stat-value">{formatPace(paceSecPerKm(summary.distanceKm, summary.cardioSec))}</div>
+            </>
+          ) : (
+            <>
+              <div className="stat-label">Répétitions</div>
+              <div className="stat-value">{summary.repCount}</div>
+            </>
+          )}
         </div>
       </div>
 
@@ -99,9 +119,7 @@ export function WorkoutSummaryScreen() {
             {records.map((r, i) => (
               <div key={`${r.setId}-${r.hit.type}-${i}`} className="record-row">
                 <span className="grow">{r.exercise}</span>
-                <span className="record-value">
-                  {RECORD_LABELS[r.hit.type]} : {formatKg(r.hit.value)} {RECORD_UNITS[r.hit.type]}
-                </span>
+                <span className="record-value">{formatRecord(r.hit, formatKg)}</span>
               </div>
             ))}
           </div>

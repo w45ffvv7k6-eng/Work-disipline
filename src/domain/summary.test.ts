@@ -33,8 +33,23 @@ describe('summarizeWorkout', () => {
       setCount: 4,
       repCount: 28,
       volumeKg: 960,
+      distanceKm: 0,
+      cardioSec: 0,
       recordCount: 1,
     });
+  });
+});
+
+describe('summarizeWorkout – course', () => {
+  it('additionne la distance et ne compte pas la durée comme des répétitions', () => {
+    const summary = summarizeWorkout(0, 1, [
+      {
+        kind: 'cardio',
+        sets: [set('r1', 0, 1710, { distanceKm: 5 }), set('r2', 0, 600, { distanceKm: 2.5 })],
+        recordSetIds: new Set(),
+      },
+    ]);
+    expect(summary).toMatchObject({ distanceKm: 7.5, cardioSec: 2310, repCount: 0, setCount: 2, volumeKg: 0 });
   });
 });
 
