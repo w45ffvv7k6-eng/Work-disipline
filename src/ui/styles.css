@@ -1487,3 +1487,121 @@ button:disabled {
   font-weight: 800;
   text-align: center;
 }
+
+/* ---------- Écran de bienvenue ---------- */
+
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--bg);
+  overflow: hidden;
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+.splash-out {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+
+.splash-glow {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(74, 222, 128, 0.25), rgba(96, 165, 250, 0.08) 55%, transparent 70%);
+  animation: glow 2.4s ease-in-out infinite;
+}
+
+.splash-icon {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: var(--accent-text);
+  box-shadow: 0 12px 40px rgba(74, 222, 128, 0.45);
+  margin-bottom: 18px;
+  animation: splash-icon 0.8s cubic-bezier(0.2, 1.6, 0.4, 1) both;
+}
+.splash-icon svg {
+  width: 58px;
+  height: 58px;
+  stroke-width: 2.4;
+}
+
+.splash-welcome {
+  position: relative;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  animation: rise 0.5s ease 0.3s both;
+}
+
+.splash-name {
+  position: relative;
+  font-size: 2.6rem;
+  font-weight: 900;
+  line-height: 1.15;
+  text-align: center;
+  padding: 0 16px;
+}
+.splash-name span {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent), #60a5fa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: letter 0.45s cubic-bezier(0.2, 1.5, 0.4, 1) both;
+}
+
+.splash-bar {
+  position: absolute;
+  bottom: calc(48px + var(--safe-bottom));
+  width: 120px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--surface-2);
+  overflow: hidden;
+}
+.splash-bar div {
+  height: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  animation: splash-progress 2.2s linear both;
+}
+
+@keyframes splash-icon {
+  from {
+    transform: scale(0) rotate(-35deg);
+    opacity: 0;
+  }
+}
+@keyframes letter {
+  from {
+    transform: translateY(24px) scale(0.6);
+    opacity: 0;
+  }
+}
+@keyframes glow {
+  50% {
+    transform: scale(1.12);
+    opacity: 0.7;
+  }
+}
+@keyframes splash-progress {
+  from {
+    transform: scaleX(0);
+  }
+}

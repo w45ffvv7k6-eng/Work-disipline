@@ -7,6 +7,7 @@ import { SessionsScreen } from './features/sessions/SessionsScreen';
 import { WorkoutSummaryScreen } from './features/summary/WorkoutSummaryScreen';
 import { LiveWorkoutScreen } from './features/workout/LiveWorkoutScreen';
 import { FeedbackProvider } from './ui/feedback';
+import { WelcomeSplash } from './ui/WelcomeSplash';
 import { DumbbellIcon, HistoryIcon, ListIcon, TemplateIcon, UserIcon } from './ui/icons';
 
 const TABS = [
@@ -56,6 +57,7 @@ export function App() {
           </Routes>
           <TabBar />
         </div>
+        <WelcomeSplash />
       </FeedbackProvider>
     </HashRouter>
   );
