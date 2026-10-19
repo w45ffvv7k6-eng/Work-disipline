@@ -5,7 +5,8 @@ import { hasPersonalData } from '../../data/backup';
 import { dbNameFor, people, type Person } from '../../data/people';
 import { useFeedback } from '../../ui/feedback';
 import { initials } from '../../ui/PageHeader';
-import { splashPhotoUrl } from '../../ui/splashPhotos';
+import { PhotoChoice } from '../../ui/PhotoChoice';
+import { DEFAULT_PHOTO, photoForName, splashPhotoUrl } from '../../ui/splashPhotos';
 
 // Personne choisie pour cette ouverture de l'appli (oublié quand l'appli est fermée).
 const CHOSEN_KEY = 'wd-chosen';
@@ -87,11 +88,14 @@ function PersonPicker({ onChoose }: { onChoose: (p: Person) => void }) {
   const [adding, setAdding] = useState(list.length === 0);
   const [editing, setEditing] = useState(false);
   const [name, setName] = useState('');
+  const [photo, setPhoto] = useState(DEFAULT_PHOTO);
+  // Tant que la personne n'a pas touché une photo, on propose celle qui correspond à son prénom.
+  const [photoTouched, setPhotoTouched] = useState(false);
 
   const add = (e: FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
-    onChoose(people.add(name));
+    onChoose(people.add(name, photo));
   };
 
   const remove = async (person: Person) => {
@@ -162,10 +166,23 @@ function PersonPicker({ onChoose }: { onChoose: (p: Person) => void }) {
                 id="person-name"
                 className="search name-big"
                 value={name}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  if (!photoTouched) setPhoto(photoForName(e.target.value));
+                }}
                 autoComplete="given-name"
                 autoFocus
                 maxLength={30}
+              />
+            </div>
+            <div className="form-field">
+              <label>Ta photo d’accueil</label>
+              <PhotoChoice
+                value={photo}
+                onChange={(file) => {
+                  setPhoto(file);
+                  setPhotoTouched(true);
+                }}
               />
             </div>
             <button className="btn btn-primary btn-block btn-big" type="submit" disabled={!name.trim()}>

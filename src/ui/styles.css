@@ -2259,3 +2259,43 @@ button:disabled {
   color: var(--accent);
   font-weight: 700;
 }
+
+/* ---------- Choix de la photo d'accueil ---------- */
+
+.photo-choice {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.photo-thumb {
+  position: relative;
+  aspect-ratio: 9 / 14;
+  border-radius: 16px;
+  background-size: cover;
+  background-position: center 60%;
+  border: 2px solid var(--border);
+  opacity: 0.7;
+  transition:
+    transform 0.15s ease,
+    opacity 0.15s ease;
+}
+.photo-thumb.selected {
+  opacity: 1;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.35);
+  transform: scale(1.02);
+}
+.photo-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 900;
+}

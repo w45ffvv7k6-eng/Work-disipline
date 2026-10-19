@@ -8,6 +8,8 @@ import { Sheet } from '../../ui/Sheet';
 import { AccountSection } from '../auth/AccountSection';
 import { people } from '../../data/people';
 import { switchPerson } from '../people/PersonGate';
+import { PhotoChoice } from '../../ui/PhotoChoice';
+import { personPhoto } from '../../ui/splashPhotos';
 import { SettingsSection } from '../settings/SettingsSection';
 import { UserIcon } from '../../ui/icons';
 import { initials, PageHeader } from '../../ui/PageHeader';
@@ -294,10 +296,23 @@ function WeightSheet({
   );
 }
 
-/** Changer de personne (plusieurs personnes peuvent utiliser l'appli sur le même téléphone). */
+/** Photo d'accueil et changement de personne (plusieurs personnes peuvent utiliser l'appli sur le même téléphone). */
 function PersonSection() {
+  const [photo, setPhoto] = useState(personPhoto());
   return (
     <>
+      <h2 className="section-title">Photo d’accueil</h2>
+      <div className="card">
+        <PhotoChoice
+          value={photo}
+          onChange={(file) => {
+            const id = people.activeId();
+            if (id) people.setPhoto(id, file);
+            setPhoto(file);
+          }}
+        />
+      </div>
+
       <h2 className="section-title">Personne</h2>
       <div className="card stack">
         <p className="muted small" style={{ margin: 0 }}>

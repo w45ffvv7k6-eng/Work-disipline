@@ -3,13 +3,11 @@ import { useRepositories, useSubscribable } from '../data';
 import { people } from '../data/people';
 import { haptic } from './feedback';
 import { DumbbellIcon } from './icons';
-import { SPLASH_PHOTOS, splashPhotoUrl } from './splashPhotos';
+import { personPhoto, splashPhotoUrl } from './splashPhotos';
 
 /** Délai entre deux photos du fond. */
 const PHOTO_INTERVAL_MS = 1600;
 const FADE_MS = 500;
-/** Nombre de photos qui défilent pendant l'accueil. */
-const PHOTOS_SHOWN = 2;
 
 /** Écran d'accueil animé : logo Work & Discipline, « Bienvenue » + prénom, photos en fond, bouton GO pour entrer. */
 export function WelcomeSplash() {
@@ -18,7 +16,8 @@ export function WelcomeSplash() {
   const [phase, setPhase] = useState<'in' | 'out' | 'gone'>('in');
 
   // Quelques photos tirées au hasard à chaque ouverture.
-  const photos = useMemo(() => [...SPLASH_PHOTOS].sort(() => Math.random() - 0.5).slice(0, PHOTOS_SHOWN), []);
+  // Photo choisie par la personne.
+  const photos = useMemo(() => [personPhoto()], []);
 
   useEffect(() => {
     if (phase !== 'out') return;

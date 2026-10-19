@@ -7,6 +7,8 @@ import { newId } from '../domain/id';
 export interface Person {
   id: string;
   name: string;
+  /** Photo d'accueil choisie par la personne (nom de fichier). */
+  photo?: string;
   createdAt: number;
 }
 
@@ -62,11 +64,12 @@ export function createPeopleRegistry(store: KeyValueStore | null = browserStore(
       return r.people.find((p) => p.id === r.active);
     },
     /** Ajoute une personne ; la toute première reprend la base d'origine. */
-    add(name: string): Person {
+    add(name: string, photo?: string): Person {
       const r = read();
       const person: Person = {
         id: r.people.some((p) => p.id === DEFAULT_PERSON) || r.people.length > 0 ? newId() : DEFAULT_PERSON,
         name: name.trim(),
+        ...(photo ? { photo } : {}),
         createdAt: Date.now(),
       };
       write({ ...r, people: [...r.people, person] });
@@ -81,6 +84,10 @@ export function createPeopleRegistry(store: KeyValueStore | null = browserStore(
     rename(id: string, name: string): void {
       const r = read();
       write({ ...r, people: r.people.map((p) => (p.id === id ? { ...p, name: name.trim() } : p)) });
+    },
+    setPhoto(id: string, photo: string): void {
+      const r = read();
+      write({ ...r, people: r.people.map((p) => (p.id === id ? { ...p, photo } : p)) });
     },
     remove(id: string): void {
       const r = read();

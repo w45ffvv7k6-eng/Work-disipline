@@ -46,6 +46,14 @@ describe('personnes du téléphone', () => {
     expect(reg.activeId()).toBeUndefined();
   });
 
+  it('mémorise la photo d’accueil choisie', () => {
+    const reg = createPeopleRegistry(memory());
+    const lea = reg.add('Léa', 'salle-2.webp');
+    expect(reg.list()[0].photo).toBe('salle-2.webp');
+    reg.setPhoto(lea.id, 'salle.webp');
+    expect(reg.list()[0].photo).toBe('salle.webp');
+  });
+
   it('sans base indiquée : base d’origine', () => {
     expect(dbNameFor(undefined)).toBe('muscu');
   });
