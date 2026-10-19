@@ -2,22 +2,25 @@ import { HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-do
 import { HomeScreen } from './features/home/HomeScreen';
 import { ComingSoon } from './features/placeholder/ComingSoon';
 import { ProfileScreen } from './features/profile/ProfileScreen';
+import { SessionEditorScreen } from './features/sessions/SessionEditorScreen';
+import { SessionsScreen } from './features/sessions/SessionsScreen';
+import { WorkoutSummaryScreen } from './features/summary/WorkoutSummaryScreen';
 import { LiveWorkoutScreen } from './features/workout/LiveWorkoutScreen';
 import { FeedbackProvider } from './ui/feedback';
 import { DumbbellIcon, HistoryIcon, ListIcon, TemplateIcon, UserIcon } from './ui/icons';
 
 const TABS = [
-  { to: '/', label: 'Séance', icon: <DumbbellIcon />, end: true },
+  { to: '/', label: 'Programme', icon: <DumbbellIcon />, end: true },
+  { to: '/seances', label: 'Séances', icon: <TemplateIcon /> },
   { to: '/historique', label: 'Historique', icon: <HistoryIcon /> },
   { to: '/exercices', label: 'Exercices', icon: <ListIcon /> },
-  { to: '/modeles', label: 'Modèles', icon: <TemplateIcon /> },
   { to: '/profil', label: 'Profil', icon: <UserIcon /> },
 ];
 
 function TabBar() {
   const location = useLocation();
   // Pendant une séance, l'onglet « Séance » reste actif.
-  const inWorkout = location.pathname.startsWith('/seance');
+  const inWorkout = location.pathname.startsWith('/seance/') || location.pathname.startsWith('/bravo');
   return (
     <nav className="tabbar">
       {TABS.map((t) => (
@@ -45,7 +48,9 @@ export function App() {
             <Route path="/seance/:id" element={<LiveWorkoutScreen />} />
             <Route path="/historique" element={<ComingSoon title="Historique" step="Historique et graphiques" />} />
             <Route path="/exercices" element={<ComingSoon title="Exercices" step="Bibliothèque" />} />
-            <Route path="/modeles" element={<ComingSoon title="Modèles" step="Modèles" />} />
+            <Route path="/seances" element={<SessionsScreen />} />
+            <Route path="/seances/:id" element={<SessionEditorScreen />} />
+            <Route path="/bravo/:id" element={<WorkoutSummaryScreen />} />
             <Route path="/profil" element={<ProfileScreen />} />
             <Route path="*" element={<HomeScreen />} />
           </Routes>

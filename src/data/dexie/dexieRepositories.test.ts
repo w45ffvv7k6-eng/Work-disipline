@@ -105,4 +105,18 @@ describe('dépôt Dexie des séances', () => {
     // Première fois : répétitions pré-remplies au bas de la fourchette (6–8 → 6).
     expect(bench.sets[0].reps).toBe(6);
   });
+
+  it('modifie une séance et met à jour les jours du programme', async () => {
+    await repos.templates.update('tpl-haut-b', { weekday: 3, name: 'Haut B' });
+    const t = await first(repos.templates.watch('tpl-haut-b'));
+    expect(t).toMatchObject({ name: 'Haut B', weekday: 3 });
+    expect((await db.programs.get('prog-prise-de-masse'))?.trainingDays).toEqual([1, 2, 3, 5]);
+  });
+
+  it('crée une séance à la fin du programme et la supprime', async () => {
+    const t = await repos.templates.create('Bras', 'prog-prise-de-masse');
+    expect(t.programOrder).toBe(4);
+    await repos.templates.delete(t.id);
+    expect(await first(repos.templates.watch(t.id))).toBeNull();
+  });
 });

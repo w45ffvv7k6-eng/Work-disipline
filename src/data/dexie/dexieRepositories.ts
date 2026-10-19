@@ -8,6 +8,7 @@ import {
   type Exercise,
   type ExerciseKind,
   type Settings,
+  type Template,
   type Workout,
   type WorkoutExercise,
   type WorkoutSet,
@@ -18,6 +19,7 @@ import type {
   ProfileRepository,
   ProgramRepository,
   SettingsRepository,
+  TemplateRepository,
   TimerRepository,
   WorkoutDetail,
   WorkoutRepository,
@@ -296,6 +298,49 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
       }),
   };
 
+  // ---------- Séances détaillées (modèles) ----------
+
+  /** Pour un programme à jours fixes, les jours d'entraînement sont ceux de ses séances. */
+  async function syncTrainingDays(programId: string | undefined) {
+    if (!programId) return;
+    const list = (await db.templates.where('programId').equals(programId).toArray()).filter((t) => !t.deletedAt);
+    const days = [...new Set(list.map((t) => t.weekday).filter((d): d is number => d !== undefined))].sort();
+    if (days.length > 0) await db.programs.update(programId, { trainingDays: days, updatedAt: now() });
+  }
+
+  const templates: TemplateRepository = {
+    watch: (id) =>
+      liveQuery(async () => {
+        const t = await db.templates.get(id);
+        return t && !t.deletedAt ? t : null;
+      }),
+    async create(name, programId) {
+      const siblings = programId
+        ? (await db.templates.where('programId').equals(programId).toArray()).filter((t) => !t.deletedAt)
+        : [];
+      const template: Template = {
+        id: newId(),
+        name,
+        exercises: [],
+        ...(programId
+          ? { programId, programOrder: siblings.reduce((m, t) => Math.max(m, (t.programOrder ?? 0) + 1), 0) }
+          : {}),
+        updatedAt: now(),
+      };
+      await db.templates.add(template);
+      return template;
+    },
+    async update(id, patch) {
+      await db.templates.update(id, { ...patch, updatedAt: now() });
+      if ('weekday' in patch) await syncTrainingDays((await db.templates.get(id))?.programId);
+    },
+    async delete(id) {
+      const t = await db.templates.get(id);
+      await db.templates.update(id, { deletedAt: now(), updatedAt: now() });
+      await syncTrainingDays(t?.programId);
+    },
+  };
+
   // ---------- Profil et suivi corporel ----------
 
   const profile: ProfileRepository = {
@@ -313,5 +358,5 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
     },
   };
 
-  return { exercises, workouts, settings, timer, programs, profile };
+  return { exercises, workouts, settings, timer, programs, templates, profile };
 }

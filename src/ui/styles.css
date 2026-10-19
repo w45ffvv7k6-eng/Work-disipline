@@ -1018,3 +1018,418 @@ button:disabled {
 .tpl-list .grow {
   min-width: 0;
 }
+
+/* ---------- Programme (accueil) ---------- */
+
+.hello {
+  margin-bottom: 16px;
+}
+.quote {
+  margin: 6px 0 0;
+  color: var(--text-dim);
+  font-style: italic;
+  font-size: 0.95rem;
+}
+
+.week-summary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  margin: 12px 0 14px;
+  border-radius: var(--radius);
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.16), rgba(96, 165, 250, 0.12));
+  border: 1px solid rgba(74, 222, 128, 0.25);
+}
+.ring-text {
+  fill: var(--text);
+  font-weight: 800;
+  font-size: 15px;
+}
+.ring-value {
+  transition: stroke-dashoffset 0.8s ease;
+}
+.link-btn {
+  padding: 4px 0;
+  color: var(--accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: left;
+}
+
+.days {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.day {
+  background: var(--surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  animation: rise 0.35s ease both;
+}
+.day:nth-child(2) {
+  animation-delay: 0.03s;
+}
+.day:nth-child(3) {
+  animation-delay: 0.06s;
+}
+.day:nth-child(4) {
+  animation-delay: 0.09s;
+}
+.day:nth-child(5) {
+  animation-delay: 0.12s;
+}
+.day:nth-child(6) {
+  animation-delay: 0.15s;
+}
+.day:nth-child(7) {
+  animation-delay: 0.18s;
+}
+
+.day-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 64px;
+  padding: 10px 14px;
+  text-align: left;
+}
+.day-head:disabled {
+  opacity: 1;
+  cursor: default;
+}
+.day-head:active:not(:disabled) {
+  background: var(--surface-2);
+}
+
+.day-date {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.day-name {
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.day-num {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+.day-title {
+  font-weight: 800;
+}
+.day-sub {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+.day-icon {
+  font-size: 1.3rem;
+  color: var(--text-dim);
+}
+
+.day.planned .day-date {
+  background: var(--accent-soft);
+}
+.day.planned .day-num {
+  color: var(--accent);
+}
+.day.done .day-date {
+  background: var(--accent);
+}
+.day.done .day-num,
+.day.done .day-name {
+  color: var(--accent-text);
+}
+.day.rest {
+  opacity: 0.55;
+}
+.day.missed {
+  opacity: 0.55;
+}
+.day.today {
+  outline: 2px solid var(--accent);
+  opacity: 1;
+}
+.day-body {
+  padding: 0 14px 14px;
+  animation: fade 0.3s ease;
+}
+
+.muscle-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+.glow {
+  box-shadow: 0 6px 24px rgba(74, 222, 128, 0.35);
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@keyframes pulse {
+  50% {
+    box-shadow: 0 0 0 6px rgba(74, 222, 128, 0.15);
+  }
+}
+
+/* ---------- Séances (modèles modifiables) ---------- */
+
+.badge-current {
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: 0.7rem;
+  letter-spacing: 0;
+}
+.session-name {
+  font-weight: 800;
+  font-size: 1.05rem;
+}
+.muscle-bar {
+  display: flex;
+  gap: 4px;
+  margin-top: 10px;
+}
+.muscle-bar span {
+  height: 6px;
+  flex: 1;
+  border-radius: 3px;
+}
+
+.saved-hint {
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+
+.name-input {
+  width: 100%;
+  font: inherit;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--text);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid var(--border);
+  padding: 6px 0;
+}
+.name-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.weekday-picker {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+.weekday-picker .chip {
+  padding: 0;
+  height: 48px;
+}
+.weekday-picker .chip.taken {
+  opacity: 0.35;
+}
+
+.edit-card,
+.exercise-card {
+  border-left: 5px solid var(--surface-3);
+}
+
+.mini-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.mini-btn.danger {
+  color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+.mini-stepper {
+  background: var(--bg);
+  border-radius: 12px;
+  padding: 8px;
+}
+.mini-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  margin-bottom: 4px;
+  text-align: center;
+}
+.mini-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mini-row button {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+.mini-row span {
+  font-size: 1.3rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.mini-value-btn {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+
+/* ---------- Séance en cours : progression et animations ---------- */
+
+.workout-progress {
+  height: 4px;
+  background: var(--surface-2);
+  margin: 10px -16px -10px;
+  overflow: hidden;
+}
+.workout-progress div {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #60a5fa);
+  transform-origin: left;
+  transition: transform 0.4s ease;
+}
+
+.set-row.done .set-check svg {
+  animation: check-pop 0.35s ease;
+}
+@keyframes check-pop {
+  0% {
+    transform: scale(0.4);
+  }
+  60% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.toast.gold {
+  animation:
+    slide-down 0.25s ease,
+    shine 1.2s ease 0.25s;
+}
+@keyframes shine {
+  50% {
+    box-shadow:
+      0 0 0 6px rgba(251, 191, 36, 0.25),
+      0 10px 30px rgba(0, 0, 0, 0.5);
+  }
+}
+
+/* ---------- Bravo (fin de séance) ---------- */
+
+.bravo {
+  position: relative;
+  overflow: hidden;
+}
+.bravo-head {
+  text-align: center;
+  margin: 24px 0 20px;
+}
+.bravo-emoji {
+  font-size: 4rem;
+  animation: bounce-in 0.7s cubic-bezier(0.2, 1.6, 0.4, 1);
+}
+@keyframes bounce-in {
+  from {
+    transform: scale(0);
+  }
+}
+
+.pop {
+  animation: bounce-in 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+
+.record-row {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.record-value {
+  color: var(--gold);
+  font-weight: 800;
+  text-align: right;
+}
+
+.confetti {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  overflow: hidden;
+}
+.confetti span {
+  position: absolute;
+  top: -20px;
+  width: 9px;
+  height: 14px;
+  border-radius: 2px;
+  opacity: 0;
+  animation: fall linear forwards;
+}
+@keyframes fall {
+  0% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    opacity: 0.8;
+    transform: translateY(105vh) rotate(720deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .confetti {
+    display: none;
+  }
+}

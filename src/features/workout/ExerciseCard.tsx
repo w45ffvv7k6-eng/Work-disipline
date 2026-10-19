@@ -8,6 +8,7 @@ import type { Settings, WorkoutSet } from '../../domain/types';
 import { unlockAudio } from '../../ui/alarm';
 import { haptic, useFeedback } from '../../ui/feedback';
 import { CheckIcon, MoreIcon } from '../../ui/icons';
+import { MUSCLE_COLORS } from '../../ui/muscles';
 import { Sheet } from '../../ui/Sheet';
 import { RestPickerSheet } from '../timer/RestPickerSheet';
 import { SetEditorSheet } from './SetEditorSheet';
@@ -67,7 +68,7 @@ export function ExerciseCard({ detail, settings }: Props) {
   };
 
   return (
-    <div className="card exercise-card">
+    <div className="card exercise-card" style={{ borderLeftColor: MUSCLE_COLORS[exercise.muscleGroup] }}>
       <div className="exercise-card-head">
         <div className="grow">
           <h3 className="exercise-name">{exercise.name}</h3>

@@ -91,6 +91,17 @@ export interface ProgramRepository {
   watchAll(): Subscribable<ProgramWithTemplates[]>;
 }
 
+/** Séances détaillées (modèles) que l'utilisateur peut modifier. */
+export interface TemplateRepository {
+  /** null : séance introuvable ou supprimée. */
+  watch(id: string): Subscribable<Template | null>;
+  /** Crée une séance vide à la fin du programme. */
+  create(name: string, programId?: string): Promise<Template>;
+  /** Met à jour la séance ; les jours d'entraînement du programme suivent les jours des séances. */
+  update(id: string, patch: Partial<Pick<Template, 'name' | 'exercises' | 'weekday'>>): Promise<void>;
+  delete(id: string): Promise<void>;
+}
+
 export interface ProfileRepository {
   /** null tant que le profil n'a pas été créé. */
   watch(): Subscribable<Profile | null>;
@@ -121,5 +132,6 @@ export interface Repositories {
   settings: SettingsRepository;
   timer: TimerRepository;
   programs: ProgramRepository;
+  templates: TemplateRepository;
   profile: ProfileRepository;
 }

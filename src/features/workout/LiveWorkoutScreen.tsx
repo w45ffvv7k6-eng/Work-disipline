@@ -16,7 +16,7 @@ export function LiveWorkoutScreen() {
   const { id = '' } = useParams();
   const navigate = useNavigate();
   const { workouts, settings: settingsRepo } = useRepositories();
-  const { confirm, toast } = useFeedback();
+  const { confirm } = useFeedback();
   const detail = useSubscribable(() => workouts.watchDetail(id), [id]);
   const settings = useSubscribable(() => settingsRepo.watch(), []);
   const now = useNow(1000);
@@ -42,6 +42,8 @@ export function LiveWorkoutScreen() {
 
   const { workout, exercises } = detail;
   const completedCount = exercises.reduce((n, e) => n + e.sets.filter((s) => s.completed).length, 0);
+  const workSets = exercises.flatMap((e) => e.sets.filter((s) => !s.isWarmup));
+  const progress = workSets.length > 0 ? workSets.filter((s) => s.completed).length / workSets.length : 0;
 
   const addExercise = async (exercise: Exercise) => {
     setPicking(false);
@@ -70,8 +72,7 @@ export function LiveWorkoutScreen() {
     });
     if (!ok) return;
     await workouts.finish(workout.id);
-    toast('Séance enregistrée 💪');
-    navigate('/');
+    navigate(`/bravo/${workout.id}`, { replace: true });
   };
 
   const discard = async () => {
@@ -106,6 +107,9 @@ export function LiveWorkoutScreen() {
           <button className="btn btn-primary btn-small" onClick={finish}>
             Terminer
           </button>
+        </div>
+        <div className="workout-progress" aria-label={`${Math.round(progress * 100)} % de la séance`}>
+          <div style={{ transform: `scaleX(${progress})` }} />
         </div>
       </header>
 
