@@ -6,7 +6,8 @@ import { RECORD_LABELS, RECORD_UNITS } from '../../domain/records';
 import { summarizeWorkout } from '../../domain/summary';
 import { haptic } from '../../ui/feedback';
 
-const CONFETTI_COLORS = ['#f2a03d', '#ffd166', '#e8642c', '#f6f0e8', '#c27b4a', '#fb923c'];
+/** Confettis aux couleurs du thème choisi (variables CSS), avec du blanc et du doré. */
+const CONFETTI_COLORS = ['var(--accent)', 'var(--accent-2)', '#ffd166', '#f6f0e8', 'var(--accent)', 'var(--accent-2)'];
 
 /** Écran de fin de séance : bravo, bilan et records. */
 export function WorkoutSummaryScreen() {

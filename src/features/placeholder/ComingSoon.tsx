@@ -1,7 +1,20 @@
-export function ComingSoon({ title, step }: { title: string; step: string }) {
+import type { ReactNode } from 'react';
+import { PageHeader } from '../../ui/PageHeader';
+
+export function ComingSoon({
+  title,
+  subtitle,
+  icon,
+  step,
+}: {
+  title: string;
+  subtitle: string;
+  icon: ReactNode;
+  step: string;
+}) {
   return (
     <div className="screen">
-      <h1 className="screen-title">{title}</h1>
+      <PageHeader icon={icon} title={title} subtitle={subtitle} />
       <div className="empty">
         <div className="big">🚧</div>
         <p>Cet écran arrive à l’étape « {step} ».</p>

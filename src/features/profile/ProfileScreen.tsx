@@ -6,6 +6,8 @@ import type { BodyCheck, Profile } from '../../domain/types';
 import { useFeedback } from '../../ui/feedback';
 import { Sheet } from '../../ui/Sheet';
 import { SettingsSection } from '../settings/SettingsSection';
+import { UserIcon } from '../../ui/icons';
+import { initials, PageHeader } from '../../ui/PageHeader';
 
 const dateFormat = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -27,8 +29,11 @@ export function ProfileScreen() {
   if (profile === null) {
     return (
       <div className="screen">
-        <h1 className="screen-title">Mon profil</h1>
-        <p className="muted">Quelques infos pour suivre ton évolution. Elles restent sur ton téléphone.</p>
+        <PageHeader
+          icon={<UserIcon />}
+          title="Mon profil"
+          subtitle="Quelques infos pour suivre ton évolution. Elles restent sur ton téléphone."
+        />
         <ProfileForm
           onSave={async (data, weightKg) => {
             await repo.save(data);
@@ -56,14 +61,18 @@ export function ProfileScreen() {
 
   return (
     <div className="screen">
-      <div className="row" style={{ marginBottom: 12 }}>
-        <h1 className="screen-title grow" style={{ margin: 0 }}>
-          {profile.firstName || 'Mon profil'}
-        </h1>
-        <button className="btn btn-small btn-ghost" onClick={() => setEditing(true)}>
-          Modifier
+      <header className="page-header" style={{ marginTop: 12 }}>
+        <div className="avatar" aria-hidden="true">
+          {initials(profile.firstName || '?')}
+        </div>
+        <div className="grow">
+          <h1 className="page-title">{profile.firstName || 'Mon profil'}</h1>
+          <p className="page-subtitle">Membre Work &amp; Discipline</p>
+        </div>
+        <button className="icon-btn edit-btn" onClick={() => setEditing(true)} aria-label="Modifier le profil">
+          ✏️
         </button>
-      </div>
+      </header>
 
       <div className="stat-grid">
         <div className="stat">

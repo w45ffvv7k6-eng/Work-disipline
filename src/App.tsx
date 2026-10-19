@@ -7,6 +7,7 @@ import { SessionsScreen } from './features/sessions/SessionsScreen';
 import { WorkoutSummaryScreen } from './features/summary/WorkoutSummaryScreen';
 import { LiveWorkoutScreen } from './features/workout/LiveWorkoutScreen';
 import { FeedbackProvider } from './ui/feedback';
+import { ThemeSync } from './ui/ThemeSync';
 import { WelcomeSplash } from './ui/WelcomeSplash';
 import { DumbbellIcon, HistoryIcon, ListIcon, TemplateIcon, UserIcon } from './ui/icons';
 
@@ -47,8 +48,28 @@ export function App() {
           <Routes>
             <Route path="/" element={<HomeScreen />} />
             <Route path="/seance/:id" element={<LiveWorkoutScreen />} />
-            <Route path="/historique" element={<ComingSoon title="Historique" step="Historique et graphiques" />} />
-            <Route path="/exercices" element={<ComingSoon title="Exercices" step="Bibliothèque" />} />
+            <Route
+              path="/historique"
+              element={
+                <ComingSoon
+                  title="Historique"
+                  subtitle="Tes séances passées, en détail"
+                  icon={<HistoryIcon />}
+                  step="Historique et graphiques"
+                />
+              }
+            />
+            <Route
+              path="/exercices"
+              element={
+                <ComingSoon
+                  title="Exercices"
+                  subtitle="Bibliothèque et courbes de progression"
+                  icon={<ListIcon />}
+                  step="Bibliothèque"
+                />
+              }
+            />
             <Route path="/seances" element={<SessionsScreen />} />
             <Route path="/seances/:id" element={<SessionEditorScreen />} />
             <Route path="/bravo/:id" element={<WorkoutSummaryScreen />} />
@@ -58,6 +79,7 @@ export function App() {
           <TabBar />
         </div>
         <WelcomeSplash />
+        <ThemeSync />
       </FeedbackProvider>
     </HashRouter>
   );

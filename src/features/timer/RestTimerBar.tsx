@@ -22,7 +22,7 @@ export function RestTimerBar({ labelFor }: { labelFor: (workoutExerciseId: strin
     if (!timer || remaining > 0 || handledEndsAt.current === timer.endsAt) return;
     handledEndsAt.current = timer.endsAt;
     if (now - timer.endsAt <= ALARM_GRACE_MS) {
-      if (settings?.sound) playAlarm();
+      if (settings?.sound) playAlarm(settings.alarmSound);
       if (settings?.vibration) haptic([300, 150, 300, 150, 300]);
       setFinishedAt(now);
     }

@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import type { MuscleGroup } from '../../domain/types';
 import { WEEKDAY_LONG } from '../../domain/week';
+import { TemplateIcon } from '../../ui/icons';
 import { MUSCLE_COLORS } from '../../ui/muscles';
+import { PageHeader } from '../../ui/PageHeader';
 
 /** Onglet « Séances » : toutes les séances détaillées, regroupées par programme. */
 export function SessionsScreen() {
@@ -22,10 +24,7 @@ export function SessionsScreen() {
 
   return (
     <div className="screen">
-      <h1 className="screen-title">Mes séances</h1>
-      <p className="muted" style={{ marginTop: -12 }}>
-        Touche une séance pour la modifier : exercices, séries, répétitions, repos, jour.
-      </p>
+      <PageHeader icon={<TemplateIcon />} title="Mes séances" subtitle="Touche une séance pour la personnaliser" />
 
       {ordered.map(({ program, templates: list }) => (
         <section key={program.id}>

@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useRepositories, useSubscribable } from '../../data';
 import { formatClock, formatKg } from '../../domain/format';
 import type { Settings } from '../../domain/types';
-import { playAlarm, unlockAudio } from '../../ui/alarm';
+import { ALARM_SOUNDS, playAlarm, unlockAudio } from '../../ui/alarm';
 import { haptic } from '../../ui/feedback';
+import { THEMES } from '../../ui/theme';
 import { RestPickerSheet } from '../timer/RestPickerSheet';
 
 const WEIGHT_STEPS = [1, 1.25, 2.5, 5];
@@ -20,6 +21,28 @@ export function SettingsSection() {
 
   return (
     <>
+      <h2 className="section-title">Couleur de l’appli</h2>
+      <div className="card">
+        <div className="theme-grid">
+          {THEMES.map((t) => (
+            <button
+              key={t.id}
+              className={`theme-swatch${settings.theme === t.id ? ' selected' : ''}`}
+              onClick={() => {
+                haptic();
+                void repo.update({ theme: t.id });
+              }}
+              aria-pressed={settings.theme === t.id}
+            >
+              <span className="swatch" style={{ background: `linear-gradient(135deg, ${t.accent}, ${t.accent2})` }}>
+                {settings.theme === t.id && '✓'}
+              </span>
+              <span className="swatch-name">{t.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       <h2 className="section-title">Minuteur de repos</h2>
       <div className="card stack">
         <button className="toggle-row" onClick={() => setPickingRest(true)}>
@@ -35,6 +58,30 @@ export function SettingsSection() {
           on={settings.sound}
           onClick={() => toggle('sound')}
         />
+        {settings.sound && (
+          <div>
+            <div className="mini-label" style={{ textAlign: 'left', marginBottom: 8 }}>
+              Son de fin de repos (touche pour écouter)
+            </div>
+            <div className="sound-grid">
+              {ALARM_SOUNDS.map((sound) => (
+                <button
+                  key={sound.id}
+                  className={`sound-choice${settings.alarmSound === sound.id ? ' selected' : ''}`}
+                  onClick={() => {
+                    unlockAudio();
+                    playAlarm(sound.id);
+                    void repo.update({ alarmSound: sound.id });
+                  }}
+                  aria-pressed={settings.alarmSound === sound.id}
+                >
+                  <span className="sound-emoji">{sound.emoji}</span>
+                  {sound.name}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
         <ToggleRow
           label="Vibration à la fin du repos"
           hint="Android uniquement (l’iPhone ne le permet pas)"
@@ -45,7 +92,7 @@ export function SettingsSection() {
           className="btn btn-block btn-small"
           onClick={() => {
             unlockAudio();
-            if (settings.sound) playAlarm();
+            if (settings.sound) playAlarm(settings.alarmSound);
             if (settings.vibration) haptic([300, 150, 300]);
           }}
         >

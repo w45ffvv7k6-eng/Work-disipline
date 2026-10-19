@@ -126,6 +126,10 @@ export interface Settings {
   keepAwake: boolean;
   /** Programme suivi (affiché sur l'accueil). */
   activeProgramId?: string;
+  /** Couleur de l'appli choisie par la personne. */
+  theme: string;
+  /** Son joué à la fin du repos. */
+  alarmSound: string;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -135,6 +139,8 @@ export const DEFAULT_SETTINGS: Settings = {
   sound: true,
   vibration: true,
   keepAwake: true,
+  theme: 'ambre',
+  alarmSound: 'bips',
 };
 
 export interface Profile {
