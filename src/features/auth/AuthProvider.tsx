@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
 import { cloudEnabled, SUPABASE_ANON_KEY, SUPABASE_URL } from '../../config';
 import { db } from '../../data';
+import { people } from '../../data/people';
 import type { CloudBackend, CloudUser } from '../../data/sync/cloud';
 import { createSupabaseBackend } from '../../data/sync/supabaseBackend';
 import { localMetaStore, SyncEngine, type SyncStatus } from '../../data/sync/syncEngine';
@@ -30,7 +31,12 @@ let conflictHandler: (() => Promise<'local' | 'remote'>) | null = null;
 function services() {
   if (!cloudEnabled) return null;
   backend ??= createSupabaseBackend(SUPABASE_URL, SUPABASE_ANON_KEY);
-  engine ??= new SyncEngine(db, backend, localMetaStore(), () => conflictHandler?.() ?? Promise.resolve('remote'));
+  engine ??= new SyncEngine(
+    db,
+    backend,
+    localMetaStore(`wd-sync-${people.activeId() ?? 'default'}`),
+    () => conflictHandler?.() ?? Promise.resolve('remote'),
+  );
   return { backend, engine };
 }
 

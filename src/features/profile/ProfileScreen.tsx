@@ -6,9 +6,17 @@ import type { BodyCheck, Profile } from '../../domain/types';
 import { useFeedback } from '../../ui/feedback';
 import { Sheet } from '../../ui/Sheet';
 import { AccountSection } from '../auth/AccountSection';
+import { people } from '../../data/people';
+import { switchPerson } from '../people/PersonGate';
 import { SettingsSection } from '../settings/SettingsSection';
 import { UserIcon } from '../../ui/icons';
 import { initials, PageHeader } from '../../ui/PageHeader';
+
+/** Le prénom du profil sert aussi dans la liste « Qui s'entraîne ? ». */
+function renameActive(firstName: string) {
+  const id = people.activeId();
+  if (id) people.rename(id, firstName);
+}
 
 const dateFormat = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
 
@@ -38,9 +46,11 @@ export function ProfileScreen() {
         <ProfileForm
           onSave={async (data, weightKg) => {
             await repo.save(data);
+            renameActive(data.firstName);
             if (weightKg > 0) await repo.addCheck({ date: Date.now(), weightKg });
           }}
         />
+        <PersonSection />
       </div>
     );
   }
@@ -135,6 +145,8 @@ export function ProfileScreen() {
         </>
       )}
 
+      <PersonSection />
+
       <AccountSection />
       <SettingsSection />
 
@@ -145,6 +157,7 @@ export function ProfileScreen() {
             onSave={async (data) => {
               setEditing(false);
               await repo.save(data);
+              renameActive(data.firstName);
             }}
           />
         </Sheet>
@@ -171,7 +184,7 @@ function ProfileForm({
   initial?: Profile;
   onSave: (data: Omit<Profile, 'id' | 'updatedAt'>, weightKg: number) => void;
 }) {
-  const [firstName, setFirstName] = useState(initial?.firstName ?? '');
+  const [firstName, setFirstName] = useState(initial?.firstName ?? people.active()?.name ?? '');
   const [height, setHeight] = useState(initial ? String(initial.heightCm) : '');
   const [weight, setWeight] = useState('');
   const heightCm = Math.round(parseNumber(height));
@@ -278,5 +291,22 @@ function WeightSheet({
         Enregistrer
       </button>
     </Sheet>
+  );
+}
+
+/** Changer de personne (plusieurs personnes peuvent utiliser l'appli sur le même téléphone). */
+function PersonSection() {
+  return (
+    <>
+      <h2 className="section-title">Personne</h2>
+      <div className="card stack">
+        <p className="muted small" style={{ margin: 0 }}>
+          Plusieurs personnes peuvent utiliser l’appli sur ce téléphone, chacune avec ses propres séances.
+        </p>
+        <button className="btn btn-block btn-small" onClick={() => switchPerson(undefined)}>
+          👥 Changer de personne
+        </button>
+      </div>
+    </>
   );
 }

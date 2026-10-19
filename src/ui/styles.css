@@ -2138,3 +2138,69 @@ button:disabled {
 .sync-line.offline .sync-dot {
   background: var(--text-dim);
 }
+
+/* ---------- Qui s'entraîne ? ---------- */
+
+.who-title {
+  text-align: center;
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin: 6px 0 22px;
+}
+.people-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px 10px;
+}
+.person {
+  position: relative;
+  animation: rise 0.35s ease both;
+}
+.person-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 4px 0;
+}
+.person-btn:active .person-avatar {
+  transform: scale(0.94);
+}
+.person-avatar {
+  width: 72px;
+  height: 72px;
+  font-size: 1.6rem;
+  transition: transform 0.12s ease;
+}
+.person-avatar.add {
+  background: transparent;
+  color: var(--text-dim);
+  border: 2px dashed var(--border);
+  box-shadow: none;
+  font-size: 2rem;
+  font-weight: 400;
+}
+.person-name {
+  font-weight: 700;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.person-remove {
+  position: absolute;
+  top: -2px;
+  right: 6px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--danger);
+  color: #fff;
+  font-weight: 900;
+}
+.name-big {
+  font-size: 1.3rem;
+  font-weight: 700;
+  height: 60px;
+}

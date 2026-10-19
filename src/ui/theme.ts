@@ -1,3 +1,4 @@
+import { people } from '../data/people';
 // Thèmes : chaque personne choisit la couleur principale de son appli et la couleur du fond.
 
 export type ThemeId = 'ambre' | 'feu' | 'ocean' | 'foret' | 'violet' | 'rose' | 'glace';
@@ -89,7 +90,8 @@ export function themeVariables(themeId: string | undefined, backgroundId?: strin
   };
 }
 
-const STORAGE_KEY = 'wd-theme';
+// Couleurs mémorisées par personne (chacune a les siennes).
+const STORAGE_KEY = `wd-theme-${people.activeId() ?? 'default'}`;
 
 /** Applique le thème à toute l'appli et le mémorise pour l'afficher sans délai à la prochaine ouverture. */
 export function applyTheme(themeId: string | undefined, backgroundId?: string) {

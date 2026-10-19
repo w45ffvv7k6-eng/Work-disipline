@@ -1,9 +1,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { MuscuDB } from './dexie/db';
+import { dbNameFor, people } from './people';
 import { createDexieRepositories } from './dexie/dexieRepositories';
 import type { Repositories, Subscribable } from './repositories';
 
-export const db = new MuscuDB();
+// Chaque personne du téléphone a sa propre base de données.
+export const db = new MuscuDB(dbNameFor(people.activeId()));
 export const repositories = createDexieRepositories(db);
 
 export const RepositoriesContext = createContext<Repositories>(repositories);

@@ -26,8 +26,8 @@ export function PageHeader({
   );
 }
 
-/** Initiales pour l'avatar : "Rafael Paulo" → "RP". */
+/** Initiales pour l'avatar : "Rafael Paulo" → "RP", "Léa" → "L". */
 export function initials(name: string): string {
   const parts = name.trim().split(/\s+/).filter(Boolean);
-  return (parts.length > 1 ? parts[0][0] + parts[parts.length - 1][0] : (parts[0] ?? '?').slice(0, 2)).toUpperCase();
+  return (parts.length > 1 ? parts[0][0] + parts[parts.length - 1][0] : (parts[0] ?? '?')[0]).toUpperCase();
 }

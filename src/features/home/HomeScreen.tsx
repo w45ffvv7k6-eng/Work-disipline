@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
+import { people } from '../../data/people';
 import type { ProgramWithTemplates } from '../../data/repositories';
 import { defaultWorkoutName, formatClock, formatDuration, formatTarget } from '../../domain/format';
 import { quoteOfTheDay } from '../../domain/summary';
@@ -77,6 +78,7 @@ export function HomeScreen() {
   };
 
   const today = new Date(now);
+  const firstName = me?.firstName || people.active()?.name;
   // Un planning enregistré pour un autre programme ne s'applique pas.
   const assignment = savedWeek && current && savedWeek.programId === current.program.id ? savedWeek.days : null;
   const plan = current ? weekPlan(current.program, current.templates, finished, today, assignment) : null;
@@ -108,7 +110,7 @@ export function HomeScreen() {
         <div className="brand-mini">WORK &amp; DISCIPLINE</div>
         <h1 className="screen-title" style={{ margin: 0 }}>
           {greeting(today)}
-          {me?.firstName ? ` ${me.firstName}` : ''} 👋
+          {firstName ? ` ${firstName}` : ''} 👋
         </h1>
         <p className="quote">« {quoteOfTheDay(today)} »</p>
       </div>

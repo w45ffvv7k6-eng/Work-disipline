@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRepositories, useSubscribable } from '../data';
+import { people } from '../data/people';
 import { haptic } from './feedback';
 import { DumbbellIcon } from './icons';
 import { SPLASH_PHOTOS, splashPhotoUrl } from './splashPhotos';
@@ -26,7 +27,7 @@ export function WelcomeSplash() {
   }, [phase]);
 
   if (phase === 'gone') return null;
-  const name = me?.firstName ?? '';
+  const name = me?.firstName || people.active()?.name || '';
 
   return (
     <div
@@ -72,7 +73,7 @@ export function WelcomeSplash() {
 
         <div className="splash-hello">
           <div className="splash-welcome">Bienvenue</div>
-          {me !== undefined && name && (
+          {name && (
             <div className="splash-name" aria-hidden="true">
               {[...name].map((letter, i) => (
                 <span key={i} style={{ animationDelay: `${1.05 + i * 0.07}s` }}>

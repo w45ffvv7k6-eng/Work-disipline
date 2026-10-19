@@ -3,6 +3,7 @@ import { HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-do
 import { AuthProvider, useAuth } from './features/auth/AuthProvider';
 import { AuthScreen, NewPasswordScreen } from './features/auth/AuthScreen';
 import { HomeScreen } from './features/home/HomeScreen';
+import { PersonGate } from './features/people/PersonGate';
 import { ComingSoon } from './features/placeholder/ComingSoon';
 import { ProfileScreen } from './features/profile/ProfileScreen';
 import { SessionEditorScreen } from './features/sessions/SessionEditorScreen';
@@ -57,42 +58,44 @@ export function App() {
     <HashRouter>
       <FeedbackProvider>
         <AuthProvider>
-          <AuthGate>
-            <div className="app">
-              <Routes>
-                <Route path="/" element={<HomeScreen />} />
-                <Route path="/seance/:id" element={<LiveWorkoutScreen />} />
-                <Route
-                  path="/historique"
-                  element={
-                    <ComingSoon
-                      title="Historique"
-                      subtitle="Tes séances passées, en détail"
-                      icon={<HistoryIcon />}
-                      step="Historique et graphiques"
-                    />
-                  }
-                />
-                <Route
-                  path="/exercices"
-                  element={
-                    <ComingSoon
-                      title="Exercices"
-                      subtitle="Bibliothèque et courbes de progression"
-                      icon={<ListIcon />}
-                      step="Bibliothèque"
-                    />
-                  }
-                />
-                <Route path="/seances" element={<SessionsScreen />} />
-                <Route path="/seances/:id" element={<SessionEditorScreen />} />
-                <Route path="/bravo/:id" element={<WorkoutSummaryScreen />} />
-                <Route path="/profil" element={<ProfileScreen />} />
-                <Route path="*" element={<HomeScreen />} />
-              </Routes>
-              <TabBar />
-            </div>
-          </AuthGate>
+          <PersonGate>
+            <AuthGate>
+              <div className="app">
+                <Routes>
+                  <Route path="/" element={<HomeScreen />} />
+                  <Route path="/seance/:id" element={<LiveWorkoutScreen />} />
+                  <Route
+                    path="/historique"
+                    element={
+                      <ComingSoon
+                        title="Historique"
+                        subtitle="Tes séances passées, en détail"
+                        icon={<HistoryIcon />}
+                        step="Historique et graphiques"
+                      />
+                    }
+                  />
+                  <Route
+                    path="/exercices"
+                    element={
+                      <ComingSoon
+                        title="Exercices"
+                        subtitle="Bibliothèque et courbes de progression"
+                        icon={<ListIcon />}
+                        step="Bibliothèque"
+                      />
+                    }
+                  />
+                  <Route path="/seances" element={<SessionsScreen />} />
+                  <Route path="/seances/:id" element={<SessionEditorScreen />} />
+                  <Route path="/bravo/:id" element={<WorkoutSummaryScreen />} />
+                  <Route path="/profil" element={<ProfileScreen />} />
+                  <Route path="*" element={<HomeScreen />} />
+                </Routes>
+                <TabBar />
+              </div>
+            </AuthGate>
+          </PersonGate>
           <WelcomeSplash />
           <ThemeSync />
         </AuthProvider>
