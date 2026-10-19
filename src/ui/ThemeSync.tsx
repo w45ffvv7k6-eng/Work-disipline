@@ -7,7 +7,7 @@ export function ThemeSync() {
   const { settings } = useRepositories();
   const current = useSubscribable(() => settings.watch(), []);
   useEffect(() => {
-    if (current) applyTheme(current.theme);
+    if (current) applyTheme(current.theme, current.background);
   }, [current]);
   return null;
 }

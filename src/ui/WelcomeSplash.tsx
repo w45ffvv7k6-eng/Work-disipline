@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useRepositories, useSubscribable } from '../data';
+import { haptic } from './feedback';
 import { DumbbellIcon } from './icons';
 import { SPLASH_PHOTOS, splashPhotoUrl } from './splashPhotos';
 
-const VISIBLE_MS = 3200;
+/** Délai entre deux photos du fond. */
+const PHOTO_INTERVAL_MS = 1600;
 const FADE_MS = 500;
 /** Nombre de photos qui défilent pendant l'accueil. */
 const PHOTOS_SHOWN = 2;
 
-/** Écran d'accueil animé : logo Work & Discipline, « Bienvenue » + prénom, photos en fond. */
+/** Écran d'accueil animé : logo Work & Discipline, « Bienvenue » + prénom, photos en fond, bouton GO pour entrer. */
 export function WelcomeSplash() {
   const { profile } = useRepositories();
   const me = useSubscribable(() => profile.watch(), []);
@@ -16,12 +18,6 @@ export function WelcomeSplash() {
 
   // Quelques photos tirées au hasard à chaque ouverture.
   const photos = useMemo(() => [...SPLASH_PHOTOS].sort(() => Math.random() - 0.5).slice(0, PHOTOS_SHOWN), []);
-
-  useEffect(() => {
-    if (phase !== 'in') return;
-    const id = window.setTimeout(() => setPhase('out'), VISIBLE_MS);
-    return () => window.clearTimeout(id);
-  }, [phase]);
 
   useEffect(() => {
     if (phase !== 'out') return;
@@ -35,8 +31,7 @@ export function WelcomeSplash() {
   return (
     <div
       className={`splash${photos.length > 0 ? ' with-photo' : ''}${phase === 'out' ? ' splash-out' : ''}`}
-      onClick={() => setPhase('out')}
-      role="status"
+      role="dialog"
       aria-label={`Work & Discipline. Bienvenue${name ? ` ${name}` : ''}`}
     >
       {/* Fond : photos qui se succèdent avec un zoom lent, sinon formes de couleur animées. */}
@@ -48,7 +43,7 @@ export function WelcomeSplash() {
               className={`splash-photo${i === photos.length - 1 ? ' last' : ''}`}
               style={{
                 backgroundImage: `url("${splashPhotoUrl(file)}")`,
-                animationDelay: `${i * (VISIBLE_MS / PHOTOS_SHOWN)}ms`,
+                animationDelay: `${i * PHOTO_INTERVAL_MS}ms`,
                 zIndex: i,
               }}
             />
@@ -89,6 +84,17 @@ export function WelcomeSplash() {
           <div className="splash-tagline">On n’aime pas, mais on n’a pas le choix !</div>
         </div>
       </div>
+
+      <button
+        className="go-btn"
+        onClick={() => {
+          haptic(30);
+          setPhase('out');
+        }}
+        disabled={phase !== 'in'}
+      >
+        GO
+      </button>
     </div>
   );
 }

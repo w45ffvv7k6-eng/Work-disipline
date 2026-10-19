@@ -3,6 +3,7 @@
   color-scheme: dark;
   /* Couleurs tirées de la photo d'accueil : noir chaud, bruns, lueur ambrée. */
   --bg: #0b0a09;
+  --bg-rgb: 11, 10, 9;
   --surface: #17130f;
   --surface-2: #221c17;
   --surface-3: #30281f;
@@ -133,7 +134,7 @@ button:disabled {
   display: flex;
   height: calc(var(--nav-h) + var(--safe-bottom));
   padding-bottom: var(--safe-bottom);
-  background: rgba(11, 10, 9, 0.96);
+  background: rgba(var(--bg-rgb), 0.96);
   border-top: 1px solid var(--border);
   backdrop-filter: blur(10px);
 }
@@ -270,7 +271,7 @@ button:disabled {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(11, 10, 9, 0.96);
+  background: rgba(var(--bg-rgb), 0.96);
   backdrop-filter: blur(10px);
   padding: calc(10px + var(--safe-top)) 16px 10px;
   border-bottom: 1px solid var(--border);
@@ -1041,7 +1042,7 @@ button:disabled {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(11, 10, 9, 0.2), rgba(11, 10, 9, 0.75) 70%, var(--bg));
+  background: linear-gradient(180deg, rgba(var(--bg-rgb), 0.2), rgba(var(--bg-rgb), 0.75) 70%, var(--bg));
 }
 .hello > * {
   position: relative;
@@ -1541,10 +1542,10 @@ button:disabled {
 .with-photo .splash-shade {
   background: linear-gradient(
     180deg,
-    rgba(11, 10, 9, 0.6) 0%,
-    rgba(11, 10, 9, 0.15) 45%,
-    rgba(11, 10, 9, 0.15) 65%,
-    rgba(11, 10, 9, 0.85) 100%
+    rgba(var(--bg-rgb), 0.6) 0%,
+    rgba(var(--bg-rgb), 0.15) 45%,
+    rgba(var(--bg-rgb), 0.15) 65%,
+    rgba(var(--bg-rgb), 0.85) 100%
   );
 }
 .with-photo .splash-welcome,
@@ -1586,7 +1587,7 @@ button:disabled {
 }
 
 .splash-bg.no-photo .splash-shade {
-  background: radial-gradient(ellipse at 50% 45%, rgba(11, 10, 9, 0.1), rgba(11, 10, 9, 0.6) 80%);
+  background: radial-gradient(ellipse at 50% 45%, rgba(var(--bg-rgb), 0.1), rgba(var(--bg-rgb), 0.6) 80%);
 }
 
 .splash-shade {
@@ -1594,8 +1595,8 @@ button:disabled {
   inset: 0;
   z-index: 10;
   background:
-    radial-gradient(ellipse at 50% 40%, rgba(11, 10, 9, 0.25), rgba(11, 10, 9, 0.85) 75%),
-    linear-gradient(180deg, rgba(11, 10, 9, 0.35), rgba(11, 10, 9, 0.92));
+    radial-gradient(ellipse at 50% 40%, rgba(var(--bg-rgb), 0.25), rgba(var(--bg-rgb), 0.85) 75%),
+    linear-gradient(180deg, rgba(var(--bg-rgb), 0.35), rgba(var(--bg-rgb), 0.92));
 }
 
 .blob {
@@ -1952,4 +1953,93 @@ button:disabled {
 .edit-btn {
   background: var(--surface-2);
   font-size: 1.2rem;
+}
+
+.bg-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px 6px;
+}
+.bg-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  min-width: 0;
+}
+.bg-sample {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 6px;
+}
+.bg-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.bg-auto {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.7);
+}
+.bg-swatch.selected .bg-sample {
+  box-shadow:
+    0 0 0 3px var(--surface),
+    0 0 0 5px var(--accent);
+}
+.bg-swatch .swatch-name {
+  font-size: 0.7rem;
+  text-align: center;
+  line-height: 1.15;
+}
+.bg-swatch.selected .swatch-name {
+  color: var(--text);
+}
+
+/* Bouton GO de l'écran de bienvenue */
+.go-btn {
+  position: absolute;
+  z-index: 2;
+  bottom: calc(9vh + var(--safe-bottom));
+  left: 50%;
+  width: 112px;
+  height: 112px;
+  margin-left: -56px;
+  border-radius: 50%;
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  color: var(--accent-text);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow:
+    0 0 0 6px rgba(var(--accent-rgb), 0.25),
+    0 14px 40px rgba(var(--accent-rgb), 0.55);
+  animation:
+    pop-in 0.6s cubic-bezier(0.2, 1.6, 0.4, 1) 1.7s both,
+    go-pulse 1.8s ease-in-out 2.4s infinite;
+}
+.go-btn:active:not(:disabled) {
+  transform: scale(0.92);
+}
+.go-btn:disabled {
+  opacity: 1;
+}
+@keyframes go-pulse {
+  50% {
+    box-shadow:
+      0 0 0 16px rgba(var(--accent-rgb), 0.12),
+      0 14px 40px rgba(var(--accent-rgb), 0.55);
+  }
 }

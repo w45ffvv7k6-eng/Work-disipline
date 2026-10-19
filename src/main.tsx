@@ -6,7 +6,8 @@ import { applyTheme, cachedTheme } from './ui/theme';
 import './ui/styles.css';
 
 // Couleur de la dernière utilisation, appliquée avant même d'ouvrir la base (pas de flash de couleur).
-applyTheme(cachedTheme());
+const cached = cachedTheme();
+applyTheme(cached.theme, cached.background);
 requestPersistentStorage();
 
 createRoot(document.getElementById('root')!).render(

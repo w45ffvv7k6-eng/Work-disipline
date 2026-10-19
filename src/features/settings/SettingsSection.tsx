@@ -4,7 +4,7 @@ import { formatClock, formatKg } from '../../domain/format';
 import type { Settings } from '../../domain/types';
 import { ALARM_SOUNDS, playAlarm, unlockAudio } from '../../ui/alarm';
 import { haptic } from '../../ui/feedback';
-import { THEMES } from '../../ui/theme';
+import { BACKGROUNDS, backgroundFor, THEMES } from '../../ui/theme';
 import { RestPickerSheet } from '../timer/RestPickerSheet';
 
 const WEIGHT_STEPS = [1, 1.25, 2.5, 5];
@@ -21,7 +21,7 @@ export function SettingsSection() {
 
   return (
     <>
-      <h2 className="section-title">Couleur de l’appli</h2>
+      <h2 className="section-title">Couleur principale</h2>
       <div className="card">
         <div className="theme-grid">
           {THEMES.map((t) => (
@@ -40,6 +40,35 @@ export function SettingsSection() {
               <span className="swatch-name">{t.name}</span>
             </button>
           ))}
+        </div>
+      </div>
+
+      <h2 className="section-title">Couleur du fond</h2>
+      <div className="card">
+        <div className="bg-grid">
+          {[
+            { id: 'assorti', name: 'Assorti', base: backgroundFor(settings.theme, 'assorti').base },
+            ...BACKGROUNDS,
+          ].map((b) => {
+            const selected = (settings.background ?? 'assorti') === b.id;
+            return (
+              <button
+                key={b.id}
+                className={`bg-swatch${selected ? ' selected' : ''}`}
+                onClick={() => {
+                  haptic();
+                  void repo.update({ background: b.id });
+                }}
+                aria-pressed={selected}
+              >
+                <span className="bg-sample" style={{ background: b.base }}>
+                  <span className="bg-dot" />
+                  {b.id === 'assorti' && <span className="bg-auto">A</span>}
+                </span>
+                <span className="swatch-name">{b.name}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
 

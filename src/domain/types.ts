@@ -128,6 +128,8 @@ export interface Settings {
   activeProgramId?: string;
   /** Couleur de l'appli choisie par la personne. */
   theme: string;
+  /** Couleur du fond (« assorti » = suit la couleur principale). */
+  background: string;
   /** Son joué à la fin du repos. */
   alarmSound: string;
 }
@@ -140,6 +142,7 @@ export const DEFAULT_SETTINGS: Settings = {
   vibration: true,
   keepAwake: true,
   theme: 'ambre',
+  background: 'assorti',
   alarmSound: 'bips',
 };
 
