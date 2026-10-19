@@ -11,7 +11,9 @@ export interface DayPlan {
   isToday: boolean;
   isPast: boolean;
   isTrainingDay: boolean;
-  /** Séance prévue ce jour-là (pour aujourd'hui et les jours à venir). */
+  /** Séance programmée ce jour-là, même si le jour est passé (inconnue pour les jours passés d'une rotation). */
+  scheduled?: Template;
+  /** Séance encore à faire ce jour-là (aujourd'hui ou à venir, pas encore faite). */
   planned?: Template;
   /** Séances terminées ce jour-là. */
   done: Workout[];
@@ -30,10 +32,22 @@ function addDays(date: Date, days: number): Date {
   return new Date(date.getFullYear(), date.getMonth(), date.getDate() + days);
 }
 
+/** Planning choisi par l'utilisateur pour une semaine : jour (1 = lundi … 7) → séance, ou null pour repos. */
+export type WeekAssignment = Record<number, string | null>;
+
+/** Identifiant d'une semaine : date de son lundi, "AAAA-MM-JJ". */
+export function weekKey(date: Date): string {
+  const monday = addDays(startOfDay(date), 1 - isoWeekday(date));
+  const mm = String(monday.getMonth() + 1).padStart(2, '0');
+  const dd = String(monday.getDate()).padStart(2, '0');
+  return `${monday.getFullYear()}-${mm}-${dd}`;
+}
+
 /**
  * Planning de la semaine en cours (lundi → dimanche) pour un programme.
- * - Séances à jour fixe (Haut A le lundi…) : chaque jour d'entraînement reçoit sa séance.
- * - Séances en rotation (Full body A / B) : les jours d'entraînement à venir reçoivent
+ * - Si l'utilisateur a organisé sa semaine (`assignment`), c'est ce planning qui compte.
+ * - Sinon, séances à jour fixe (Haut A le lundi…) : chaque jour d'entraînement reçoit sa séance.
+ * - Sinon, séances en rotation (Full body A / B) : les jours d'entraînement à venir reçoivent
  *   les séances suivantes de la rotation, à partir de la prochaine à faire.
  * Un jour où une séance a déjà été faite n'a plus de séance « prévue ».
  */
@@ -42,10 +56,12 @@ export function weekPlan(
   templates: Template[],
   finishedWorkouts: Workout[],
   now: Date = new Date(),
+  assignment?: WeekAssignment | null,
 ): DayPlan[] {
   const today = startOfDay(now);
   const monday = addDays(today, 1 - isoWeekday(today));
   const rotation = [...templates].sort((a, b) => (a.programOrder ?? 0) - (b.programOrder ?? 0));
+  const byId = new Map(rotation.map((t) => [t.id, t]));
   const fixed = rotation.some((t) => t.weekday !== undefined);
   const next = nextTemplateInProgram(rotation, finishedWorkouts);
   let cursor = next ? rotation.indexOf(next) : 0;
@@ -56,13 +72,47 @@ export function weekPlan(
     const end = addDays(date, 1).getTime();
     const done = finishedWorkouts.filter((w) => w.startedAt >= date.getTime() && w.startedAt < end);
     const isPast = date < today;
-    const isTrainingDay = program.trainingDays.includes(weekday);
-    let planned: Template | undefined;
-    if (!isPast && done.length === 0 && isTrainingDay && rotation.length > 0) {
-      planned = fixed ? rotation.find((t) => t.weekday === weekday) : rotation[cursor++ % rotation.length];
+
+    let scheduled: Template | undefined;
+    let isTrainingDay: boolean;
+    if (assignment) {
+      const id = assignment[weekday];
+      scheduled = id ? byId.get(id) : undefined;
+      isTrainingDay = !!scheduled;
+    } else {
+      isTrainingDay = program.trainingDays.includes(weekday);
+      if (isTrainingDay && rotation.length > 0) {
+        if (fixed) scheduled = rotation.find((t) => t.weekday === weekday);
+        else if (!isPast && done.length === 0) scheduled = rotation[cursor++ % rotation.length];
+      }
     }
-    return { date, weekday, isToday: date.getTime() === today.getTime(), isPast, isTrainingDay, planned, done };
+    const planned = !isPast && done.length === 0 ? scheduled : undefined;
+    return {
+      date,
+      weekday,
+      isToday: date.getTime() === today.getTime(),
+      isPast,
+      isTrainingDay,
+      scheduled,
+      planned,
+      done,
+    };
   });
+}
+
+/** Planning de la semaine sous forme modifiable (point de départ quand l'utilisateur organise sa semaine). */
+export function assignmentFromPlan(plan: DayPlan[]): WeekAssignment {
+  return Object.fromEntries(plan.map((d) => [d.weekday, d.scheduled?.id ?? null]));
+}
+
+/** Déplace la séance d'un jour vers un autre ; si l'autre jour avait une séance, elles s'échangent. */
+export function moveSession(assignment: WeekAssignment, from: number, to: number): WeekAssignment {
+  return { ...assignment, [from]: assignment[to] ?? null, [to]: assignment[from] ?? null };
+}
+
+/** Nombre de séances visées cette semaine (séances programmées + séances faites hors programme). */
+export function weeklyGoal(plan: DayPlan[]): number {
+  return plan.filter((d) => d.isTrainingDay || d.done.length > 0).length;
 }
 
 /** Séance à proposer en priorité : celle d'aujourd'hui, sinon la prochaine prévue cette semaine, sinon la suivante de la rotation. */

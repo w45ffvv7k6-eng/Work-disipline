@@ -9,6 +9,7 @@ import type {
   Template,
   Workout,
   WorkoutExercise,
+  WeekPlan,
   WorkoutSet,
 } from '../../domain/types';
 import { seedExercises } from '../seedExercises';
@@ -25,6 +26,7 @@ export class MuscuDB extends Dexie {
   profile!: EntityTable<Profile, 'id'>;
   bodyChecks!: EntityTable<BodyCheck, 'id'>;
   timer!: EntityTable<ActiveTimer, 'id'>;
+  weekPlans!: EntityTable<WeekPlan, 'id'>;
 
   constructor(name = 'muscu') {
     super(name);
@@ -41,6 +43,8 @@ export class MuscuDB extends Dexie {
       bodyChecks: 'id, date',
       timer: 'id',
     });
+    // Version 2 : plannings de semaine personnalisés. Les données existantes sont conservées.
+    this.version(2).stores({ weekPlans: 'id' });
     // Au tout premier lancement : bibliothèque d'exercices et programmes fournis.
     this.on('populate', (tx) => {
       const { programs, templates } = seedPrograms();

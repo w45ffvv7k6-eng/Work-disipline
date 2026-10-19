@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { seedPrograms } from '../data/seedPrograms';
 import type { Workout } from './types';
-import { suggestedSession, weekPlan } from './week';
+import { assignmentFromPlan, moveSession, suggestedSession, weekKey, weekPlan, weeklyGoal } from './week';
 
 const { programs, templates } = seedPrograms(0);
 const mass = programs.find((p) => p.id === 'prog-prise-de-masse')!;
@@ -62,5 +62,62 @@ describe('weekPlan – rotation (full body)', () => {
     expect(plan[2].planned).toBeUndefined();
     expect(plan[2].done).toHaveLength(1);
     expect(plan[4].planned?.id).toBe('tpl-full-a');
+  });
+});
+
+describe('semaine organisée par l’utilisateur', () => {
+  it('identifie la semaine par la date de son lundi', () => {
+    expect(weekKey(WED)).toBe('2026-10-12');
+    expect(weekKey(new Date(2026, 9, 18, 23))).toBe('2026-10-12');
+    expect(weekKey(new Date(2026, 9, 19, 1))).toBe('2026-10-19');
+  });
+
+  it('part du planning du programme', () => {
+    const plan = weekPlan(mass, massTpl, [], WED);
+    expect(assignmentFromPlan(plan)).toEqual({
+      1: 'tpl-haut-a',
+      2: 'tpl-bas-a',
+      3: null,
+      4: 'tpl-haut-b',
+      5: 'tpl-bas-b',
+      6: null,
+      7: null,
+    });
+  });
+
+  it('déplace une séance vers un jour libre', () => {
+    const base = assignmentFromPlan(weekPlan(mass, massTpl, [], WED));
+    const moved = moveSession(base, 4, 6);
+    expect(moved[4]).toBeNull();
+    expect(moved[6]).toBe('tpl-haut-b');
+  });
+
+  it('échange deux séances', () => {
+    const base = assignmentFromPlan(weekPlan(mass, massTpl, [], WED));
+    const moved = moveSession(base, 4, 5);
+    expect([moved[4], moved[5]]).toEqual(['tpl-bas-b', 'tpl-haut-b']);
+  });
+
+  it('applique le planning choisi à la semaine', () => {
+    const assignment = { 1: 'tpl-haut-a', 2: null, 3: 'tpl-bas-a', 4: null, 5: null, 6: 'tpl-haut-b', 7: null };
+    const plan = weekPlan(mass, massTpl, [], WED, assignment);
+    expect(plan.map((d) => d.planned?.id ?? null)).toEqual([null, null, 'tpl-bas-a', null, null, 'tpl-haut-b', null]);
+    expect(plan[0].scheduled?.id).toBe('tpl-haut-a');
+    expect(plan.map((d) => d.isTrainingDay)).toEqual([true, false, true, false, false, true, false]);
+    expect(weeklyGoal(plan)).toBe(3);
+  });
+
+  it('compte dans l’objectif une séance faite un jour de repos', () => {
+    const done = [workout(undefined, new Date(2026, 9, 13, 18))];
+    const plan = weekPlan(mass, massTpl, done, WED, {
+      1: 'tpl-haut-a',
+      2: null,
+      3: null,
+      4: null,
+      5: null,
+      6: null,
+      7: null,
+    });
+    expect(weeklyGoal(plan)).toBe(2);
   });
 });

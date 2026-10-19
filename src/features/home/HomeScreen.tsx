@@ -5,8 +5,18 @@ import type { ProgramWithTemplates } from '../../data/repositories';
 import { defaultWorkoutName, formatClock, formatDuration, formatTarget } from '../../domain/format';
 import { quoteOfTheDay } from '../../domain/summary';
 import type { Exercise, Template } from '../../domain/types';
-import { WEEKDAY_LONG, weekPlan, type DayPlan } from '../../domain/week';
-import { useFeedback } from '../../ui/feedback';
+import {
+  assignmentFromPlan,
+  moveSession,
+  WEEKDAY_LONG,
+  WEEKDAY_SHORT,
+  weekKey,
+  weeklyGoal,
+  weekPlan,
+  type DayPlan,
+  type WeekAssignment,
+} from '../../domain/week';
+import { haptic, useFeedback } from '../../ui/feedback';
 import { MUSCLE_COLORS } from '../../ui/muscles';
 import { ProgressRing } from '../../ui/ProgressRing';
 import { Sheet } from '../../ui/Sheet';
@@ -22,24 +32,29 @@ function greeting(date: Date): string {
   return h >= 5 && h < 18 ? 'Bonjour' : 'Bonsoir';
 }
 
+/** Un jour peut être réorganisé s'il n'est pas passé et qu'aucune séance n'y a encore été faite. */
+const isEditable = (d: DayPlan) => !d.isPast && d.done.length === 0;
+
 export function HomeScreen() {
-  const { workouts, programs, settings: settingsRepo, exercises, profile } = useRepositories();
+  const { workouts, programs, settings: settingsRepo, exercises, profile, weekPlans } = useRepositories();
   const navigate = useNavigate();
-  const { confirm } = useFeedback();
+  const { confirm, toast } = useFeedback();
+  const now = useNow(30_000);
+  const key = weekKey(new Date(now));
   const active = useSubscribable(() => workouts.watchActive(), []);
   const finished = useSubscribable(() => workouts.watchFinished(), []);
   const allPrograms = useSubscribable(() => programs.watchAll(), []);
   const settings = useSubscribable(() => settingsRepo.watch(), []);
   const library = useSubscribable(() => exercises.watchAll(), []);
   const me = useSubscribable(() => profile.watch(), []);
-  const now = useNow(30_000);
+  const savedWeek = useSubscribable(() => weekPlans.watch(key), [key]);
   const [choosingProgram, setChoosingProgram] = useState(false);
-  const [preview, setPreview] = useState<Template | null>(null);
+  const [openDay, setOpenDay] = useState<number | null>(null);
 
   const exerciseById = useMemo(() => new Map((library ?? []).map((e) => [e.id, e])), [library]);
   const current = allPrograms?.find((p) => p.program.id === settings?.activeProgramId);
 
-  if (active === undefined || !finished || !allPrograms || !settings) return null;
+  if (active === undefined || !finished || !allPrograms || !settings || savedWeek === undefined) return null;
 
   const startTemplate = async (template: Template) => {
     if (active) {
@@ -61,10 +76,30 @@ export function HomeScreen() {
   };
 
   const today = new Date(now);
-  const plan = current ? weekPlan(current.program, current.templates, finished, today) : null;
+  // Un planning enregistré pour un autre programme ne s'applique pas.
+  const assignment = savedWeek && current && savedWeek.programId === current.program.id ? savedWeek.days : null;
+  const plan = current ? weekPlan(current.program, current.templates, finished, today, assignment) : null;
   const doneThisWeek = plan ? plan.reduce((n, d) => n + d.done.length, 0) : 0;
-  const goal = current?.program.trainingDays.length ?? 0;
-  const fixed = current?.templates.some((t) => t.weekday !== undefined) ?? false;
+  const goal = plan ? weeklyGoal(plan) : 0;
+
+  /** Modifie le planning de la semaine (en partant du planning du programme s'il n'a jamais été modifié). */
+  const editWeek = async (change: (a: WeekAssignment) => WeekAssignment, message?: string) => {
+    if (!current || !plan) return;
+    haptic();
+    await weekPlans.save(key, current.program.id, change(assignment ?? assignmentFromPlan(plan)));
+    if (message) toast(message);
+  };
+
+  const resetWeek = async () => {
+    const ok = await confirm({
+      title: 'Revenir au planning du programme ?',
+      message: 'Tes changements de la semaine seront annulés.',
+      confirmLabel: 'Revenir au planning',
+    });
+    if (ok) await weekPlans.reset(key);
+  };
+
+  const selected = plan?.find((d) => d.weekday === openDay);
 
   return (
     <div className="screen">
@@ -98,7 +133,7 @@ export function HomeScreen() {
             <div className="grow">
               <div className="muted small">Cette semaine</div>
               <div className="program-name">
-                {doneThisWeek >= goal
+                {goal > 0 && doneThisWeek >= goal
                   ? 'Semaine bouclée, bravo ! 🔥'
                   : `${doneThisWeek} séance${doneThisWeek > 1 ? 's' : ''} sur ${goal}`}
               </div>
@@ -108,20 +143,40 @@ export function HomeScreen() {
             </div>
           </div>
 
+          {!assignment && (
+            <div className="plan-banner">
+              <div className="plan-banner-title">🗓️ Organise ta semaine</div>
+              <p>
+                Voici le planning proposé par ton programme. Touche un jour pour <b>déplacer</b>, <b>changer</b> ou{' '}
+                <b>ajouter</b> une séance.
+              </p>
+              <button
+                className="btn btn-primary btn-block btn-small"
+                onClick={() => editWeek((a) => a, 'Semaine validée ✅ Tu pourras toujours la modifier.')}
+              >
+                Valider ce planning
+              </button>
+            </div>
+          )}
+
           <div className="days">
             {plan.map((day) => (
               <DayRow
                 key={day.weekday}
                 day={day}
-                // Jours passés d'un programme à jours fixes : on rappelle quelle séance était prévue.
-                template={day.planned ?? (fixed ? current.templates.find((t) => t.weekday === day.weekday) : undefined)}
                 exerciseById={exerciseById}
                 hasActive={!!active}
-                onOpen={(t) => setPreview(t)}
+                onOpen={() => setOpenDay(day.weekday)}
                 onStart={(t) => startTemplate(t)}
               />
             ))}
           </div>
+
+          {assignment && (
+            <button className="link-btn" style={{ marginTop: 10 }} onClick={resetWeek}>
+              ↺ Revenir au planning du programme
+            </button>
+          )}
         </>
       )}
 
@@ -142,20 +197,35 @@ export function HomeScreen() {
         </Sheet>
       )}
 
-      {preview && (
-        <Sheet onClose={() => setPreview(null)} title={preview.name}>
-          <TemplateExerciseList template={preview} exerciseById={exerciseById} />
-          <button
-            className="btn btn-primary btn-block btn-big"
-            style={{ marginTop: 16 }}
-            onClick={() => {
-              setPreview(null);
-              void startTemplate(preview);
-            }}
-          >
-            Démarrer cette séance
-          </button>
-        </Sheet>
+      {selected && plan && current && (
+        <DaySheet
+          day={selected}
+          plan={plan}
+          templates={current.templates}
+          exerciseById={exerciseById}
+          onClose={() => setOpenDay(null)}
+          onStart={(t) => {
+            setOpenDay(null);
+            void startTemplate(t);
+          }}
+          onMove={(to) => {
+            setOpenDay(null);
+            const target = plan.find((d) => d.weekday === to);
+            void editWeek(
+              (a) => moveSession(a, selected.weekday, to),
+              target?.scheduled
+                ? `Séances échangées : ${WEEKDAY_LONG[selected.weekday - 1]} ⇄ ${WEEKDAY_LONG[to - 1]}`
+                : `Séance déplacée au ${WEEKDAY_LONG[to - 1]}`,
+            );
+          }}
+          onSet={(templateId) => {
+            setOpenDay(null);
+            void editWeek(
+              (a) => ({ ...a, [selected.weekday]: templateId }),
+              templateId ? undefined : `${WEEKDAY_LONG[selected.weekday - 1]} : repos 😴`,
+            );
+          }}
+        />
       )}
     </div>
   );
@@ -163,20 +233,19 @@ export function HomeScreen() {
 
 function DayRow({
   day,
-  template,
   exerciseById,
   hasActive,
   onOpen,
   onStart,
 }: {
   day: DayPlan;
-  template?: Template;
   exerciseById: Map<string, Exercise>;
   hasActive: boolean;
-  onOpen: (t: Template) => void;
+  onOpen: () => void;
   onStart: (t: Template) => void;
 }) {
   const done = day.done[0];
+  const template = day.scheduled;
   const status = done ? 'done' : day.planned ? 'planned' : day.isTrainingDay && day.isPast ? 'missed' : 'rest';
   const expanded = day.isToday && status === 'planned' && !hasActive && !!template;
   const title = done ? done.name : template ? template.name : day.isTrainingDay ? 'Séance' : 'Repos';
@@ -186,23 +255,23 @@ function DayRow({
       ? 'Pas faite'
       : template
         ? `${template.exercises.length} exercices`
-        : day.isTrainingDay
-          ? 'Selon la rotation'
+        : isEditable(day)
+          ? 'Récupération 😴 · touche pour ajouter une séance'
           : 'Récupération 😴';
-  const canOpen = !!template && status !== 'done';
+  const editable = isEditable(day);
 
   return (
     <div className={`day ${status}${day.isToday ? ' today' : ''}`}>
-      <button className="day-head" onClick={() => canOpen && onOpen(template!)} disabled={!canOpen}>
+      <button className="day-head" onClick={onOpen} disabled={!editable}>
         <div className="day-date">
-          <span className="day-name">{day.isToday ? 'Auj.' : WEEKDAY_LONG[day.weekday - 1].slice(0, 3)}</span>
+          <span className="day-name">{day.isToday ? 'Auj.' : WEEKDAY_SHORT[day.weekday - 1]}</span>
           <span className="day-num">{day.date.getDate()}</span>
         </div>
         <div className="grow">
           <div className="day-title">{title}</div>
           <div className="day-sub">{subtitle}</div>
         </div>
-        <span className="day-icon">{status === 'done' ? '✅' : canOpen ? '›' : ''}</span>
+        <span className="day-icon">{status === 'done' ? '✅' : editable ? '⋯' : ''}</span>
       </button>
       {expanded && (
         <div className="day-body">
@@ -217,6 +286,93 @@ function DayRow({
         </div>
       )}
     </div>
+  );
+}
+
+/** Actions sur un jour : démarrer, déplacer, changer de séance, mettre en repos, ajouter une séance. */
+function DaySheet({
+  day,
+  plan,
+  templates,
+  exerciseById,
+  onClose,
+  onStart,
+  onMove,
+  onSet,
+}: {
+  day: DayPlan;
+  plan: DayPlan[];
+  templates: Template[];
+  exerciseById: Map<string, Exercise>;
+  onClose: () => void;
+  onStart: (t: Template) => void;
+  onMove: (to: number) => void;
+  onSet: (templateId: string | null) => void;
+}) {
+  const template = day.scheduled;
+  const [mode, setMode] = useState<'menu' | 'move' | 'change'>(template ? 'menu' : 'change');
+  const dayLabel = `${WEEKDAY_LONG[day.weekday - 1]} ${day.date.getDate()}`;
+  const title = dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1);
+
+  if (mode === 'move' && template) {
+    const targets = plan.filter((d) => d.weekday !== day.weekday && isEditable(d));
+    return (
+      <Sheet onClose={onClose} title={`Déplacer « ${shortName(template.name)} »`}>
+        <p className="muted small" style={{ marginTop: -8 }}>
+          Choisis le nouveau jour. S’il a déjà une séance, les deux séances s’échangent.
+        </p>
+        <div className="stack">
+          {targets.map((d) => (
+            <button key={d.weekday} className="move-target" onClick={() => onMove(d.weekday)}>
+              <span className="move-day">
+                {WEEKDAY_SHORT[d.weekday - 1]} {d.date.getDate()}
+              </span>
+              <span className="grow">{d.scheduled ? `⇄ échanger avec ${shortName(d.scheduled.name)}` : 'Libre'}</span>
+            </button>
+          ))}
+          {targets.length === 0 && <p className="muted">Plus aucun jour disponible cette semaine.</p>}
+        </div>
+      </Sheet>
+    );
+  }
+
+  if (mode === 'change' || !template) {
+    return (
+      <Sheet onClose={onClose} title={template ? `${title} : changer de séance` : `${title} : ajouter une séance`}>
+        <div className="stack">
+          {templates
+            .filter((t) => t.id !== template?.id)
+            .map((t) => (
+              <button key={t.id} className="card-button" onClick={() => onSet(t.id)}>
+                <div style={{ fontWeight: 800 }}>{t.name}</div>
+                <div className="muted small">{t.exercises.length} exercices</div>
+              </button>
+            ))}
+        </div>
+      </Sheet>
+    );
+  }
+
+  return (
+    <Sheet onClose={onClose} title={`${title} · ${template.name}`}>
+      <TemplateExerciseList template={template} exerciseById={exerciseById} />
+      <div className="stack" style={{ marginTop: 16 }}>
+        <button className="btn btn-primary btn-block btn-big" onClick={() => onStart(template)}>
+          Démarrer maintenant
+        </button>
+        <div className="action-grid">
+          <button className="btn" onClick={() => setMode('move')}>
+            📅 Déplacer
+          </button>
+          <button className="btn" onClick={() => setMode('change')}>
+            🔄 Changer
+          </button>
+        </div>
+        <button className="btn btn-block btn-ghost" onClick={() => onSet(null)}>
+          😴 Mettre ce jour en repos
+        </button>
+      </div>
+    </Sheet>
   );
 }
 

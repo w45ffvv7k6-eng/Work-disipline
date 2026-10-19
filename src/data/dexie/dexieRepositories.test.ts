@@ -119,4 +119,12 @@ describe('dépôt Dexie des séances', () => {
     await repos.templates.delete(t.id);
     expect(await first(repos.templates.watch(t.id))).toBeNull();
   });
+
+  it('enregistre et réinitialise le planning d’une semaine', async () => {
+    const days = { 1: 'tpl-haut-a', 2: null, 3: 'tpl-bas-a', 4: null, 5: null, 6: null, 7: null };
+    await repos.weekPlans.save('2026-10-19', 'prog-prise-de-masse', days);
+    expect((await first(repos.weekPlans.watch('2026-10-19')))?.days).toEqual(days);
+    await repos.weekPlans.reset('2026-10-19');
+    expect(await first(repos.weekPlans.watch('2026-10-19'))).toBeNull();
+  });
 });

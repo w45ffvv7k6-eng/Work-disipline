@@ -21,6 +21,7 @@ import type {
   SettingsRepository,
   TemplateRepository,
   TimerRepository,
+  WeekPlanRepository,
   WorkoutDetail,
   WorkoutRepository,
 } from '../repositories';
@@ -341,6 +342,18 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
     },
   };
 
+  // ---------- Plannings de semaine ----------
+
+  const weekPlans: WeekPlanRepository = {
+    watch: (key) => liveQuery(async () => (await db.weekPlans.get(key)) ?? null),
+    async save(key, programId, days) {
+      await db.weekPlans.put({ id: key, programId, days, updatedAt: now() });
+    },
+    async reset(key) {
+      await db.weekPlans.delete(key);
+    },
+  };
+
   // ---------- Profil et suivi corporel ----------
 
   const profile: ProfileRepository = {
@@ -358,5 +371,5 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
     },
   };
 
-  return { exercises, workouts, settings, timer, programs, templates, profile };
+  return { exercises, workouts, settings, timer, programs, templates, weekPlans, profile };
 }

@@ -12,6 +12,7 @@ import type {
   Program,
   Settings,
   Template,
+  WeekPlan,
   Workout,
   WorkoutExercise,
   WorkoutSet,
@@ -112,6 +113,15 @@ export interface ProfileRepository {
   deleteCheck(id: string): Promise<void>;
 }
 
+/** Planning personnalisé de chaque semaine. */
+export interface WeekPlanRepository {
+  /** null : la semaine suit le planning du programme. */
+  watch(weekKey: string): Subscribable<WeekPlan | null>;
+  save(weekKey: string, programId: string, days: WeekPlan['days']): Promise<void>;
+  /** Revient au planning du programme pour cette semaine. */
+  reset(weekKey: string): Promise<void>;
+}
+
 /** Minuteur de repos (un seul à la fois), conservé même si l'appli est fermée. */
 export interface TimerRepository {
   watch(): Subscribable<ActiveTimer | null>;
@@ -133,5 +143,6 @@ export interface Repositories {
   timer: TimerRepository;
   programs: ProgramRepository;
   templates: TemplateRepository;
+  weekPlans: WeekPlanRepository;
   profile: ProfileRepository;
 }

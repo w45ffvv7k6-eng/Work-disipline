@@ -162,6 +162,16 @@ export interface BodyCheck {
   deletedAt?: number;
 }
 
+/** Semaine organisée par l'utilisateur (sinon, le planning du programme s'applique). */
+export interface WeekPlan {
+  /** Date du lundi, "AAAA-MM-JJ". */
+  id: string;
+  programId: string;
+  /** Jour (1 = lundi … 7) → identifiant de séance, ou null pour repos. */
+  days: Record<number, string | null>;
+  updatedAt: number;
+}
+
 /** Minuteur de repos en cours : on stocke l'heure de fin, pas un compte à rebours. */
 export interface ActiveTimer {
   id: 'timer';
