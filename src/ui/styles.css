@@ -2043,3 +2043,98 @@ button:disabled {
       0 14px 40px rgba(var(--accent-rgb), 0.55);
   }
 }
+
+/* ---------- Connexion ---------- */
+
+.auth {
+  position: relative;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: calc(24px + var(--safe-top)) 16px calc(24px + var(--safe-bottom));
+  background-size: cover;
+  background-position: center;
+}
+.auth-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(var(--bg-rgb), 0.55), rgba(var(--bg-rgb), 0.92));
+}
+.auth-card {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  padding: 24px 20px;
+  border-radius: 22px;
+  background: rgba(var(--bg-rgb), 0.82);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: rise 0.4s ease both;
+}
+.auth-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+.auth-wordmark {
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  font-size: 1.15rem;
+}
+.auth-wordmark span {
+  color: var(--accent);
+}
+.password-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.password-row .search {
+  flex: 1;
+}
+.auth-error {
+  color: var(--danger);
+  background: var(--danger-soft);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+.auth-info {
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+.auth-link {
+  display: block;
+  margin: 14px auto 0;
+}
+
+.sync-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+.sync-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #4ade80;
+  flex-shrink: 0;
+}
+.sync-line.syncing .sync-dot {
+  background: var(--accent);
+  animation: pulse 1s ease-in-out infinite;
+}
+.sync-line.offline .sync-dot {
+  background: var(--text-dim);
+}

@@ -5,6 +5,7 @@ import { formatKg } from '../../domain/format';
 import type { BodyCheck, Profile } from '../../domain/types';
 import { useFeedback } from '../../ui/feedback';
 import { Sheet } from '../../ui/Sheet';
+import { AccountSection } from '../auth/AccountSection';
 import { SettingsSection } from '../settings/SettingsSection';
 import { UserIcon } from '../../ui/icons';
 import { initials, PageHeader } from '../../ui/PageHeader';
@@ -134,6 +135,7 @@ export function ProfileScreen() {
         </>
       )}
 
+      <AccountSection />
       <SettingsSection />
 
       {editing && (
