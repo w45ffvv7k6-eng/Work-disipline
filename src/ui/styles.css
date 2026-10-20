@@ -51,14 +51,19 @@ body {
 
 body {
   -webkit-tap-highlight-color: transparent;
+}
+
+/* Pas de « user-select: none » sur toute la page : sur iPhone, ça peut empêcher le clavier de s'ouvrir. */
+button,
+.tabbar {
   -webkit-user-select: none;
   user-select: none;
 }
 
 input,
 textarea {
-  -webkit-user-select: text;
-  user-select: text;
+  -webkit-user-select: auto;
+  user-select: auto;
 }
 
 button {
@@ -2055,10 +2060,9 @@ button:disabled {
   max-width: 420px;
   padding: 24px 20px;
   border-radius: 22px;
-  background: rgba(var(--bg-rgb), 0.82);
+  /* Sans flou d'arrière-plan : il peut bloquer la saisie dans les cases sur iPhone. */
+  background: rgba(var(--bg-rgb), 0.9);
   border: 1px solid var(--border);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
   animation: rise 0.4s ease both;
 }
