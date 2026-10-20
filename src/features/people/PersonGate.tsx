@@ -8,23 +8,23 @@ import { initials } from '../../ui/PageHeader';
 import { PhotoChoice } from '../../ui/PhotoChoice';
 import { DEFAULT_PHOTO, photoForName, splashPhotoUrl } from '../../ui/splashPhotos';
 
-// Personne choisie pour cette ouverture de l'appli (oublié quand l'appli est fermée).
-const CHOSEN_KEY = 'wd-chosen';
+// Demande d'afficher « Qui s'entraîne ? » (bouton « Changer de personne » du profil).
+const PICK_KEY = 'wd-pick';
 
-function chosenThisSession(): string | null {
+function wantsPicker(): boolean {
   try {
-    return sessionStorage.getItem(CHOSEN_KEY);
+    return sessionStorage.getItem(PICK_KEY) === '1';
   } catch {
-    return null;
+    return false;
   }
 }
 
-function rememberChoice(id: string | null) {
+function setWantsPicker(on: boolean) {
   try {
-    if (id) sessionStorage.setItem(CHOSEN_KEY, id);
-    else sessionStorage.removeItem(CHOSEN_KEY);
+    if (on) sessionStorage.setItem(PICK_KEY, '1');
+    else sessionStorage.removeItem(PICK_KEY);
   } catch {
-    // stockage indisponible : on redemandera
+    // stockage indisponible : sans conséquence
   }
 }
 
@@ -35,19 +35,16 @@ function restart() {
 
 /** Revient à l'écran « Qui s'entraîne ? ». */
 export function switchPerson() {
-  rememberChoice(null);
+  setWantsPicker(true);
   restart();
 }
 
 /**
- * À chaque ouverture : « Qui s'entraîne ? », puis l'écran « Bienvenue <prénom> » avec le bouton GO,
- * puis l'appli avec les données de la personne choisie.
+ * L'appli se souvient de la dernière personne : elle arrive directement sur « Bienvenue <prénom> » (bouton GO).
+ * « Qui s'entraîne ? » n'apparaît qu'à la première utilisation ou via « Changer de personne ».
  */
 export function PersonGate({ children, welcome }: { children: ReactNode; welcome: ReactNode }) {
-  const [chosen, setChosen] = useState(() => {
-    const id = chosenThisSession();
-    return !!id && id === people.activeId() && !!people.active();
-  });
+  const [chosen, setChosen] = useState(() => !wantsPicker() && !!people.active());
   const [ready, setReady] = useState(false);
 
   // Données saisies avant l'arrivée des personnes : elles deviennent celles de la personne d'origine.
@@ -56,6 +53,7 @@ export function PersonGate({ children, welcome }: { children: ReactNode; welcome
       if (people.list().length === 0 && (await hasPersonalData(db))) {
         const profile = await db.profile.get('profile');
         people.ensureDefault(profile?.firstName || 'Moi');
+        if (!wantsPicker() && people.active()) setChosen(true);
       }
       setReady(true);
     })();
@@ -73,7 +71,7 @@ export function PersonGate({ children, welcome }: { children: ReactNode; welcome
 
   const choose = (person: Person) => {
     people.select(person.id);
-    rememberChoice(person.id);
+    setWantsPicker(false);
     // La base déjà ouverte est celle de cette personne : pas besoin de redémarrer.
     if (dbNameFor(person.id) === db.name) setChosen(true);
     else restart();
