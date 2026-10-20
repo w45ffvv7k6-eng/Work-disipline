@@ -92,6 +92,10 @@ export function WelcomeSplash() {
       >
         GO
       </button>
+
+      <div className="splash-signature">
+        By <b>RPA</b>
+      </div>
     </div>
   );
 }

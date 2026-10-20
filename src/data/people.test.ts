@@ -54,6 +54,15 @@ describe('personnes du téléphone', () => {
     expect(reg.list()[0].photo).toBe('salle.webp');
   });
 
+  it('mémorise et retire la photo de profil', () => {
+    const reg = createPeopleRegistry(memory());
+    const lea = reg.add('Léa');
+    expect(reg.setAvatar(lea.id, 'data:image/jpeg;base64,AAA')).toBe(true);
+    expect(reg.list()[0].avatar).toBe('data:image/jpeg;base64,AAA');
+    reg.setAvatar(lea.id, undefined);
+    expect(reg.list()[0]).not.toHaveProperty('avatar');
+  });
+
   it('sans base indiquée : base d’origine', () => {
     expect(dbNameFor(undefined)).toBe('muscu');
   });

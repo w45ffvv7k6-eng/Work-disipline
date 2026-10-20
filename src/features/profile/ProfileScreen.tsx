@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ReactNode } from 'react';
 import { useRepositories, useSubscribable } from '../../data';
 import { bmi, bmiCategory, weightDelta } from '../../domain/body';
 import { formatKg } from '../../domain/format';
@@ -14,7 +14,8 @@ import { personPhoto } from '../../ui/splashPhotos';
 import { PHOTO_CHANGED } from '../../ui/AppBackground';
 import { SettingsSection } from '../settings/SettingsSection';
 import { UserIcon } from '../../ui/icons';
-import { initials, PageHeader } from '../../ui/PageHeader';
+import { PageHeader } from '../../ui/PageHeader';
+import { Avatar, photoToAvatar } from '../../ui/Avatar';
 
 /** Le prénom du profil sert aussi dans la liste « Qui s'entraîne ? ». */
 function renameActive(firstName: string) {
@@ -36,6 +37,7 @@ export function ProfileScreen() {
   const checks = useSubscribable(() => repo.watchChecks(), []);
   const [editing, setEditing] = useState(false);
   const [weighing, setWeighing] = useState(false);
+  const avatar = useAvatar();
 
   if (profile === undefined || !checks) return null;
 
@@ -54,7 +56,7 @@ export function ProfileScreen() {
             if (weightKg > 0) await repo.addCheck({ date: Date.now(), weightKg });
           }}
         />
-        <PersonSection />
+        <PersonSection avatar={avatar} />
       </div>
     );
   }
@@ -77,9 +79,12 @@ export function ProfileScreen() {
   return (
     <div className="screen">
       <header className="page-header" style={{ marginTop: 12 }}>
-        <div className="avatar" aria-hidden="true">
-          {initials(profile.firstName || '?')}
-        </div>
+        <PhotoPicker className="avatar-btn" onFile={avatar.onFile} label="Changer ma photo de profil">
+          <Avatar name={profile.firstName} photo={avatar.photo} />
+          <span className="avatar-camera" aria-hidden="true">
+            📷
+          </span>
+        </PhotoPicker>
         <div className="grow">
           <h1 className="page-title">{profile.firstName || 'Mon profil'}</h1>
           <p className="page-subtitle">Membre Work &amp; Discipline</p>
@@ -149,7 +154,7 @@ export function ProfileScreen() {
         </>
       )}
 
-      <PersonSection />
+      <PersonSection avatar={avatar} />
 
       <InstallSection />
       <AccountSection />
@@ -299,11 +304,83 @@ function WeightSheet({
   );
 }
 
-/** Photo d'accueil et changement de personne (plusieurs personnes peuvent utiliser l'appli sur le même téléphone). */
-function PersonSection() {
+type AvatarState = ReturnType<typeof useAvatar>;
+
+/** Photo de profil de la personne : choisie dans la galerie ou prise avec l'appareil photo. */
+function useAvatar() {
+  const { toast } = useFeedback();
+  const [photo, setPhoto] = useState(people.active()?.avatar);
+
+  const save = (value: string | undefined) => {
+    const id = people.activeId();
+    if (!id) return;
+    if (people.setAvatar(id, value)) setPhoto(value);
+    else toast('Impossible d’enregistrer la photo sur ce téléphone.');
+  };
+
+  const onFile = async (file: File) => {
+    try {
+      save(await photoToAvatar(file));
+    } catch {
+      toast('Cette photo n’a pas pu être ouverte.');
+    }
+  };
+
+  return { photo, onFile, remove: () => save(undefined) };
+}
+
+/**
+ * Zone qui ouvre le choix d'une photo (« Photothèque » ou « Prendre une photo » sur iPhone).
+ * Un <label> autour du champ : la façon la plus fiable de l'ouvrir sur iPhone.
+ */
+function PhotoPicker({
+  onFile,
+  className,
+  label,
+  children,
+}: {
+  onFile: (file: File) => void;
+  className: string;
+  label?: string;
+  children: ReactNode;
+}) {
+  return (
+    <label className={className} aria-label={label}>
+      <input
+        type="file"
+        accept="image/*"
+        className="visually-hidden"
+        onChange={(e) => {
+          const file = e.target.files?.[0];
+          e.target.value = '';
+          if (file) onFile(file);
+        }}
+      />
+      {children}
+    </label>
+  );
+}
+
+/** Photo de profil, photo d'accueil et changement de personne (plusieurs personnes peuvent utiliser l'appli sur le même téléphone). */
+function PersonSection({ avatar }: { avatar: AvatarState }) {
   const [photo, setPhoto] = useState(personPhoto());
   return (
     <>
+      <h2 className="section-title">Ma photo</h2>
+      <div className="card avatar-card">
+        <Avatar name={people.active()?.name ?? ''} photo={avatar.photo} />
+        <div className="grow stack">
+          <PhotoPicker className="btn btn-block btn-small" onFile={avatar.onFile}>
+            📷 {avatar.photo ? 'Changer ma photo' : 'Mettre ma photo'}
+          </PhotoPicker>
+          {avatar.photo && (
+            <button className="link-btn" onClick={avatar.remove}>
+              Retirer ma photo
+            </button>
+          )}
+        </div>
+      </div>
+
       <h2 className="section-title">Photo d’accueil</h2>
       <div className="card">
         <PhotoChoice

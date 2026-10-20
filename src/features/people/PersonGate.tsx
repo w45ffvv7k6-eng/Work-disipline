@@ -4,7 +4,7 @@ import { db } from '../../data';
 import { hasPersonalData } from '../../data/backup';
 import { dbNameFor, people, type Person } from '../../data/people';
 import { useFeedback } from '../../ui/feedback';
-import { initials } from '../../ui/PageHeader';
+import { Avatar } from '../../ui/Avatar';
 import { PhotoChoice } from '../../ui/PhotoChoice';
 import { DEFAULT_PHOTO, photoForName, splashPhotoUrl } from '../../ui/splashPhotos';
 
@@ -131,7 +131,7 @@ function PersonPicker({ onChoose }: { onChoose: (p: Person) => void }) {
               {list.map((p, i) => (
                 <div key={p.id} className="person" style={{ animationDelay: `${i * 0.06}s` }}>
                   <button className="person-btn" onClick={() => (editing ? undefined : onChoose(p))}>
-                    <span className="avatar person-avatar">{initials(p.name || '?')}</span>
+                    <Avatar name={p.name} photo={p.avatar} className="person-avatar" />
                     <span className="person-name">{p.name || 'Sans nom'}</span>
                   </button>
                   {editing && (

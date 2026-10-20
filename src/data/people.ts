@@ -9,6 +9,8 @@ export interface Person {
   name: string;
   /** Photo d'accueil choisie par la personne (nom de fichier). */
   photo?: string;
+  /** Photo de profil de la personne (petite image JPEG en data URL). */
+  avatar?: string;
   createdAt: number;
 }
 
@@ -88,6 +90,18 @@ export function createPeopleRegistry(store: KeyValueStore | null = browserStore(
     setPhoto(id: string, photo: string): void {
       const r = read();
       write({ ...r, people: r.people.map((p) => (p.id === id ? { ...p, photo } : p)) });
+    },
+    setAvatar(id: string, avatar: string | undefined): boolean {
+      const r = read();
+      write({
+        ...r,
+        people: r.people.map((p) => {
+          if (p.id !== id) return p;
+          const { avatar: _old, ...rest } = p;
+          return avatar ? { ...rest, avatar } : rest;
+        }),
+      });
+      return read().people.find((p) => p.id === id)?.avatar === avatar;
     },
     remove(id: string): void {
       const r = read();
