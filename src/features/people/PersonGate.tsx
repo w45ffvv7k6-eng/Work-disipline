@@ -170,8 +170,10 @@ function PersonPicker({ onChoose }: { onChoose: (p: Person) => void }) {
                   setName(e.target.value);
                   if (!photoTouched) setPhoto(photoForName(e.target.value));
                 }}
+                // Pas d'autoFocus : sur iPhone, un champ activé sans toucher l'écran peut empêcher le clavier de s'ouvrir.
+                onTouchEnd={(e) => e.currentTarget.focus()}
+                type="text"
                 autoComplete="given-name"
-                autoFocus
                 maxLength={30}
               />
             </div>
