@@ -1643,22 +1643,10 @@ button:disabled {
   gap: 16px;
 }
 
-.splash-icon {
-  width: 84px;
-  height: 84px;
-  border-radius: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--accent);
-  color: var(--accent-text);
-  box-shadow: 0 12px 40px rgba(var(--accent-rgb), 0.5);
+.splash-logo {
+  width: min(78vw, 340px);
+  height: auto;
   animation: splash-icon 0.8s cubic-bezier(0.2, 1.6, 0.4, 1) both;
-}
-.splash-icon svg {
-  width: 52px;
-  height: 52px;
-  stroke-width: 2.4;
 }
 
 .splash-wordmark {
@@ -2007,11 +1995,11 @@ button:disabled {
   z-index: 2;
   bottom: calc(9vh + var(--safe-bottom));
   left: 50%;
-  width: 112px;
-  height: 112px;
-  margin-left: -56px;
+  width: 100px;
+  height: 100px;
+  margin-left: -50px;
   border-radius: 50%;
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 900;
   letter-spacing: 0.06em;
   color: var(--accent-text);

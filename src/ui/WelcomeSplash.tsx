@@ -2,7 +2,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { useRepositories, useSubscribable } from '../data';
 import { people } from '../data/people';
 import { haptic } from './feedback';
-import { DumbbellIcon } from './icons';
 import { personPhoto, splashPhotoUrl } from './splashPhotos';
 
 /** Délai entre deux photos du fond. */
@@ -60,9 +59,7 @@ export function WelcomeSplash() {
 
       <div className="splash-content">
         <div className="splash-brand">
-          <div className="splash-icon">
-            <DumbbellIcon />
-          </div>
+          <img className="splash-logo" src={splashPhotoUrl('logo.webp')} alt="" />
           <div className="splash-wordmark">
             <span className="wm-work">WORK</span>
             <span className="wm-amp">&amp;</span>
