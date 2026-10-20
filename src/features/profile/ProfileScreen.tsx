@@ -6,6 +6,7 @@ import type { BodyCheck, Profile } from '../../domain/types';
 import { useFeedback } from '../../ui/feedback';
 import { Sheet } from '../../ui/Sheet';
 import { AccountSection } from '../auth/AccountSection';
+import { InstallSection } from '../install/InstallSection';
 import { people } from '../../data/people';
 import { switchPerson } from '../people/PersonGate';
 import { PhotoChoice } from '../../ui/PhotoChoice';
@@ -150,6 +151,7 @@ export function ProfileScreen() {
 
       <PersonSection />
 
+      <InstallSection />
       <AccountSection />
       <SettingsSection />
 

@@ -24,6 +24,16 @@ const TABS = [
   { to: '/profil', label: 'Profil', icon: <UserIcon /> },
 ];
 
+/** Chaque changement d'écran apparaît en fondu (animation rejouée à chaque nouvelle adresse). */
+function PageTransition({ children }: { children: ReactNode }) {
+  const location = useLocation();
+  return (
+    <div key={location.pathname} className="page-transition">
+      {children}
+    </div>
+  );
+}
+
 function TabBar() {
   const location = useLocation();
   // Pendant une séance, l'onglet « Séance » reste actif.
@@ -63,37 +73,39 @@ export function App() {
             <AuthGate>
               <AppBackground />
               <div className="app">
-                <Routes>
-                  <Route path="/" element={<HomeScreen />} />
-                  <Route path="/seance/:id" element={<LiveWorkoutScreen />} />
-                  <Route
-                    path="/historique"
-                    element={
-                      <ComingSoon
-                        title="Historique"
-                        subtitle="Tes séances passées, en détail"
-                        icon={<HistoryIcon />}
-                        step="Historique et graphiques"
-                      />
-                    }
-                  />
-                  <Route
-                    path="/exercices"
-                    element={
-                      <ComingSoon
-                        title="Exercices"
-                        subtitle="Bibliothèque et courbes de progression"
-                        icon={<ListIcon />}
-                        step="Bibliothèque"
-                      />
-                    }
-                  />
-                  <Route path="/seances" element={<SessionsScreen />} />
-                  <Route path="/seances/:id" element={<SessionEditorScreen />} />
-                  <Route path="/bravo/:id" element={<WorkoutSummaryScreen />} />
-                  <Route path="/profil" element={<ProfileScreen />} />
-                  <Route path="*" element={<HomeScreen />} />
-                </Routes>
+                <PageTransition>
+                  <Routes>
+                    <Route path="/" element={<HomeScreen />} />
+                    <Route path="/seance/:id" element={<LiveWorkoutScreen />} />
+                    <Route
+                      path="/historique"
+                      element={
+                        <ComingSoon
+                          title="Historique"
+                          subtitle="Tes séances passées, en détail"
+                          icon={<HistoryIcon />}
+                          step="Historique et graphiques"
+                        />
+                      }
+                    />
+                    <Route
+                      path="/exercices"
+                      element={
+                        <ComingSoon
+                          title="Exercices"
+                          subtitle="Bibliothèque et courbes de progression"
+                          icon={<ListIcon />}
+                          step="Bibliothèque"
+                        />
+                      }
+                    />
+                    <Route path="/seances" element={<SessionsScreen />} />
+                    <Route path="/seances/:id" element={<SessionEditorScreen />} />
+                    <Route path="/bravo/:id" element={<WorkoutSummaryScreen />} />
+                    <Route path="/profil" element={<ProfileScreen />} />
+                    <Route path="*" element={<HomeScreen />} />
+                  </Routes>
+                </PageTransition>
                 <TabBar />
               </div>
             </AuthGate>
