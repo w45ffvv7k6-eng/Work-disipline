@@ -10,6 +10,7 @@ import { people } from '../../data/people';
 import { switchPerson } from '../people/PersonGate';
 import { PhotoChoice } from '../../ui/PhotoChoice';
 import { personPhoto } from '../../ui/splashPhotos';
+import { PHOTO_CHANGED } from '../../ui/AppBackground';
 import { SettingsSection } from '../settings/SettingsSection';
 import { UserIcon } from '../../ui/icons';
 import { initials, PageHeader } from '../../ui/PageHeader';
@@ -309,6 +310,7 @@ function PersonSection() {
             const id = people.activeId();
             if (id) people.setPhoto(id, file);
             setPhoto(file);
+            window.dispatchEvent(new Event(PHOTO_CHANGED));
           }}
         />
       </div>

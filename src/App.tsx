@@ -11,6 +11,7 @@ import { SessionsScreen } from './features/sessions/SessionsScreen';
 import { WorkoutSummaryScreen } from './features/summary/WorkoutSummaryScreen';
 import { LiveWorkoutScreen } from './features/workout/LiveWorkoutScreen';
 import { FeedbackProvider } from './ui/feedback';
+import { AppBackground } from './ui/AppBackground';
 import { ThemeSync } from './ui/ThemeSync';
 import { WelcomeSplash } from './ui/WelcomeSplash';
 import { DumbbellIcon, HistoryIcon, ListIcon, TemplateIcon, UserIcon } from './ui/icons';
@@ -60,6 +61,7 @@ export function App() {
         <AuthProvider>
           <PersonGate welcome={<WelcomeSplash />}>
             <AuthGate>
+              <AppBackground />
               <div className="app">
                 <Routes>
                   <Route path="/" element={<HomeScreen />} />

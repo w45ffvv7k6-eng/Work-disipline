@@ -78,6 +78,7 @@ export function themeVariables(themeId: string | undefined, backgroundId?: strin
     '--bg': bg,
     '--bg-rgb': hexToRgb(bg),
     '--surface': lighten(bg, 0.05),
+    '--surface-rgb': hexToRgb(lighten(bg, 0.05)),
     '--surface-2': lighten(bg, 0.09),
     '--surface-3': lighten(bg, 0.14),
     '--border': lighten(bg, 0.16),

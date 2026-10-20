@@ -4,6 +4,7 @@
   /* Couleurs tirées de la photo d'accueil : noir chaud, bruns, lueur ambrée. */
   --bg: #0b0a09;
   --bg-rgb: 11, 10, 9;
+  --surface-rgb: 23, 19, 15;
   --surface: #17130f;
   --surface-2: #221c17;
   --surface-3: #30281f;
@@ -1028,24 +1029,11 @@ button:disabled {
 
 .hello {
   position: relative;
-  margin: calc(-16px - var(--safe-top)) -16px 16px;
-  padding: calc(28px + var(--safe-top)) 16px 22px;
-  min-height: 190px;
+  min-height: 150px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  background-size: cover;
-  background-position: center 38%;
-  overflow: hidden;
-}
-.hello::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(var(--bg-rgb), 0.2), rgba(var(--bg-rgb), 0.75) 70%, var(--bg));
-}
-.hello > * {
-  position: relative;
+  margin-bottom: 16px;
 }
 .hello .brand-mini {
   font-size: 0.75rem;
@@ -2298,4 +2286,69 @@ button:disabled {
   background: var(--accent);
   color: var(--accent-text);
   font-weight: 900;
+}
+
+/* ---------- Photo de la personne en fond de l'appli ---------- */
+
+.app-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.app-bg-photo {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center 40%;
+  animation: bg-zoom 30s ease-in-out infinite alternate;
+}
+/* Voile : la photo reste bien visible en haut, plus sombre derrière le contenu pour la lisibilité. */
+.app-bg-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(var(--bg-rgb), 0.05) 0%,
+    rgba(var(--bg-rgb), 0.35) 30%,
+    rgba(var(--bg-rgb), 0.5) 60%,
+    rgba(var(--bg-rgb), 0.7) 100%
+  );
+}
+@keyframes bg-zoom {
+  to {
+    transform: scale(1.06);
+  }
+}
+
+/* Le fond de la page laisse voir la photo (seule la racine garde la couleur de fond). */
+html {
+  background: var(--bg);
+}
+body {
+  background: transparent;
+}
+.app {
+  background: transparent;
+}
+
+/* Cartes légèrement transparentes : on devine la photo derrière. */
+.app .card,
+.app .card-button,
+.app .day,
+.app .stat,
+.app .plan-banner,
+.app .week-summary {
+  background-color: rgba(var(--surface-rgb), 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.app .day.rest,
+.app .day.missed {
+  opacity: 0.8;
+}
+.hello .screen-title,
+.hello .quote,
+.page-header {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
 }
