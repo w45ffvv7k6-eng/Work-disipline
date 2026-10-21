@@ -5,6 +5,7 @@ import { people } from '../../data/people';
 import { formatLongDate } from '../../domain/format';
 import { t, tn } from '../../i18n';
 import { useFeedback } from '../../ui/feedback';
+import { getCustomBackground, setCustomBackground } from '../../ui/splashPhotos';
 
 /** Au-delà, on rappelle de refaire une sauvegarde. */
 const REMIND_AFTER_DAYS = 14;
@@ -76,7 +77,13 @@ export function BackupSection() {
       const person = people.active();
       const backup: BackupFile = {
         ...(await exportAll(db)),
-        person: { name: person?.name, photo: person?.photo, avatar: person?.avatar, lang: person?.lang },
+        person: {
+          name: person?.name,
+          photo: person?.photo,
+          avatar: person?.avatar,
+          lang: person?.lang,
+          background: getCustomBackground() ?? undefined,
+        },
       };
       const now = new Date();
       const file = new File([JSON.stringify(backup)], fileName(person?.name, now), { type: 'application/json' });
@@ -122,6 +129,7 @@ export function BackupSection() {
         if (backup.person.avatar) people.setAvatar(id, backup.person.avatar);
         if (backup.person.photo) people.setPhoto(id, backup.person.photo);
         if (backup.person.lang) people.setLang(id, backup.person.lang);
+        if (backup.person.background) setCustomBackground(backup.person.background, id);
       }
       toast(t('Sauvegarde restaurée ✅'));
       // Redémarrage pour tout réafficher (programme, couleurs, langue…).

@@ -133,6 +133,7 @@ export function LineChart({
   fallbackMax,
   title,
   empty,
+  single,
 }: {
   points: Point[];
   format: (v: number) => string;
@@ -140,6 +141,8 @@ export function LineChart({
   fallbackMax: number;
   title: string;
   empty: string;
+  /** Texte affiché sous le graphique quand il n'y a encore qu'un seul point. */
+  single?: string;
 }) {
   const [selected, setSelected] = useState(points.length - 1);
   const values = points.map((p) => p.value);
@@ -197,6 +200,7 @@ export function LineChart({
           </>
         )}
       </Frame>
+      {points.length === 1 && single && <p className="chart-hint">{single}</p>}
     </div>
   );
 }

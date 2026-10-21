@@ -1,12 +1,13 @@
 import { useEffect, useMemo } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
-import { formatDuration, formatKg } from '../../domain/format';
-import { formatRecord } from '../../domain/records';
+import { formatDuration, formatKg, formatLastTime, formatVolume } from '../../domain/format';
+import { formatRecord, formatRecordValue } from '../../domain/records';
+import { compareToLast, percentChange } from '../../domain/stats';
 import { formatPace, paceSecPerKm } from '../../domain/cardio';
 import { summarizeWorkout } from '../../domain/summary';
 import { haptic } from '../../ui/feedback';
-import { t } from '../../i18n';
+import { t, tn } from '../../i18n';
 
 /** Confettis aux couleurs du thème choisi (variables CSS), avec du blanc et du doré. */
 const CONFETTI_COLORS = ['var(--accent)', 'var(--accent-2)', '#ffd166', '#f6f0e8', 'var(--accent)', 'var(--accent-2)'];
@@ -17,6 +18,7 @@ export function WorkoutSummaryScreen() {
   const navigate = useNavigate();
   const { workouts } = useRepositories();
   const detail = useSubscribable(() => workouts.watchDetail(id), [id]);
+  const history = useSubscribable(() => workouts.watchHistory(), []);
 
   // Confettis générés une fois (positions et délais aléatoires).
   const confetti = useMemo(
@@ -33,7 +35,7 @@ export function WorkoutSummaryScreen() {
 
   useEffect(() => haptic([40, 60, 40, 60, 120]), []);
 
-  if (detail === undefined) return null;
+  if (detail === undefined || !history) return null;
   if (detail === null) return <Navigate to="/" replace />;
 
   const { workout, exercises } = detail;
@@ -46,6 +48,17 @@ export function WorkoutSummaryScreen() {
       recordSetIds: new Set(e.sets.filter((s) => e.records.has(s.id)).map((s) => s.id)),
     })),
   );
+  // Exercices avec au moins une série validée (hors échauffement).
+  const done = exercises.filter((e) => e.sets.some((s) => s.completed && !s.isWarmup));
+  const firstEver = history.length <= 1;
+  // Comparaison avec la dernière fois qu'on a fait la même séance.
+  const previous = history.find(
+    (h) =>
+      h.workout.id !== workout.id &&
+      h.workout.startedAt < workout.startedAt &&
+      (workout.templateId ? h.workout.templateId === workout.templateId : h.workout.name === workout.name),
+  );
+  const volumeChange = summary.volumeKg > 0 ? percentChange(summary.volumeKg, previous?.summary.volumeKg) : null;
   const records = exercises.flatMap((e) =>
     e.sets.flatMap((s) =>
       (e.records.get(s.id) ?? []).map((hit) => ({ exercise: t(e.exercise.name), hit, setId: s.id })),
@@ -75,6 +88,22 @@ export function WorkoutSummaryScreen() {
           {t('Bravo, séance terminée !')}
         </h1>
         <p className="muted">{t(workout.name)}</p>
+        {records.length > 0 ? (
+          <div className="bravo-highlight">
+            🏆 {tn(records.length, '{n} nouveau record !', '{n} nouveaux records !')}
+          </div>
+        ) : firstEver ? (
+          <div className="bravo-highlight">🎉 {t('Première séance enregistrée ! Ce sont tes records de départ.')}</div>
+        ) : null}
+        {volumeChange !== null && (
+          <p className="bravo-compare">
+            {t('Volume : {volume} ({change} par rapport à ta dernière séance « {name} »)', {
+              volume: formatVolume(summary.volumeKg),
+              change: `${volumeChange > 0 ? '+' : volumeChange < 0 ? '−' : '±'}${Math.abs(volumeChange)} %`,
+              name: t(workout.name),
+            })}
+          </p>
+        )}
       </div>
 
       <div className="stat-grid">
@@ -113,6 +142,35 @@ export function WorkoutSummaryScreen() {
             </>
           )}
         </div>
+      </div>
+
+      <h2 className="section-title">{t('Exercices ({n})', { n: done.length })}</h2>
+      <div className="card" style={{ padding: '4px 16px' }}>
+        {done.map((e) => {
+          const comparison = compareToLast(e.sets, e.lastTime, e.exercise.kind);
+          const text = formatLastTime(e.sets, e.exercise.kind);
+          return (
+            <div key={e.workoutExercise.id} className="bravo-exercise">
+              <div className="grow">
+                <div className="title">{t(e.exercise.name)}</div>
+                <div className="subtitle">{text}</div>
+              </div>
+              {comparison === null ? (
+                <span className="trend new">{t('1re fois')}</span>
+              ) : comparison.delta > 0 ? (
+                <span className="trend up">
+                  ↑ +{formatRecordValue({ type: comparison.metric, value: comparison.delta }, formatKg)}
+                </span>
+              ) : comparison.delta < 0 ? (
+                <span className="trend down">
+                  ↓ −{formatRecordValue({ type: comparison.metric, value: -comparison.delta }, formatKg)}
+                </span>
+              ) : (
+                <span className="trend same">= {t('comme la dernière fois')}</span>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {records.length > 0 && (

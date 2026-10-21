@@ -1,7 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { useRepositories, useSubscribable } from '../../data';
 import { bmi, bmiCategory, weightDelta } from '../../domain/body';
-import { formatKg } from '../../domain/format';
+import { formatKg, formatSigned } from '../../domain/format';
 import type { BodyCheck, Profile } from '../../domain/types';
 import { useFeedback } from '../../ui/feedback';
 import { Sheet } from '../../ui/Sheet';
@@ -11,12 +11,12 @@ import { InstallSection } from '../install/InstallSection';
 import { people } from '../../data/people';
 import { switchPerson } from '../people/PersonGate';
 import { PhotoChoice } from '../../ui/PhotoChoice';
-import { personPhoto } from '../../ui/splashPhotos';
+import { CUSTOM_PHOTO, personPhoto, setCustomBackground } from '../../ui/splashPhotos';
 import { PHOTO_CHANGED } from '../../ui/AppBackground';
-import { LanguageSection, SettingsSection } from '../settings/SettingsSection';
+import { SettingsSection } from '../settings/SettingsSection';
 import { UserIcon } from '../../ui/icons';
 import { PageHeader } from '../../ui/PageHeader';
-import { Avatar, photoToAvatar } from '../../ui/Avatar';
+import { Avatar, photoToAvatar, photoToBackground } from '../../ui/Avatar';
 import { locale, t } from '../../i18n';
 
 /** Le prénom du profil sert aussi dans la liste « Qui s'entraîne ? ». */
@@ -63,7 +63,7 @@ export function ProfileScreen() {
         />
         <PersonSection avatar={avatar} />
         <BackupSection />
-        <LanguageSection />
+        <SettingsSection />
       </div>
     );
   }
@@ -122,7 +122,7 @@ export function ProfileScreen() {
           <div
             className={`stat-value${totalDelta && totalDelta > 0 ? ' up' : totalDelta && totalDelta < 0 ? ' down' : ''}`}
           >
-            {totalDelta !== null ? `${totalDelta > 0 ? '+' : ''}${formatKg(totalDelta)} kg` : '—'}
+            {totalDelta !== null ? `${formatSigned(totalDelta)} kg` : '—'}
           </div>
           <div className="stat-hint">
             {first && totalDelta !== null ? t('depuis le {date}', { date: dateFormat.format(first.date) }) : ''}
@@ -149,8 +149,7 @@ export function ProfileScreen() {
                   </div>
                   {delta !== null && (
                     <span className={`delta${delta > 0 ? ' up' : delta < 0 ? ' down' : ''}`}>
-                      {delta > 0 ? '+' : ''}
-                      {formatKg(delta)} kg
+                      {formatSigned(delta)} kg
                     </span>
                   )}
                 </button>
@@ -371,7 +370,14 @@ function PhotoPicker({
 
 /** Photo de profil, photo d'accueil et changement de personne (plusieurs personnes peuvent utiliser l'appli sur le même téléphone). */
 function PersonSection({ avatar }: { avatar: AvatarState }) {
+  const { toast } = useFeedback();
   const [photo, setPhoto] = useState(personPhoto());
+  const choose = (file: string) => {
+    const id = people.activeId();
+    if (id) people.setPhoto(id, file);
+    setPhoto(file);
+    window.dispatchEvent(new Event(PHOTO_CHANGED));
+  };
   return (
     <>
       <h2 className="section-title">{t('Ma photo')}</h2>
@@ -389,15 +395,26 @@ function PersonSection({ avatar }: { avatar: AvatarState }) {
         </div>
       </div>
 
-      <h2 className="section-title">{t('Photo d’accueil')}</h2>
+      <h2 className="section-title">{t('Photo de fond')}</h2>
       <div className="card">
+        <p className="muted small" style={{ marginTop: 0 }}>
+          {t('Elle s’affiche sur l’écran de bienvenue et derrière toute l’appli. Choisis-en une ou mets la tienne.')}
+        </p>
         <PhotoChoice
           value={photo}
-          onChange={(file) => {
-            const id = people.activeId();
-            if (id) people.setPhoto(id, file);
-            setPhoto(file);
-            window.dispatchEvent(new Event(PHOTO_CHANGED));
+          onChange={choose}
+          onCustomFile={async (file) => {
+            try {
+              const image = await photoToBackground(file);
+              if (!setCustomBackground(image)) {
+                toast(t('Pas assez de place sur le téléphone pour cette photo.'));
+                return;
+              }
+              choose(CUSTOM_PHOTO);
+              toast(t('Photo de fond enregistrée ✅'));
+            } catch {
+              toast(t('Cette photo n’a pas pu être ouverte.'));
+            }
           }}
         />
       </div>

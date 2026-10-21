@@ -286,7 +286,6 @@ const dictionary: Dictionary = {
   'On n’aime pas, mais on n’a pas le choix !': 'Ma jecli, laakiin waa qasab!',
   'Options de l’exercice': 'Doorashooyinka jimicsiga',
   'Options de la séance': 'Doorashooyinka tababarka',
-  'Organise ta semaine': 'Habee toddobaadkaaga',
   'Ouvre l’appli dans <b>Chrome</b>.': 'Ka fur app-ka <b>Chrome</b>.',
   'Ouvre l’appli dans <b>Safari</b>.': 'Ka fur app-ka <b>Safari</b>.',
   'par jambe': 'lug kasta',

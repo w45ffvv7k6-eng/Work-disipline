@@ -121,3 +121,13 @@ describe('semaine organisée par l’utilisateur', () => {
     expect(weeklyGoal(plan)).toBe(2);
   });
 });
+
+describe('séance faite un autre jour que prévu', () => {
+  it('compte pour le jour où elle était prévue', () => {
+    const early = { ...workout('tpl-haut-b', WED), plannedFor: new Date(2026, 9, 15).getTime() };
+    const plan = weekPlan(mass, massTpl, [early], WED);
+    expect(plan[2].done).toHaveLength(0); // mercredi
+    expect(plan[3].done.map((w) => w.id)).toEqual([early.id]); // jeudi
+    expect(plan[3].planned).toBeUndefined();
+  });
+});

@@ -77,7 +77,11 @@ export function weekPlan(
     const date = addDays(monday, i);
     const weekday = i + 1;
     const end = addDays(date, 1).getTime();
-    const done = finishedWorkouts.filter((w) => w.startedAt >= date.getTime() && w.startedAt < end);
+    // Une séance faite en avance (ou en retard) compte pour le jour où elle était prévue.
+    const done = finishedWorkouts.filter((w) => {
+      const day = w.plannedFor ?? w.startedAt;
+      return day >= date.getTime() && day < end;
+    });
     const isPast = date < today;
 
     let scheduled: Template | undefined;

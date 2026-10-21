@@ -6,6 +6,7 @@ import { ALARM_SOUNDS, playAlarm, unlockAudio } from '../../ui/alarm';
 import { haptic } from '../../ui/feedback';
 import { BACKGROUNDS, backgroundFor, THEMES } from '../../ui/theme';
 import { RestPickerSheet } from '../timer/RestPickerSheet';
+import { Sheet } from '../../ui/Sheet';
 import { k, t } from '../../i18n';
 import { LANGUAGES, useLanguage } from '../../i18n/react';
 
@@ -200,30 +201,46 @@ function ToggleRow({ label, hint, on, onClick }: { label: string; hint?: string;
 /** Choix de la langue de l'appli (enregistré pour la personne). */
 export function LanguageSection() {
   const { lang, change } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const current = LANGUAGES.find((l) => l.id === lang) ?? LANGUAGES[0];
   return (
     <>
       <h2 className="section-title">{t('Langue')}</h2>
       <div className="card">
-        <div className="lang-grid">
-          {LANGUAGES.map((l) => (
-            <button
-              key={l.id}
-              className={`lang-choice${lang === l.id ? ' selected' : ''}`}
-              onClick={() => {
-                haptic();
-                change(l.id);
-              }}
-              aria-pressed={lang === l.id}
-              lang={l.id}
-            >
-              <span className="lang-flag" aria-hidden="true">
-                {l.flag}
-              </span>
-              {l.name}
-            </button>
-          ))}
-        </div>
+        <button className="toggle-row" onClick={() => setOpen(true)}>
+          <span className="lang-current">
+            <span className="lang-flag" aria-hidden="true">
+              {current.flag}
+            </span>
+            {current.name}
+          </span>
+          <span className="value-pill">{t('Changer')}</span>
+        </button>
       </div>
+      {open && (
+        <Sheet onClose={() => setOpen(false)} title={t('Langue')}>
+          <div className="lang-grid">
+            {LANGUAGES.map((l) => (
+              <button
+                key={l.id}
+                className={`lang-choice${lang === l.id ? ' selected' : ''}`}
+                onClick={() => {
+                  haptic();
+                  setOpen(false);
+                  change(l.id);
+                }}
+                aria-pressed={lang === l.id}
+                lang={l.id}
+              >
+                <span className="lang-flag" aria-hidden="true">
+                  {l.flag}
+                </span>
+                {l.name}
+              </button>
+            ))}
+          </div>
+        </Sheet>
+      )}
     </>
   );
 }

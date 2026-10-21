@@ -110,6 +110,7 @@ export function ExerciseDetailScreen() {
           formatDate={formatShortDate}
           fallbackMax={exercise.kind === 'weighted' ? 60 : 15}
           empty={t('Fais cet exercice une première fois pour voir ta courbe.')}
+          single={t('1 séance pour l’instant : reviens la prochaine fois pour voir ta courbe.')}
         />
 
         <h2 className="section-title">{t('Dernières séances')}</h2>

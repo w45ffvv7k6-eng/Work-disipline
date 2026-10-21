@@ -26,7 +26,9 @@ function parseNumber(text: string): number {
 const roundTo = (value: number, digits = 2) => Math.round(value * 10 ** digits) / 10 ** digits;
 
 export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelete }: Props) {
-  const [weight, setWeight] = useState(formatKg(set.weightKg));
+  // Charge encore inconnue (première fois) : champ vide à remplir.
+  const [weight, setWeight] = useState(kind === 'weighted' && set.weightKg <= 0 ? '' : formatKg(set.weightKg));
+  const missingWeight = kind === 'weighted' && parseNumber(weight) <= 0;
   const [reps, setReps] = useState(String(set.reps));
   const [isWarmup, setIsWarmup] = useState(set.isWarmup);
   const repStep = kind === 'duration' ? 5 : 1;
@@ -99,6 +101,7 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
           <div className="stepper-label">
             {kind === 'bodyweight' ? t('Lest (kg) — 0 si sans lest') : t('Charge (kg)')}
           </div>
+          {missingWeight && <p className="muted small weight-hint">{t('Indique la charge que tu utilises.')}</p>}
           <div className="stepper-row">
             <button
               className="stepper-btn"
@@ -113,6 +116,7 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
               onFocus={(e) => e.target.select()}
+              placeholder="?"
               aria-label={t('Charge en kg')}
             />
             <button
@@ -165,7 +169,7 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
 
       <div className="stack" style={{ marginTop: 16 }}>
         {!set.completed && (
-          <button className="btn btn-primary btn-block btn-big" onClick={() => save(true)}>
+          <button className="btn btn-primary btn-block btn-big" onClick={() => save(true)} disabled={missingWeight}>
             {t('Valider la série')}
           </button>
         )}

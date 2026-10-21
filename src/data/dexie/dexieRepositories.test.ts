@@ -151,4 +151,35 @@ describe('dépôt Dexie des séances', () => {
     expect(summaries['ex-dev-couche']).toMatchObject({ sessionCount: 2, best: { maxWeight: 62.5 } });
     expect(summaries['ex-squat']).toBeUndefined();
   });
+
+  it('changer la charge d’une série la recopie sur les séries suivantes non validées', async () => {
+    const w = await repos.workouts.start('Recopie');
+    const we = await repos.workouts.addExercise(w.id, 'ex-squat', 3);
+    const [first, second, third] = await db.sets.where('workoutExerciseId').equals(we.id).sortBy('order');
+    expect(first.weightKg).toBe(0);
+    await repos.workouts.updateSet(first.id, { weightKg: 60 });
+    expect((await db.sets.get(second.id))?.weightKg).toBe(60);
+    expect((await db.sets.get(third.id))?.weightKg).toBe(60);
+    await repos.workouts.updateSet(third.id, { weightKg: 50 });
+    expect((await db.sets.get(second.id))?.weightKg).toBe(60);
+  });
+
+  it('une seule pesée par jour : la nouvelle remplace la précédente', async () => {
+    const day = new Date(2026, 9, 21, 8).getTime();
+    await repos.profile.addCheck({ date: day, weightKg: 75 });
+    await repos.profile.addCheck({ date: day + 3_600_000, weightKg: 74.3 });
+    await repos.profile.addCheck({ date: day + 86_400_000, weightKg: 74 });
+    const checks = await first(repos.profile.watchChecks());
+    expect(checks.map((c) => c.weightKg)).toEqual([74, 74.3]);
+  });
+
+  it('une séance faite en avance garde son jour prévu, et l’historique compte les records', async () => {
+    const thursday = new Date(2026, 9, 22).getTime();
+    const w = await repos.workouts.startFromTemplate('tpl-haut-b', thursday);
+    expect((await db.workouts.get(w.id))?.plannedFor).toBe(thursday);
+    await doWorkout([[60, 8]]);
+    await doWorkout([[65, 8]]);
+    const history = await first(repos.workouts.watchHistory());
+    expect(history[0].summary.recordCount).toBe(1);
+  });
 });

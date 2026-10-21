@@ -57,7 +57,9 @@ export function isRtl(): boolean {
  * t('{n} séries', { n: 3 }) → "3 séries" / "3 sets".
  */
 export function t(text: string, params?: Record<string, string | number>): string {
-  const translated = current === 'fr' ? text : (DICTIONARIES[current][text] ?? text);
+  const raw = current === 'fr' ? text : (DICTIONARIES[current][text] ?? text);
+  // Typographie française : espace insécable avant ? ! : ; (jamais seuls en début de ligne).
+  const translated = current === 'fr' ? raw.replace(/ ([?!:;])/g, '\u00a0$1') : raw;
   if (!params) return translated;
   return translated.replace(/\{(\w+)\}/g, (all, key: string) => (key in params ? String(params[key]) : all));
 }

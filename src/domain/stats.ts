@@ -62,3 +62,55 @@ export function exerciseProgress(
     .filter((p) => p.value > 0)
     .sort((a, b) => a.date - b.date);
 }
+
+/**
+ * Semaines d'affilée avec au moins une séance, en remontant depuis la semaine en cours.
+ * La semaine en cours ne casse pas la série tant qu'elle n'est pas finie.
+ */
+export function weekStreak(startedAts: number[], now: Date): number {
+  const weeks = new Set(startedAts.map((at) => mondayOf(new Date(at)).getTime()));
+  const monday = mondayOf(now);
+  const weekBefore = (date: Date, n: number) => new Date(date.getFullYear(), date.getMonth(), date.getDate() - 7 * n);
+  let n = weeks.has(monday.getTime()) ? 0 : 1;
+  let streak = 0;
+  while (weeks.has(weekBefore(monday, n).getTime())) {
+    streak++;
+    n++;
+  }
+  return streak;
+}
+
+/**
+ * Durée estimée d'une séance en minutes (arrondie à 5) : ~45 s par série + le repos.
+ * null si elle contient du cardio (durée trop variable).
+ */
+export function estimatedMinutes(
+  exercises: { plannedSets: number; restSec?: number; kind?: string }[],
+  defaultRestSec: number,
+): number | null {
+  if (exercises.length === 0 || exercises.some((e) => e.kind === 'cardio')) return null;
+  const seconds = exercises.reduce((n, e) => n + e.plannedSets * (45 + (e.restSec ?? defaultRestSec)), 0);
+  return Math.max(5, Math.round(seconds / 300) * 5);
+}
+
+/**
+ * Progression d'un exercice par rapport à la dernière fois, sur sa mesure principale
+ * (charge max, répétitions max…). null si c'est la première fois ou rien de validé.
+ */
+export function compareToLast(
+  current: RecordInput[],
+  last: RecordInput[],
+  kind: ExerciseKind,
+): { metric: RecordType; delta: number } | null {
+  const metric = progressMetric(kind);
+  const now = bestValues(current, kind)[metric];
+  const before = bestValues(last, kind)[metric];
+  if (now === undefined || before === undefined) return null;
+  return { metric, delta: Math.round((now - before) * 100) / 100 };
+}
+
+/** Évolution en % (arrondie), null si pas de valeur de comparaison. */
+export function percentChange(current: number, previous: number | undefined): number | null {
+  if (!previous || previous <= 0) return null;
+  return Math.round(((current - previous) / previous) * 100);
+}

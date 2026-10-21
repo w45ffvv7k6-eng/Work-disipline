@@ -18,6 +18,8 @@ import { t } from '../../i18n';
 interface Props {
   detail: WorkoutExerciseDetail;
   settings: Settings;
+  /** Mini-guide de la première séance : élément à mettre en avant sur la 1re série. */
+  coach?: 'values' | 'check' | null;
 }
 
 export function recordMessage(hits: RecordHit[]): string {
@@ -25,7 +27,7 @@ export function recordMessage(hits: RecordHit[]): string {
   return `🏆 ${t('Nouveau record !')} ${parts.join(' · ')}`;
 }
 
-export function ExerciseCard({ detail, settings }: Props) {
+export function ExerciseCard({ detail, settings, coach = null }: Props) {
   const { workouts, exercises, timer } = useRepositories();
   const { toast, confirm } = useFeedback();
   const { exercise, sets, lastTime, records, workoutExercise } = detail;
@@ -43,6 +45,11 @@ export function ExerciseCard({ detail, settings }: Props) {
   let workingIndex = 0;
 
   const toggle = async (set: WorkoutSet) => {
+    // Première fois sur un exercice avec charge : on demande d'abord la charge (« ? kg »).
+    if (!set.completed && exercise.kind === 'weighted' && set.weightKg <= 0) {
+      setEditing(set);
+      return;
+    }
     haptic();
     // Le tap débloque le son sur iPhone pour la fin du repos.
     unlockAudio();
@@ -102,7 +109,7 @@ export function ExerciseCard({ detail, settings }: Props) {
         )}
       </p>
 
-      {sets.map((set) => {
+      {sets.map((set, setIndex) => {
         const label = set.isWarmup ? t('É') : String(++workingIndex);
         const hits = records.get(set.id);
         return (
@@ -113,12 +120,16 @@ export function ExerciseCard({ detail, settings }: Props) {
             >
               {label}
             </div>
-            <button className="set-values" onClick={() => setEditing(set)} aria-label={t('Modifier la série')}>
+            <button
+              className={`set-values${coach === 'values' && setIndex === 0 ? ' coach-target' : ''}`}
+              onClick={() => setEditing(set)}
+              aria-label={t('Modifier la série')}
+            >
               <SetValues set={set} kind={exercise.kind} />
               {hits && <span className="pr-badge">🏆 PR</span>}
             </button>
             <button
-              className="set-check"
+              className={`set-check${coach === 'check' && setIndex === 0 ? ' coach-target' : ''}`}
               onClick={() => toggle(set)}
               aria-label={set.completed ? t('Annuler la validation') : t('Valider la série')}
               aria-pressed={set.completed}
@@ -142,7 +153,7 @@ export function ExerciseCard({ detail, settings }: Props) {
           onSave={async (values, complete) => {
             setEditing(null);
             await workouts.updateSet(editing.id, values);
-            if (complete && !editing.completed) await toggle(editing);
+            if (complete && !editing.completed) await toggle({ ...editing, ...values });
           }}
           onDelete={async () => {
             setEditing(null);
@@ -220,6 +231,10 @@ export function SetValues({ set, kind }: { set: WorkoutSet; kind: WorkoutExercis
         ) : (
           <span className="unit">{t('PDC')}</span>
         )
+      ) : set.weightKg <= 0 && !set.completed ? (
+        <span className="unknown">
+          ? <span className="unit">kg</span>
+        </span>
       ) : (
         <span>
           {formatKg(set.weightKg)} <span className="unit">kg</span>

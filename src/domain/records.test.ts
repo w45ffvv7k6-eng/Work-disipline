@@ -69,8 +69,8 @@ describe('records de course', () => {
   });
 
   it('affiche la meilleure allure en minutes par kilomètre', () => {
-    expect(formatRecord({ type: 'bestSpeed', value: 10.5 }, String)).toBe('Meilleure allure : 5:43 /km');
-    expect(formatRecord({ type: 'maxDistance', value: 8 }, String)).toBe('Distance max : 8 km');
+    expect(formatRecord({ type: 'bestSpeed', value: 10.5 }, String)).toBe('Meilleure allure\u00a0: 5:43 /km');
+    expect(formatRecord({ type: 'maxDistance', value: 8 }, String)).toBe('Distance max\u00a0: 8 km');
   });
 });
 

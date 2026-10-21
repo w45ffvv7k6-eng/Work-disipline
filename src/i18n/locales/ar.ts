@@ -283,7 +283,6 @@ const dictionary: Dictionary = {
   'On n’aime pas, mais on n’a pas le choix !': 'لا نحبه، لكن لا خيار لنا!',
   'Options de l’exercice': 'خيارات التمرين',
   'Options de la séance': 'خيارات الحصة',
-  'Organise ta semaine': 'نظّم أسبوعك',
   'Ouvre l’appli dans <b>Chrome</b>.': 'افتح التطبيق في <b>Chrome</b>.',
   'Ouvre l’appli dans <b>Safari</b>.': 'افتح التطبيق في <b>Safari</b>.',
   'par jambe': 'لكل رجل',

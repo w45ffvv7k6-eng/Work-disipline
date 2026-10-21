@@ -60,6 +60,8 @@ export interface Workout {
   endedAt?: number;
   notes: string;
   templateId?: string;
+  /** Jour prévu (minuit) quand la séance d'un autre jour est faite en avance ou en retard : elle compte pour ce jour-là. */
+  plannedFor?: number;
   updatedAt: number;
   deletedAt?: number;
 }

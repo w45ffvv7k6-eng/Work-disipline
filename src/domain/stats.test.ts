@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest';
-import { exerciseProgress, mondayOf, progressMetric, weeklyTotals } from './stats';
+import {
+  compareToLast,
+  estimatedMinutes,
+  exerciseProgress,
+  percentChange,
+  mondayOf,
+  progressMetric,
+  weekStreak,
+  weeklyTotals,
+} from './stats';
 
 const set = (workoutId: string, weightKg: number, reps: number, extra = {}) => ({
   id: `${workoutId}-${weightKg}-${reps}`,
@@ -62,5 +71,51 @@ describe('statistiques', () => {
     expect(progressMetric('bodyweight')).toBe('maxReps');
     expect(progressMetric('duration')).toBe('maxDuration');
     expect(progressMetric('cardio')).toBe('maxDistance');
+  });
+});
+
+describe('série de semaines et durée estimée', () => {
+  const at = (y: number, m: number, d: number) => new Date(y, m, d, 18).getTime();
+  const now = new Date(2026, 9, 21);
+
+  it('compte les semaines d’affilée, sans casser la série pendant la semaine en cours', () => {
+    expect(weekStreak([], now)).toBe(0);
+    expect(weekStreak([at(2026, 9, 13), at(2026, 9, 6)], now)).toBe(2);
+    expect(weekStreak([at(2026, 9, 20), at(2026, 9, 13), at(2026, 9, 6)], now)).toBe(3);
+    expect(weekStreak([at(2026, 9, 20), at(2026, 8, 29)], now)).toBe(1);
+  });
+
+  it('estime la durée d’une séance', () => {
+    // 4 séries × (45 s + 150 s) + 3 × (45 + 90) = 780 + 405 = 1185 s ≈ 20 min
+    expect(estimatedMinutes([{ plannedSets: 4, restSec: 150 }, { plannedSets: 3 }], 90)).toBe(20);
+    expect(estimatedMinutes([{ plannedSets: 1, kind: 'cardio' }], 90)).toBeNull();
+  });
+});
+
+describe('comparaison avec la dernière fois', () => {
+  const s = (weightKg: number, reps: number, extra = {}) => ({
+    id: `${weightKg}-${reps}`,
+    workoutId: 'w',
+    weightKg,
+    reps,
+    isWarmup: false,
+    completed: true,
+    ...extra,
+  });
+
+  it('donne l’écart de charge max, ou rien la première fois', () => {
+    expect(compareToLast([s(62.5, 8)], [s(60, 8), s(57.5, 8)], 'weighted')).toEqual({
+      metric: 'maxWeight',
+      delta: 2.5,
+    });
+    expect(compareToLast([s(60, 8)], [s(60, 10)], 'weighted')).toEqual({ metric: 'maxWeight', delta: 0 });
+    expect(compareToLast([s(60, 8)], [], 'weighted')).toBeNull();
+    expect(compareToLast([s(0, 12)], [s(0, 10)], 'bodyweight')).toEqual({ metric: 'maxReps', delta: 2 });
+  });
+
+  it('calcule une évolution en %', () => {
+    expect(percentChange(3240, 3000)).toBe(8);
+    expect(percentChange(2700, 3000)).toBe(-10);
+    expect(percentChange(100, undefined)).toBeNull();
   });
 });

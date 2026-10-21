@@ -285,7 +285,6 @@ const dictionary: Dictionary = {
   'On n’aime pas, mais on n’a pas le choix !': 'We don’t love it, but we’ve got no choice!',
   'Options de l’exercice': 'Exercise options',
   'Options de la séance': 'Workout options',
-  'Organise ta semaine': 'Plan your week',
   'Ouvre l’appli dans <b>Chrome</b>.': 'Open the app in <b>Chrome</b>.',
   'Ouvre l’appli dans <b>Safari</b>.': 'Open the app in <b>Safari</b>.',
   'par jambe': 'per leg',

@@ -1,6 +1,6 @@
 import { liveQuery } from 'dexie';
 import { newId } from '../../domain/id';
-import { prefillValues, workingSets } from '../../domain/prefill';
+import { prefillValues, propagateToNextSets, workingSets } from '../../domain/prefill';
 import { bestValues, computeRecords, type RecordHit } from '../../domain/records';
 import { summarizeWorkout } from '../../domain/summary';
 import { adjustTimer } from '../../domain/timer';
@@ -174,6 +174,15 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
           db.exercises.toArray(),
         ]);
         const kinds = new Map(list.map((e) => [e.id, e.kind]));
+        // Records battus : calculés exercice par exercice sur toutes les séances terminées.
+        const recordSetIds = new Set<string>();
+        for (const exerciseId of new Set(sets.map((s) => s.exerciseId))) {
+          const hits = computeRecords(
+            sets.filter((s) => s.exerciseId === exerciseId),
+            kinds.get(exerciseId) ?? 'weighted',
+          );
+          for (const id of hits.keys()) recordSetIds.add(id);
+        }
         return finished.map((workout) => {
           const own = sets.filter((s) => s.workoutId === workout.id);
           const exerciseIds = [...new Set(own.map((s) => s.exerciseId))];
@@ -185,7 +194,7 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
               exerciseIds.map((id) => ({
                 kind: kinds.get(id) ?? 'weighted',
                 sets: own.filter((s) => s.exerciseId === id),
-                recordSetIds: new Set<string>(),
+                recordSetIds,
               })),
             ),
           };
@@ -200,16 +209,16 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
       });
     },
 
-    async startFromTemplate(templateId) {
+    async startFromTemplate(templateId, plannedFor) {
       const template = await db.templates.get(templateId);
       if (!template) throw new Error('Modèle introuvable');
       const workout = await workouts.start(template.name);
-      await db.workouts.update(workout.id, { templateId });
+      await db.workouts.update(workout.id, { templateId, ...(plannedFor !== undefined ? { plannedFor } : {}) });
       for (const { exerciseId, plannedSets, ...target } of template.exercises) {
         if (!(await db.exercises.get(exerciseId))) continue;
         await workouts.addExercise(workout.id, exerciseId, plannedSets, target);
       }
-      return { ...workout, templateId };
+      return { ...workout, templateId, ...(plannedFor !== undefined ? { plannedFor } : {}) };
     },
 
     async start(name) {
@@ -304,7 +313,16 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
     },
 
     async updateSet(setId, patch) {
-      await db.sets.update(setId, { ...patch, updatedAt: now() });
+      const set = await db.sets.get(setId);
+      if (!set) return;
+      const siblings = await db.sets.where('workoutExerciseId').equals(set.workoutExerciseId).toArray();
+      const t = now();
+      await db.transaction('rw', db.sets, async () => {
+        for (const next of propagateToNextSets(siblings, setId, patch)) {
+          await db.sets.update(next.id, { ...next.patch, updatedAt: t });
+        }
+        await db.sets.update(setId, { ...patch, updatedAt: t });
+      });
     },
 
     async toggleSetCompleted(setId): Promise<RecordHit[]> {
@@ -441,7 +459,14 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
     watchChecks: () =>
       liveQuery(async () => (await db.bodyChecks.orderBy('date').reverse().toArray()).filter((c) => !c.deletedAt)),
     async addCheck(data) {
-      await db.bodyChecks.add({ ...data, id: newId(), updatedAt: now() });
+      // Une seule pesée par jour : une nouvelle pesée le même jour remplace la précédente.
+      const day = new Date(data.date);
+      const start = new Date(day.getFullYear(), day.getMonth(), day.getDate()).getTime();
+      const end = start + 86_400_000;
+      const t = now();
+      const sameDay = (await db.bodyChecks.toArray()).filter((c) => !c.deletedAt && c.date >= start && c.date < end);
+      for (const c of sameDay) await db.bodyChecks.update(c.id, { deletedAt: t, updatedAt: t });
+      await db.bodyChecks.add({ ...data, id: newId(), updatedAt: t });
     },
     async deleteCheck(id) {
       await db.bodyChecks.update(id, { deletedAt: now(), updatedAt: now() });

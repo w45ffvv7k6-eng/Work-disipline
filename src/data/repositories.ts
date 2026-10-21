@@ -79,7 +79,7 @@ export interface WorkoutRepository {
   deleteFinished(workoutId: string): Promise<void>;
   start(name: string): Promise<Workout>;
   /** Démarre une séance préparée à partir d'un modèle (exercices, séries prévues, objectifs, repos). */
-  startFromTemplate(templateId: string): Promise<Workout>;
+  startFromTemplate(templateId: string, plannedFor?: number): Promise<Workout>;
   rename(workoutId: string, name: string): Promise<void>;
   updateNotes(workoutId: string, notes: string): Promise<void>;
   /** Termine la séance (les séries non validées sont supprimées). */
@@ -107,6 +107,10 @@ export interface WorkoutRepository {
     setId: string,
     patch: Partial<Pick<WorkoutSet, 'weightKg' | 'reps' | 'distanceKm' | 'isWarmup'>>,
   ): Promise<void>;
+  /**
+   * Modifie une série. Les séries suivantes non validées qui avaient les mêmes valeurs
+   * reçoivent aussi la nouvelle charge / les nouvelles répétitions.
+   */
   /** Valide / dévalide une série. Renvoie les records battus si la série vient d'être validée. */
   toggleSetCompleted(setId: string): Promise<RecordHit[]>;
   deleteSet(setId: string): Promise<void>;

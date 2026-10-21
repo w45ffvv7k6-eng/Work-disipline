@@ -283,7 +283,6 @@ const dictionary: Dictionary = {
   'On n’aime pas, mais on n’a pas le choix !': 'Sevmiyoruz ama başka çaremiz yok!',
   'Options de l’exercice': 'Egzersiz seçenekleri',
   'Options de la séance': 'Antrenman seçenekleri',
-  'Organise ta semaine': 'Haftanı planla',
   'Ouvre l’appli dans <b>Chrome</b>.': 'Uygulamayı <b>Chrome</b>’da aç.',
   'Ouvre l’appli dans <b>Safari</b>.': 'Uygulamayı <b>Safari</b>’de aç.',
   'par jambe': 'bacak başına',

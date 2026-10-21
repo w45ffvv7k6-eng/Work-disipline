@@ -14,7 +14,8 @@ interface SetLike extends SetValues {
 }
 
 export const DEFAULT_VALUES: Record<ExerciseKind, SetValues> = {
-  weighted: { weightKg: 20, reps: 10 },
+  // Charge inconnue la première fois (0 = « ? kg ») : la personne saisit la sienne.
+  weighted: { weightKg: 0, reps: 10 },
   bodyweight: { weightKg: 0, reps: 10 },
   duration: { weightKg: 0, reps: 30 },
   cardio: { weightKg: 0, reps: 1800, distanceKm: 5 },
@@ -59,4 +60,41 @@ function pick(s: SetValues): SetValues {
   return s.distanceKm !== undefined
     ? { weightKg: s.weightKg, reps: s.reps, distanceKm: s.distanceKm }
     : { weightKg: s.weightKg, reps: s.reps };
+}
+
+interface EditableSet extends SetValues {
+  id: string;
+  workoutExerciseId: string;
+  order: number;
+  isWarmup: boolean;
+  completed: boolean;
+}
+
+/**
+ * Quand on modifie une série, les séries suivantes du même exercice qui ne sont pas encore validées
+ * et qui avaient les mêmes valeurs (non retouchées) reçoivent la nouvelle valeur.
+ * Ex. : on passe la série 1 de 20 à 40 kg → les séries 2, 3, 4 (encore à 20 kg) passent à 40 kg.
+ * Les échauffements ne sont ni modifiés ni recopiés.
+ */
+export function propagateToNextSets(
+  sets: EditableSet[],
+  editedId: string,
+  patch: Partial<SetValues>,
+): { id: string; patch: Partial<SetValues> }[] {
+  const edited = sets.find((s) => s.id === editedId);
+  if (!edited || edited.isWarmup) return [];
+  const fields = (['weightKg', 'reps', 'distanceKm'] as const).filter(
+    (f) => patch[f] !== undefined && patch[f] !== edited[f],
+  );
+  if (fields.length === 0) return [];
+  return sets
+    .filter(
+      (s) => s.workoutExerciseId === edited.workoutExerciseId && s.order > edited.order && !s.completed && !s.isWarmup,
+    )
+    .map((s) => {
+      const change: Partial<SetValues> = {};
+      for (const f of fields) if (s[f] === edited[f]) change[f] = patch[f];
+      return { id: s.id, patch: change };
+    })
+    .filter((c) => Object.keys(c.patch).length > 0);
 }

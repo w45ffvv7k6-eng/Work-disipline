@@ -131,3 +131,10 @@ export function formatLongDate(date: number | Date): string {
 export function formatVolume(kg: number): string {
   return kg >= 1000 ? `${formatKg(Math.round(kg / 100) / 10)} t` : `${formatKg(kg)} kg`;
 }
+
+/** Nombre avec son signe : "+1,2", "−0,7" (vrai signe moins), "0". */
+export function formatSigned(value: number): string {
+  if (value > 0) return `+${formatKg(value)}`;
+  if (value < 0) return `−${formatKg(-value)}`;
+  return formatKg(0);
+}

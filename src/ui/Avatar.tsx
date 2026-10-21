@@ -49,3 +49,33 @@ export function photoToAvatar(file: File): Promise<string> {
     img.src = url;
   });
 }
+
+/** Plus grand côté de la photo de fond enregistrée : nette en plein écran, légère à stocker. */
+const BACKGROUND_MAX_SIDE = 1440;
+
+/** Réduit une photo du téléphone pour le fond de l'appli et la convertit en JPEG (data URL). */
+export function photoToBackground(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, BACKGROUND_MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.naturalWidth * scale);
+      canvas.height = Math.round(img.naturalHeight * scale);
+      const ctx = canvas.getContext('2d');
+      URL.revokeObjectURL(url);
+      if (!ctx) {
+        reject(new Error('canvas'));
+        return;
+      }
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL('image/jpeg', 0.8));
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error('image'));
+    };
+    img.src = url;
+  });
+}

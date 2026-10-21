@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { formatLastTime } from './format';
-import { prefillValues } from './prefill';
+import { prefillValues, propagateToNextSets } from './prefill';
 
 const s = (order: number, weightKg: number, reps: number, extra = {}) => ({
   order,
@@ -38,12 +38,12 @@ describe('prefillValues', () => {
   });
 
   it('utilise des valeurs par défaut la première fois', () => {
-    expect(prefillValues([], [], 'weighted')).toEqual({ weightKg: 20, reps: 10 });
+    expect(prefillValues([], [], 'weighted')).toEqual({ weightKg: 0, reps: 10 });
     expect(prefillValues([], [], 'bodyweight')).toEqual({ weightKg: 0, reps: 10 });
   });
 
   it('première fois avec un objectif : part du bas de la fourchette', () => {
-    expect(prefillValues([], [], 'weighted', { repMin: 6 })).toEqual({ weightKg: 20, reps: 6 });
+    expect(prefillValues([], [], 'weighted', { repMin: 6 })).toEqual({ weightKg: 0, reps: 6 });
     expect(prefillValues([], [], 'duration', { repMin: 45 })).toEqual({ weightKg: 0, reps: 45 });
     expect(prefillValues(lastTime, [], 'weighted', { repMin: 6 })).toEqual({ weightKg: 60, reps: 10 });
   });
@@ -82,5 +82,46 @@ describe('formatLastTime', () => {
 
   it('renvoie null sans séries de travail', () => {
     expect(formatLastTime([s(0, 20, 10, { isWarmup: true })], 'weighted')).toBeNull();
+  });
+});
+
+describe('modification d’une série recopiée sur les suivantes', () => {
+  const set = (id: string, order: number, weightKg: number, reps: number, extra = {}) => ({
+    id,
+    workoutExerciseId: 'we',
+    order,
+    weightKg,
+    reps,
+    isWarmup: false,
+    completed: false,
+    ...extra,
+  });
+
+  it('recopie la nouvelle charge sur les séries suivantes non validées et non retouchées', () => {
+    const sets = [
+      set('w', 0, 10, 12, { isWarmup: true }),
+      set('a', 1, 20, 10),
+      set('b', 2, 20, 10),
+      set('c', 3, 25, 10),
+      set('d', 4, 20, 10, { completed: true }),
+      set('e', 5, 20, 10),
+    ];
+    expect(propagateToNextSets(sets, 'a', { weightKg: 40 })).toEqual([
+      { id: 'b', patch: { weightKg: 40 } },
+      { id: 'e', patch: { weightKg: 40 } },
+    ]);
+  });
+
+  it('ne touche ni aux séries précédentes, ni aux échauffements, ni si rien ne change', () => {
+    const sets = [set('a', 1, 20, 10), set('b', 2, 20, 10)];
+    expect(propagateToNextSets(sets, 'b', { weightKg: 40 })).toEqual([]);
+    expect(propagateToNextSets(sets, 'a', { weightKg: 20 })).toEqual([]);
+    const withWarmup = [set('w', 0, 20, 10, { isWarmup: true }), set('a', 1, 20, 10)];
+    expect(propagateToNextSets(withWarmup, 'w', { weightKg: 30 })).toEqual([]);
+  });
+
+  it('recopie aussi les répétitions', () => {
+    const sets = [set('a', 1, 40, 10), set('b', 2, 40, 10)];
+    expect(propagateToNextSets(sets, 'a', { reps: 8 })).toEqual([{ id: 'b', patch: { reps: 8 } }]);
   });
 });

@@ -2798,3 +2798,256 @@ body {
   background: var(--accent);
   border: 3px solid var(--bg);
 }
+
+/* ---------- Carte « Aujourd'hui » (accueil) ---------- */
+
+.today-card {
+  margin: 14px 0 10px;
+  padding: 18px;
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, rgba(var(--accent-rgb), 0.22), rgba(var(--accent-2-rgb), 0.14)),
+    rgba(var(--surface-rgb), 0.85);
+  border: 1px solid rgba(var(--accent-rgb), 0.45);
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.35);
+  animation: rise 0.35s ease both;
+}
+.today-card.rest,
+.today-card.done {
+  background: rgba(var(--surface-rgb), 0.85);
+  border-color: var(--border);
+}
+.today-card.done {
+  border-color: rgba(var(--accent-rgb), 0.35);
+}
+.today-label {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.today-title {
+  margin-top: 4px;
+  font-size: 1.35rem;
+  font-weight: 900;
+  line-height: 1.2;
+}
+.today-sub {
+  margin: 4px 0 14px;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+.progress-line {
+  margin: 0 0 4px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(var(--surface-rgb), 0.7);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+.plan-banner.compact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  margin: 10px 0 0;
+  border-style: dashed;
+  border-color: var(--border);
+  background: rgba(var(--surface-rgb), 0.6);
+}
+.plan-banner.compact p {
+  flex: 1;
+  margin: 0;
+  font-size: 0.85rem;
+}
+.plan-banner.compact .link-btn {
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 800;
+}
+.day.before {
+  opacity: 0.55;
+}
+
+/* ---------- Mini-guide de la première séance ---------- */
+
+.coach-tip {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(var(--nav-h) + var(--safe-bottom) + 12px);
+  z-index: 45;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: var(--surface-3);
+  border: 1px solid rgba(var(--accent-rgb), 0.6);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55);
+  animation: rise 0.3s ease both;
+}
+.coach-step {
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--accent);
+}
+.coach-tip p {
+  margin: 4px 0 10px;
+  font-weight: 700;
+  line-height: 1.35;
+}
+.coach-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+}
+.coach-target {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  animation: coach-pulse 1.2s ease-in-out infinite;
+}
+@keyframes coach-pulse {
+  50% {
+    outline-offset: 6px;
+    outline-color: rgba(var(--accent-rgb), 0.4);
+  }
+}
+.set-values .unknown {
+  color: var(--accent);
+}
+.weight-hint {
+  margin: 0 0 6px;
+  text-align: center;
+  color: var(--accent);
+}
+
+/* Écran Bravo : records, comparaison, détail par exercice */
+.bravo-highlight {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--gold-soft);
+  color: var(--gold);
+  font-weight: 900;
+  font-size: 1.05rem;
+}
+.bravo-compare {
+  margin: 10px 0 0;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
+.bravo-exercise {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.bravo-exercise:last-child {
+  border-bottom: none;
+}
+.bravo-exercise .title {
+  font-weight: 800;
+}
+.bravo-exercise .subtitle {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}
+.trend {
+  flex-shrink: 0;
+  font-size: 0.82rem;
+  font-weight: 800;
+  padding: 3px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.trend.up {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.14);
+}
+.trend.down {
+  color: #f87171;
+  background: rgba(248, 113, 113, 0.14);
+}
+.trend.same,
+.trend.new {
+  color: var(--text-dim);
+  background: var(--surface-2);
+}
+.chart-hint {
+  margin: 4px 0 2px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+.history-summary {
+  margin-bottom: 4px;
+  font-weight: 800;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+.history-summary .muted {
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.lang-current {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+}
+.btn-primary:disabled {
+  background: var(--surface-3);
+  color: var(--text-dim);
+  box-shadow: none;
+  opacity: 1;
+}
+/* Écran d'accueil : bouton GO et slogan plus lisibles sur la photo. */
+.go-btn {
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.18),
+    0 0 0 10px rgba(var(--accent-rgb), 0.18),
+    0 14px 40px rgba(var(--accent-rgb), 0.65);
+}
+.splash-tagline {
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+/* Choix de la photo de fond, avec « Ma photo » */
+.photo-choice.with-custom {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.photo-thumb.custom {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 8px 6px;
+  cursor: pointer;
+  background-color: var(--surface-2);
+  border-style: dashed;
+}
+.photo-thumb.custom[style] {
+  border-style: solid;
+}
+.photo-add {
+  margin: auto 0;
+  font-size: 1.8rem;
+}
+.photo-label {
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-align: center;
+}

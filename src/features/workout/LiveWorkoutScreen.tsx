@@ -11,7 +11,8 @@ import { ExerciseCard } from './ExerciseCard';
 import { ExercisePicker } from './ExercisePicker';
 import { RestTimerBar } from '../timer/RestTimerBar';
 import { useWakeLock } from '../../ui/useWakeLock';
-import { t, tn } from '../../i18n';
+import { k, t, tn } from '../../i18n';
+import { people } from '../../data/people';
 
 export function LiveWorkoutScreen() {
   const { id = '' } = useParams();
@@ -24,6 +25,7 @@ export function LiveWorkoutScreen() {
   const [picking, setPicking] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [renaming, setRenaming] = useState(false);
+  const [coachStep, setCoachStep] = useState<number | null>(() => (coachSeen() ? null : 0));
   useWakeLock(!!detail && detail.workout.status === 'active' && (settings?.keepAwake ?? true));
 
   if (detail === undefined) return null; // chargement (quelques millisecondes)
@@ -108,7 +110,7 @@ export function LiveWorkoutScreen() {
           <button className="icon-btn" onClick={() => setMenuOpen(true)} aria-label={t('Options de la séance')}>
             <MoreIcon />
           </button>
-          <button className="btn btn-primary btn-small" onClick={finish}>
+          <button className={`btn btn-primary btn-small${coachStep === 2 ? ' coach-target' : ''}`} onClick={finish}>
             {t('Terminer')}
           </button>
         </div>
@@ -119,8 +121,13 @@ export function LiveWorkoutScreen() {
 
       <div className="screen with-rest-space" style={{ paddingTop: 16 }}>
         <div className="stack">
-          {exercises.map((e) => (
-            <ExerciseCard key={e.workoutExercise.id} detail={e} settings={settings ?? DEFAULT_SETTINGS} />
+          {exercises.map((e, i) => (
+            <ExerciseCard
+              key={e.workoutExercise.id}
+              detail={e}
+              settings={settings ?? DEFAULT_SETTINGS}
+              coach={i === 0 ? (coachStep === 0 ? 'values' : coachStep === 1 ? 'check' : null) : null}
+            />
           ))}
           {exercises.length === 0 && (
             <div className="empty">
@@ -142,6 +149,22 @@ export function LiveWorkoutScreen() {
       />
 
       {picking && <ExercisePicker onClose={() => setPicking(false)} onPick={addExercise} />}
+
+      {coachStep !== null && exercises.length > 0 && (
+        <CoachTip
+          step={coachStep}
+          onNext={() => {
+            if (coachStep >= COACH_TIPS.length - 1) {
+              rememberCoachSeen();
+              setCoachStep(null);
+            } else setCoachStep(coachStep + 1);
+          }}
+          onSkip={() => {
+            rememberCoachSeen();
+            setCoachStep(null);
+          }}
+        />
+      )}
 
       {menuOpen && (
         <Sheet onClose={() => setMenuOpen(false)} title={t('Séance')}>
@@ -198,5 +221,52 @@ function RenameSheet({
         {t('Enregistrer')}
       </button>
     </Sheet>
+  );
+}
+
+/** Mini-guide affiché une seule fois, à la première séance de la personne. */
+const COACH_TIPS = [
+  k('Touche une série pour changer le poids ou les répétitions.'),
+  k('Touche ✓ quand tu as fini ta série : le minuteur de repos démarre.'),
+  k('Quand tu as fini ta séance, touche « Terminer ».'),
+];
+
+const coachKey = () => `wd-coach-${people.activeId() ?? 'default'}`;
+
+function coachSeen(): boolean {
+  try {
+    return localStorage.getItem(coachKey()) === '1';
+  } catch {
+    return true;
+  }
+}
+
+function rememberCoachSeen() {
+  try {
+    localStorage.setItem(coachKey(), '1');
+  } catch {
+    // stockage indisponible : le guide pourra réapparaître
+  }
+}
+
+function CoachTip({ step, onNext, onSkip }: { step: number; onNext: () => void; onSkip: () => void }) {
+  const last = step === COACH_TIPS.length - 1;
+  return (
+    <div className="coach-tip" role="status">
+      <div className="coach-step">
+        {step + 1}/{COACH_TIPS.length}
+      </div>
+      <p>{t(COACH_TIPS[step])}</p>
+      <div className="coach-actions">
+        {!last && (
+          <button className="link-btn" onClick={onSkip}>
+            {t('Passer')}
+          </button>
+        )}
+        <button className="btn btn-primary btn-small" onClick={onNext}>
+          {last ? t('J’ai compris') : t('Suivant')}
+        </button>
+      </div>
+    </div>
   );
 }
