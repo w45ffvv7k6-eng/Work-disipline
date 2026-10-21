@@ -507,6 +507,54 @@ const dictionary: Dictionary = {
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
     'El volumen del móvil también cuenta: súbelo con los botones laterales.',
   'Volume du son': 'Volumen del sonido',
+  '{change} de volume': '{change} de volumen',
+  '{n} nouveau record !': '¡{n} récord nuevo!',
+  '{n} nouveaux records !': '¡{n} récords nuevos!',
+  '{n} record ce mois-ci': '{n} récord este mes',
+  '{n} records ce mois-ci': '{n} récords este mes',
+  '{n} séance au compteur': '{n} entreno registrado',
+  '{n} séance faite': '{n} entreno hecho',
+  '{n} séances au compteur': '{n} entrenos registrados',
+  '{n} séances faites': '{n} entrenos hechos',
+  '{n} semaines d’affilée': '{n} semanas seguidas',
+  '~{n} min': '~{n} min',
+  '1 pesée pour l’instant : ta courbe apparaîtra dès la prochaine.':
+    '1 pesaje por ahora: tu curva aparecerá con el siguiente.',
+  '1 séance pour l’instant : reviens la prochaine fois pour voir ta courbe.':
+    '1 entreno por ahora: vuelve la próxima vez para ver tu curva.',
+  '1re fois': '1.ª vez',
+  'Ajouter ma photo': 'Añadir mi foto',
+  'Aujourd’hui': 'Hoy',
+  'Cette semaine : {sessions}': 'Esta semana: {sessions}',
+  'Cette semaine : aucune séance pour l’instant. À toi de jouer 💪': 'Esta semana: aún ningún entreno. Te toca 💪',
+  'Changer ma photo de fond': 'Cambiar mi foto de fondo',
+  'comme la dernière fois': 'igual que la última vez',
+  'Commencer la séance': 'Empezar el entreno',
+  'Elle s’affiche sur l’écran de bienvenue et derrière toute l’appli. Choisis-en une ou mets la tienne.':
+    'Se muestra en la pantalla de bienvenida y detrás de toda la app. Elige una o pon la tuya.',
+  'Indique la charge que tu utilises.': 'Indica el peso que usas.',
+  'J’ai compris': 'Entendido',
+  'Je m’entraîne quand même': 'Entrenar igualmente',
+  'Jour de repos, récupère bien !': 'Día de descanso, ¡recupérate bien!',
+  'Ma progression': 'Mi progreso',
+  'par rapport à la semaine dernière': 'respecto a la semana pasada',
+  'Pas assez de place sur le téléphone pour cette photo.': 'No hay suficiente espacio en el teléfono para esta foto.',
+  'Photo de fond': 'Foto de fondo',
+  'Photo de fond enregistrée ✅': 'Foto de fondo guardada ✅',
+  'Première séance enregistrée ! Ce sont tes records de départ.':
+    '¡Primer entreno registrado! Estos son tus récords iniciales.',
+  'Prochaine séance : {name}': 'Próximo entreno: {name}',
+  'Prochaine séance : {name} · {day}': 'Próximo entreno: {name} · {day}',
+  'Quand tu as fini ta séance, touche « Terminer ».': 'Cuando termines tu entreno, toca «Terminar».',
+  'Séance faite, bravo !': '¡Entreno hecho, bravo!',
+  Suivant: 'Siguiente',
+  'Touche ✓ quand tu as fini ta série : le minuteur de repos démarre.':
+    'Toca ✓ cuando termines tu serie: empieza el temporizador de descanso.',
+  'Touche une série pour changer le poids ou les répétitions.':
+    'Toca una serie para cambiar el peso o las repeticiones.',
+  'Voir le bilan': 'Ver el resumen',
+  'Volume : {volume} ({change} par rapport à ta dernière séance « {name} »)':
+    'Volumen: {volume} ({change} respecto a tu último entreno «{name}»)',
 };
 
 export default dictionary;

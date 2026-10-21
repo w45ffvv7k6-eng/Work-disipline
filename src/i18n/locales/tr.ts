@@ -506,6 +506,54 @@ const dictionary: Dictionary = {
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
     'Telefonun ses seviyesi de önemli: yan tuşlarla artır.',
   'Volume du son': 'Ses seviyesi',
+  '{change} de volume': 'Hacim {change}',
+  '{n} nouveau record !': '{n} yeni rekor!',
+  '{n} nouveaux records !': '{n} yeni rekor!',
+  '{n} record ce mois-ci': 'Bu ay {n} rekor',
+  '{n} records ce mois-ci': 'Bu ay {n} rekor',
+  '{n} séance au compteur': 'Toplam {n} antrenman',
+  '{n} séance faite': '{n} antrenman yapıldı',
+  '{n} séances au compteur': 'Toplam {n} antrenman',
+  '{n} séances faites': '{n} antrenman yapıldı',
+  '{n} semaines d’affilée': 'Üst üste {n} hafta',
+  '~{n} min': '~{n} dk',
+  '1 pesée pour l’instant : ta courbe apparaîtra dès la prochaine.':
+    'Şimdilik 1 tartım var: grafiğin bir sonrakiyle görünecek.',
+  '1 séance pour l’instant : reviens la prochaine fois pour voir ta courbe.':
+    'Şimdilik 1 antrenman var: grafiğini görmek için bir dahaki sefere tekrar gel.',
+  '1re fois': 'İlk kez',
+  'Ajouter ma photo': 'Fotoğrafımı ekle',
+  'Aujourd’hui': 'Bugün',
+  'Cette semaine : {sessions}': 'Bu hafta: {sessions}',
+  'Cette semaine : aucune séance pour l’instant. À toi de jouer 💪': 'Bu hafta: henüz antrenman yok. Sıra sende 💪',
+  'Changer ma photo de fond': 'Arka plan fotoğrafımı değiştir',
+  'comme la dernière fois': 'geçen seferki gibi',
+  'Commencer la séance': 'Antrenmana başla',
+  'Elle s’affiche sur l’écran de bienvenue et derrière toute l’appli. Choisis-en une ou mets la tienne.':
+    'Karşılama ekranında ve tüm uygulamanın arkasında görünür. Birini seç ya da kendi fotoğrafını koy.',
+  'Indique la charge que tu utilises.': 'Kullandığın ağırlığı gir.',
+  'J’ai compris': 'Anladım',
+  'Je m’entraîne quand même': 'Yine de antrenman yapacağım',
+  'Jour de repos, récupère bien !': 'Dinlenme günü, iyi toparlan!',
+  'Ma progression': 'İlerlemem',
+  'par rapport à la semaine dernière': 'geçen haftaya göre',
+  'Pas assez de place sur le téléphone pour cette photo.': 'Bu fotoğraf için telefonda yeterli yer yok.',
+  'Photo de fond': 'Arka plan fotoğrafı',
+  'Photo de fond enregistrée ✅': 'Arka plan fotoğrafı kaydedildi ✅',
+  'Première séance enregistrée ! Ce sont tes records de départ.':
+    'İlk antrenman kaydedildi! Bunlar başlangıç rekorların.',
+  'Prochaine séance : {name}': 'Sonraki antrenman: {name}',
+  'Prochaine séance : {name} · {day}': 'Sonraki antrenman: {name} · {day}',
+  'Quand tu as fini ta séance, touche « Terminer ».': 'Antrenmanın bitince « Bitir » düğmesine dokun.',
+  'Séance faite, bravo !': 'Antrenman tamam, bravo!',
+  Suivant: 'İleri',
+  'Touche ✓ quand tu as fini ta série : le minuteur de repos démarre.':
+    'Setini bitirince ✓ işaretine dokun: dinlenme sayacı başlar.',
+  'Touche une série pour changer le poids ou les répétitions.':
+    'Ağırlığı veya tekrarları değiştirmek için bir sete dokun.',
+  'Voir le bilan': 'Özeti gör',
+  'Volume : {volume} ({change} par rapport à ta dernière séance « {name} »)':
+    'Hacim: {volume} (son « {name} » antrenmanına göre {change})',
 };
 
 export default dictionary;

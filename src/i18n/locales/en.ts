@@ -506,6 +506,52 @@ const dictionary: Dictionary = {
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
     'Your phone’s volume counts too: turn it up with the side buttons.',
   'Volume du son': 'Sound volume',
+  '{change} de volume': '{change} volume',
+  '{n} nouveau record !': '{n} new PR!',
+  '{n} nouveaux records !': '{n} new PRs!',
+  '{n} record ce mois-ci': '{n} PR this month',
+  '{n} records ce mois-ci': '{n} PRs this month',
+  '{n} séance au compteur': '{n} workout logged',
+  '{n} séance faite': '{n} workout done',
+  '{n} séances au compteur': '{n} workouts logged',
+  '{n} séances faites': '{n} workouts done',
+  '{n} semaines d’affilée': '{n}-week streak',
+  '~{n} min': '~{n} min',
+  '1 pesée pour l’instant : ta courbe apparaîtra dès la prochaine.':
+    '1 weigh-in so far: your chart will appear after the next one.',
+  '1 séance pour l’instant : reviens la prochaine fois pour voir ta courbe.':
+    '1 workout so far: come back next time to see your chart.',
+  '1re fois': '1st time',
+  'Ajouter ma photo': 'Add my photo',
+  'Aujourd’hui': 'Today',
+  'Cette semaine : {sessions}': 'This week: {sessions}',
+  'Cette semaine : aucune séance pour l’instant. À toi de jouer 💪': 'This week: no workouts yet. Your turn 💪',
+  'Changer ma photo de fond': 'Change my background photo',
+  'comme la dernière fois': 'same as last time',
+  'Commencer la séance': 'Start workout',
+  'Elle s’affiche sur l’écran de bienvenue et derrière toute l’appli. Choisis-en une ou mets la tienne.':
+    'It shows on the welcome screen and behind the whole app. Pick one or use your own.',
+  'Indique la charge que tu utilises.': 'Enter the weight you use.',
+  'J’ai compris': 'Got it',
+  'Je m’entraîne quand même': 'Train anyway',
+  'Jour de repos, récupère bien !': 'Rest day, recover well!',
+  'Ma progression': 'My progress',
+  'par rapport à la semaine dernière': 'vs. last week',
+  'Pas assez de place sur le téléphone pour cette photo.': 'Not enough space on your phone for this photo.',
+  'Photo de fond': 'Background photo',
+  'Photo de fond enregistrée ✅': 'Background photo saved ✅',
+  'Première séance enregistrée ! Ce sont tes records de départ.': 'First workout logged! These are your starting PRs.',
+  'Prochaine séance : {name}': 'Next workout: {name}',
+  'Prochaine séance : {name} · {day}': 'Next workout: {name} · {day}',
+  'Quand tu as fini ta séance, touche « Terminer ».': 'When you’re done with your workout, tap “Finish”.',
+  'Séance faite, bravo !': 'Workout done, great job!',
+  Suivant: 'Next',
+  'Touche ✓ quand tu as fini ta série : le minuteur de repos démarre.':
+    'Tap ✓ when you finish your set: the rest timer starts.',
+  'Touche une série pour changer le poids ou les répétitions.': 'Tap a set to change the weight or reps.',
+  'Voir le bilan': 'See summary',
+  'Volume : {volume} ({change} par rapport à ta dernière séance « {name} »)':
+    'Volume: {volume} ({change} vs. your last “{name}” workout)',
 };
 
 export default dictionary;

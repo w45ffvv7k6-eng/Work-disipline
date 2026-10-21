@@ -512,6 +512,54 @@ const dictionary: Dictionary = {
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
     'Codka taleefanka sidoo kale wuu muhiim yahay: ku kordhi badhamada dhinaca.',
   'Volume du son': 'Heerka codka',
+  '{change} de volume': 'Mugga {change}',
+  '{n} nouveau record !': '{n} rikoor cusub!',
+  '{n} nouveaux records !': '{n} rikoor oo cusub!',
+  '{n} record ce mois-ci': '{n} rikoor bishan',
+  '{n} records ce mois-ci': '{n} rikoor bishan',
+  '{n} séance au compteur': '{n} tababar ilaa hadda',
+  '{n} séance faite': '{n} tababar la dhammeeyay',
+  '{n} séances au compteur': '{n} tababar ilaa hadda',
+  '{n} séances faites': '{n} tababar la dhammeeyay',
+  '{n} semaines d’affilée': '{n} toddobaad oo isku xiga',
+  '~{n} min': '~{n} daqiiqo',
+  '1 pesée pour l’instant : ta courbe apparaîtra dès la prochaine.':
+    '1 miisaan ilaa hadda: qalooca wuxuu soo bixi doonaa marka xigta.',
+  '1 séance pour l’instant : reviens la prochaine fois pour voir ta courbe.':
+    '1 tababar ilaa hadda: soo noqo marka xigta si aad u aragto qalooca.',
+  '1re fois': 'Markii 1aad',
+  'Ajouter ma photo': 'Ku dar sawirkayga',
+  'Aujourd’hui': 'Maanta',
+  'Cette semaine : {sessions}': 'Toddobaadkan: {sessions}',
+  'Cette semaine : aucune séance pour l’instant. À toi de jouer 💪':
+    'Toddobaadkan: weli tababar ma jiro. Adiga ayay kuu taal 💪',
+  'Changer ma photo de fond': 'Beddel sawirka gadaasha',
+  'comme la dernière fois': 'sidii markii hore',
+  'Commencer la séance': 'Bilow tababarka',
+  'Elle s’affiche sur l’écran de bienvenue et derrière toute l’appli. Choisis-en une ou mets la tienne.':
+    'Wuxuu ka muuqdaa bogga hore iyo gadaasha app-ka oo dhan. Mid dooro ama geli kaaga.',
+  'Indique la charge que tu utilises.': 'Geli culeyska aad isticmaasho.',
+  'J’ai compris': 'Waan fahmay',
+  'Je m’entraîne quand même': 'Si kastaba waan tababaranayaa',
+  'Jour de repos, récupère bien !': 'Maalin nasasho, si fiican u bogso!',
+  'Ma progression': 'Horumarkayga',
+  'par rapport à la semaine dernière': 'marka loo eego toddobaadkii hore',
+  'Pas assez de place sur le téléphone pour cette photo.': 'Meel ku filan kuma jirto taleefanka sawirkan.',
+  'Photo de fond': 'Sawirka gadaasha',
+  'Photo de fond enregistrée ✅': 'Sawirka gadaasha waa la keydiyay ✅',
+  'Première séance enregistrée ! Ce sont tes records de départ.':
+    'Tababarkii ugu horreeyay waa la keydiyay! Kuwani waa rikoorradaada bilowga.',
+  'Prochaine séance : {name}': 'Tababarka xiga: {name}',
+  'Prochaine séance : {name} · {day}': 'Tababarka xiga: {name} · {day}',
+  'Quand tu as fini ta séance, touche « Terminer ».': 'Markaad dhammeyso tababarka, taabo « Dhammee ».',
+  'Séance faite, bravo !': 'Tababarka waa la dhammeeyay, hambalyo!',
+  Suivant: 'Xiga',
+  'Touche ✓ quand tu as fini ta série : le minuteur de repos démarre.':
+    'Taabo ✓ markaad dhammeyso set-kaaga: saacadda nasashada ayaa bilaabanaysa.',
+  'Touche une série pour changer le poids ou les répétitions.': 'Taabo set si aad u beddesho miisaanka ama ku celinta.',
+  'Voir le bilan': 'Arag soo koobidda',
+  'Volume : {volume} ({change} par rapport à ta dernière séance « {name} »)':
+    'Mugga: {volume} ({change} marka loo eego tababarkaagii ugu dambeeyay « {name} »)',
 };
 
 export default dictionary;
