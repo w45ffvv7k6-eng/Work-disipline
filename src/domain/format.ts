@@ -111,3 +111,23 @@ export function plural(count: number, word: 'exercice' | 'série' | 'séance' | 
       return tn(count, '{n} record', '{n} records');
   }
 }
+
+/** 13 oct. */
+export function formatShortDate(date: number | Date): string {
+  return new Date(date).toLocaleDateString(locale(), { day: 'numeric', month: 'short' });
+}
+
+/** 13/10 */
+export function formatNumericDate(date: number | Date): string {
+  return new Date(date).toLocaleDateString(locale(), { day: 'numeric', month: 'numeric' });
+}
+
+/** mardi 13 octobre */
+export function formatLongDate(date: number | Date): string {
+  return new Date(date).toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' });
+}
+
+/** Grands volumes en tonnes : 12500 → "12,5 t", 800 → "800 kg". */
+export function formatVolume(kg: number): string {
+  return kg >= 1000 ? `${formatKg(Math.round(kg / 100) / 10)} t` : `${formatKg(kg)} kg`;
+}

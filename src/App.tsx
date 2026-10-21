@@ -4,7 +4,10 @@ import { AuthProvider, useAuth } from './features/auth/AuthProvider';
 import { AuthScreen, NewPasswordScreen } from './features/auth/AuthScreen';
 import { HomeScreen } from './features/home/HomeScreen';
 import { PersonGate } from './features/people/PersonGate';
-import { ComingSoon } from './features/placeholder/ComingSoon';
+import { ExerciseDetailScreen } from './features/exercises/ExerciseDetailScreen';
+import { ExercisesScreen } from './features/exercises/ExercisesScreen';
+import { HistoryDetailScreen } from './features/history/HistoryDetailScreen';
+import { HistoryScreen } from './features/history/HistoryScreen';
 import { ProfileScreen } from './features/profile/ProfileScreen';
 import { SessionEditorScreen } from './features/sessions/SessionEditorScreen';
 import { SessionsScreen } from './features/sessions/SessionsScreen';
@@ -90,28 +93,10 @@ export function App() {
                     <Routes>
                       <Route path="/" element={<HomeScreen />} />
                       <Route path="/seance/:id" element={<LiveWorkoutScreen />} />
-                      <Route
-                        path="/historique"
-                        element={
-                          <ComingSoon
-                            title={translate('Historique')}
-                            subtitle={translate('Tes séances passées, en détail')}
-                            icon={<HistoryIcon />}
-                            step={translate('Historique et graphiques')}
-                          />
-                        }
-                      />
-                      <Route
-                        path="/exercices"
-                        element={
-                          <ComingSoon
-                            title={translate('Exercices')}
-                            subtitle={translate('Bibliothèque et courbes de progression')}
-                            icon={<ListIcon />}
-                            step={translate('Bibliothèque')}
-                          />
-                        }
-                      />
+                      <Route path="/historique" element={<HistoryScreen />} />
+                      <Route path="/historique/:id" element={<HistoryDetailScreen />} />
+                      <Route path="/exercices" element={<ExercisesScreen />} />
+                      <Route path="/exercices/:id" element={<ExerciseDetailScreen />} />
                       <Route path="/seances" element={<SessionsScreen />} />
                       <Route path="/seances/:id" element={<SessionEditorScreen />} />
                       <Route path="/bravo/:id" element={<WorkoutSummaryScreen />} />

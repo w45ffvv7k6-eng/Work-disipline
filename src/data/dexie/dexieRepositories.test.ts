@@ -127,4 +127,28 @@ describe('dépôt Dexie des séances', () => {
     await repos.weekPlans.reset('2026-10-19');
     expect(await first(repos.weekPlans.watch('2026-10-19'))).toBeNull();
   });
+
+  it('historique : bilan de chaque séance terminée, de la plus récente à la plus ancienne', async () => {
+    expect(await first(repos.workouts.watchHistory())).toEqual([]);
+    await doWorkout([
+      [60, 10],
+      [60, 8],
+    ]);
+    const second = await doWorkout([[80, 5]], 'ex-squat');
+    const history = await first(repos.workouts.watchHistory());
+    expect(history.map((h) => h.workout.id)[0]).toBe(second.id);
+    expect(history[1].summary).toMatchObject({ setCount: 2, repCount: 18, volumeKg: 1080, exerciseCount: 1 });
+    await repos.workouts.deleteFinished(second.id);
+    expect(await first(repos.workouts.watchHistory())).toHaveLength(1);
+  });
+
+  it('fiche exercice : séances et records de l’exercice', async () => {
+    await doWorkout([[60, 8]]);
+    await doWorkout([[62.5, 6]]);
+    const sessions = await first(repos.exercises.watchHistory('ex-dev-couche'));
+    expect(sessions.map((s) => s.sets[0].weightKg)).toEqual([62.5, 60]);
+    const summaries = await first(repos.exercises.watchSummaries());
+    expect(summaries['ex-dev-couche']).toMatchObject({ sessionCount: 2, best: { maxWeight: 62.5 } });
+    expect(summaries['ex-squat']).toBeUndefined();
+  });
 });

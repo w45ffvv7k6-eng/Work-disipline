@@ -98,9 +98,12 @@ export function bestValues(sets: RecordInput[], kind: ExerciseKind): Partial<Rec
 
 /** Texte d'un record : "Charge max : 62,5 kg", "Meilleure allure : 5:42 /km". */
 export function formatRecord(hit: RecordHit, formatNumber: (n: number) => string): string {
-  const value =
-    hit.type === 'bestSpeed'
-      ? formatPace(hit.value > 0 ? Math.round(3600 / hit.value) : null)
-      : `${formatNumber(hit.value)} ${t(RECORD_UNITS[hit.type])}`;
-  return t('{label} : {value}', { label: t(RECORD_LABELS[hit.type]), value });
+  return t('{label} : {value}', { label: t(RECORD_LABELS[hit.type]), value: formatRecordValue(hit, formatNumber) });
+}
+
+/** Valeur seule d'un record : "62,5 kg", "5:42 /km". */
+export function formatRecordValue(hit: RecordHit, formatNumber: (n: number) => string): string {
+  return hit.type === 'bestSpeed'
+    ? formatPace(hit.value > 0 ? Math.round(3600 / hit.value) : null)
+    : `${formatNumber(hit.value)} ${t(RECORD_UNITS[hit.type])}`;
 }

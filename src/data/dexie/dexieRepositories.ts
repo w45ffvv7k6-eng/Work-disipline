@@ -1,7 +1,8 @@
 import { liveQuery } from 'dexie';
 import { newId } from '../../domain/id';
 import { prefillValues, workingSets } from '../../domain/prefill';
-import { computeRecords, type RecordHit } from '../../domain/records';
+import { bestValues, computeRecords, type RecordHit } from '../../domain/records';
+import { summarizeWorkout } from '../../domain/summary';
 import { adjustTimer } from '../../domain/timer';
 import {
   DEFAULT_SETTINGS,
@@ -15,6 +16,8 @@ import {
 } from '../../domain/types';
 import type {
   ExerciseRepository,
+  ExerciseSummary,
+  HistoryEntry,
   Repositories,
   ProfileRepository,
   ProgramRepository,
@@ -73,6 +76,43 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
         (await db.exercises.toArray()).filter((e) => !e.deletedAt).sort((a, b) => a.name.localeCompare(b.name, 'fr')),
       ),
     get: (id) => db.exercises.get(id),
+    watchHistory: (exerciseId) =>
+      liveQuery(async () => {
+        const sets = await db.sets.where('exerciseId').equals(exerciseId).toArray();
+        const workouts = await workoutsById(sets.map((s) => s.workoutId));
+        return [...workouts.values()]
+          .filter((w) => w.status === 'finished')
+          .sort((a, b) => b.startedAt - a.startedAt)
+          .map((workout) => ({
+            workout,
+            sets: sets.filter((s) => s.workoutId === workout.id).sort((a, b) => a.order - b.order),
+          }));
+      }),
+    watchSummaries: () =>
+      liveQuery(async () => {
+        const [sets, finished, list] = await Promise.all([
+          db.sets.toArray(),
+          db.workouts.where('status').equals('finished').toArray(),
+          db.exercises.toArray(),
+        ]);
+        const startedAt = new Map(finished.filter((w) => !w.deletedAt).map((w) => [w.id, w.startedAt]));
+        const kinds = new Map(list.map((e) => [e.id, e.kind]));
+        const byExercise = new Map<string, WorkoutSet[]>();
+        for (const s of sets) {
+          if (!startedAt.has(s.workoutId) || !s.completed) continue;
+          byExercise.set(s.exerciseId, [...(byExercise.get(s.exerciseId) ?? []), s]);
+        }
+        const result: Record<string, ExerciseSummary> = {};
+        for (const [exerciseId, done] of byExercise) {
+          const workoutIds = new Set(done.map((s) => s.workoutId));
+          result[exerciseId] = {
+            sessionCount: workoutIds.size,
+            lastAt: Math.max(...[...workoutIds].map((id) => startedAt.get(id)!)),
+            best: bestValues(done, kinds.get(exerciseId) ?? 'weighted'),
+          };
+        }
+        return result;
+      }),
     async create(data) {
       const exercise: Exercise = { ...data, id: newId(), isCustom: true, updatedAt: now() };
       await db.exercises.add(exercise);
@@ -122,6 +162,43 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
           .filter((w) => !w.deletedAt)
           .sort((a, b) => b.startedAt - a.startedAt),
       ),
+
+    watchHistory: () =>
+      liveQuery(async (): Promise<HistoryEntry[]> => {
+        const finished = (await db.workouts.where('status').equals('finished').toArray())
+          .filter((w) => !w.deletedAt)
+          .sort((a, b) => b.startedAt - a.startedAt);
+        const ids = finished.map((w) => w.id);
+        const [sets, list] = await Promise.all([
+          db.sets.where('workoutId').anyOf(ids).toArray(),
+          db.exercises.toArray(),
+        ]);
+        const kinds = new Map(list.map((e) => [e.id, e.kind]));
+        return finished.map((workout) => {
+          const own = sets.filter((s) => s.workoutId === workout.id);
+          const exerciseIds = [...new Set(own.map((s) => s.exerciseId))];
+          return {
+            workout,
+            summary: summarizeWorkout(
+              workout.startedAt,
+              workout.endedAt ?? workout.startedAt,
+              exerciseIds.map((id) => ({
+                kind: kinds.get(id) ?? 'weighted',
+                sets: own.filter((s) => s.exerciseId === id),
+                recordSetIds: new Set<string>(),
+              })),
+            ),
+          };
+        });
+      }),
+
+    async deleteFinished(workoutId) {
+      await db.transaction('rw', [db.workouts, db.workoutExercises, db.sets], async () => {
+        await db.sets.where('workoutId').equals(workoutId).delete();
+        await db.workoutExercises.where('workoutId').equals(workoutId).delete();
+        await db.workouts.delete(workoutId);
+      });
+    },
 
     async startFromTemplate(templateId) {
       const template = await db.templates.get(templateId);

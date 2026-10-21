@@ -24,6 +24,8 @@ export interface BackupFile {
   version: 1;
   exportedAt: number;
   data: Record<BackupTable, unknown[]>;
+  /** Prénom, photos et langue de la personne (sauvegardes faites depuis l'appli). */
+  person?: { name?: string; photo?: string; avatar?: string; lang?: string };
 }
 
 export async function exportAll(db: MuscuDB): Promise<BackupFile> {

@@ -2567,3 +2567,172 @@ body {
 .move-target:active {
   transform: scale(0.98);
 }
+
+/* ---------- Graphiques ---------- */
+
+.chart-card {
+  padding: 14px 14px 8px;
+  margin-bottom: 12px;
+}
+.chart-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 12px;
+  margin-bottom: 6px;
+}
+.chart-title {
+  font-weight: 800;
+}
+.chart-value {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.chart-plot {
+  position: relative;
+}
+.chart-plot svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.chart-plot .grid {
+  stroke: var(--border);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+.chart-plot .axis {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+.chart-plot .tick {
+  fill: var(--text-dim);
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.chart-plot .bar {
+  cursor: pointer;
+}
+.chart-plot .bar-fill {
+  fill: rgba(var(--accent-rgb), 0.55);
+  transition: fill 0.15s ease;
+}
+.chart-plot .bar.selected .bar-fill {
+  fill: var(--accent);
+}
+.chart-plot .bar-zero {
+  fill: var(--surface-3);
+}
+.chart-plot .bar.selected .tick {
+  fill: var(--text);
+  font-weight: 700;
+}
+.chart-plot .line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.chart-plot .dot {
+  fill: var(--accent);
+  stroke: var(--surface);
+  stroke-width: 2;
+  cursor: pointer;
+}
+.chart-empty {
+  position: absolute;
+  inset: 0 0 24px 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 12px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-weight: 600;
+  pointer-events: none;
+}
+
+.empty-card {
+  text-align: center;
+  color: var(--text-dim);
+}
+.empty-card .big {
+  font-size: 2rem;
+}
+.empty-card p {
+  margin: 6px 0 0;
+}
+
+/* Séance passée (historique) */
+.past-exercise {
+  border-left: 5px solid var(--surface-3);
+}
+.past-set {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-top: 1px solid var(--border);
+  font-variant-numeric: tabular-nums;
+}
+.past-set-index {
+  width: 24px;
+  text-align: center;
+  font-weight: 800;
+  color: var(--text-dim);
+}
+.past-set.warmup .past-set-index {
+  color: var(--gold);
+}
+.past-set.warmup .past-set-values {
+  opacity: 0.7;
+}
+.past-set-values {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex: 1;
+  font-weight: 700;
+}
+.past-set-values .unit,
+.past-set-values .times,
+.past-set-values .pace {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.past-set-values .cardio-values {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+
+.record-chip {
+  font-size: 0.8rem;
+  font-weight: 800;
+  color: var(--gold);
+  background: var(--gold-soft);
+  border-radius: 999px;
+  padding: 3px 9px;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.workout-header .muscle-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  vertical-align: middle;
+}
+
+.backup-status {
+  font-weight: 700;
+  font-size: 0.92rem;
+}
+.backup-status.warn {
+  color: var(--gold);
+}

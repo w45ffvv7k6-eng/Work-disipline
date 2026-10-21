@@ -2,7 +2,8 @@
 // Les écrans ne connaissent QUE ces interfaces : pour ajouter une synchronisation
 // cloud (ex. Supabase), on écrira une autre implémentation sans toucher aux écrans.
 
-import type { RecordHit } from '../domain/records';
+import type { RecordHit, RecordType } from '../domain/records';
+import type { WorkoutSummary } from '../domain/summary';
 import type {
   ActiveTimer,
   BodyCheck,
@@ -28,6 +29,27 @@ export interface ExerciseRepository {
   get(id: string): Promise<Exercise | undefined>;
   create(data: Pick<Exercise, 'name' | 'muscleGroup' | 'kind'>): Promise<Exercise>;
   update(id: string, patch: Partial<Pick<Exercise, 'name' | 'muscleGroup' | 'kind' | 'restSec'>>): Promise<void>;
+  /** Séances terminées où l'exercice a été fait, de la plus récente à la plus ancienne. */
+  watchHistory(exerciseId: string): Subscribable<ExerciseSession[]>;
+  /** Pour chaque exercice déjà pratiqué : nombre de séances, date de la dernière et records. */
+  watchSummaries(): Subscribable<Record<string, ExerciseSummary>>;
+}
+
+export interface ExerciseSession {
+  workout: Workout;
+  sets: WorkoutSet[];
+}
+
+export interface ExerciseSummary {
+  sessionCount: number;
+  lastAt: number;
+  best: Partial<Record<RecordType, number>>;
+}
+
+/** Séance terminée et son bilan (pour l'historique). */
+export interface HistoryEntry {
+  workout: Workout;
+  summary: WorkoutSummary;
 }
 
 export interface WorkoutExerciseDetail {
@@ -51,6 +73,10 @@ export interface WorkoutRepository {
   watchDetail(workoutId: string): Subscribable<WorkoutDetail | null>;
   /** Séances terminées, de la plus récente à la plus ancienne. */
   watchFinished(): Subscribable<Workout[]>;
+  /** Séances terminées avec leur bilan (durée, séries, volume…), de la plus récente à la plus ancienne. */
+  watchHistory(): Subscribable<HistoryEntry[]>;
+  /** Supprime définitivement une séance terminée (et ses séries). */
+  deleteFinished(workoutId: string): Promise<void>;
   start(name: string): Promise<Workout>;
   /** Démarre une séance préparée à partir d'un modèle (exercices, séries prévues, objectifs, repos). */
   startFromTemplate(templateId: string): Promise<Workout>;

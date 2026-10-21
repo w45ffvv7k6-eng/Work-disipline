@@ -190,7 +190,7 @@ export function ExerciseCard({ detail, settings }: Props) {
   );
 }
 
-function SetValues({ set, kind }: { set: WorkoutSet; kind: WorkoutExerciseDetail['exercise']['kind'] }) {
+export function SetValues({ set, kind }: { set: WorkoutSet; kind: WorkoutExerciseDetail['exercise']['kind'] }) {
   if (kind === 'cardio') {
     return (
       <span className="cardio-values">
