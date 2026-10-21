@@ -560,6 +560,11 @@ const dictionary: Dictionary = {
   'Voir le bilan': 'Arag soo koobidda',
   'Volume : {volume} ({change} par rapport à ta dernière séance « {name} »)':
     'Mugga: {volume} ({change} marka loo eego tababarkaagii ugu dambeeyay « {name} »)',
+  'Supprimer ta photo de fond ?': 'Ma tirtirtaa sawirka gadaashiisa?',
+  'Elle sera retirée de ce téléphone. Tu pourras en remettre une quand tu veux.':
+    'Waa laga saari doonaa taleefankan. Mar kasta waad ku dari kartaa mid kale.',
+  'Photo de fond supprimée': 'Sawirka gadaashiisa waa la tirtiray',
+  'Supprimer ma photo de fond': 'Tirtir sawirkayga gadaashiisa',
 };
 
 export default dictionary;

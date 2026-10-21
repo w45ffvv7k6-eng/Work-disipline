@@ -11,7 +11,13 @@ import { InstallSection } from '../install/InstallSection';
 import { people } from '../../data/people';
 import { switchPerson } from '../people/PersonGate';
 import { PhotoChoice } from '../../ui/PhotoChoice';
-import { CUSTOM_PHOTO, personPhoto, setCustomBackground } from '../../ui/splashPhotos';
+import {
+  CUSTOM_PHOTO,
+  getCustomBackground,
+  personPhoto,
+  photoForName,
+  setCustomBackground,
+} from '../../ui/splashPhotos';
 import { PHOTO_CHANGED } from '../../ui/AppBackground';
 import { SettingsSection } from '../settings/SettingsSection';
 import { UserIcon } from '../../ui/icons';
@@ -370,7 +376,7 @@ function PhotoPicker({
 
 /** Photo de profil, photo d'accueil et changement de personne (plusieurs personnes peuvent utiliser l'appli sur le même téléphone). */
 function PersonSection({ avatar }: { avatar: AvatarState }) {
-  const { toast } = useFeedback();
+  const { toast, confirm } = useFeedback();
   const [photo, setPhoto] = useState(personPhoto());
   const choose = (file: string) => {
     const id = people.activeId();
@@ -417,6 +423,27 @@ function PersonSection({ avatar }: { avatar: AvatarState }) {
             }
           }}
         />
+        {getCustomBackground() && (
+          <button
+            className="link-btn danger-link"
+            style={{ marginTop: 12 }}
+            onClick={async () => {
+              const ok = await confirm({
+                title: t('Supprimer ta photo de fond ?'),
+                message: t('Elle sera retirée de ce téléphone. Tu pourras en remettre une quand tu veux.'),
+                confirmLabel: t('Supprimer'),
+                danger: true,
+              });
+              if (!ok) return;
+              setCustomBackground(null);
+              // Retour à la photo proposée d'après le prénom.
+              choose(photo === CUSTOM_PHOTO ? photoForName(people.active()?.name ?? '') : photo);
+              toast(t('Photo de fond supprimée'));
+            }}
+          >
+            🗑️ {t('Supprimer ma photo de fond')}
+          </button>
+        )}
       </div>
 
       <h2 className="section-title">{t('Personne')}</h2>

@@ -547,6 +547,11 @@ const dictionary: Dictionary = {
   'Voir le bilan': 'عرض الملخص',
   'Volume : {volume} ({change} par rapport à ta dernière séance « {name} »)':
     'الحجم: {volume} ({change} مقارنة بآخر حصة « {name} »)',
+  'Supprimer ta photo de fond ?': 'حذف صورة الخلفية؟',
+  'Elle sera retirée de ce téléphone. Tu pourras en remettre une quand tu veux.':
+    'ستُزال من هذا الهاتف. يمكنك إضافة صورة أخرى متى شئت.',
+  'Photo de fond supprimée': 'تم حذف صورة الخلفية',
+  'Supprimer ma photo de fond': 'حذف صورة الخلفية الخاصة بي',
 };
 
 export default dictionary;

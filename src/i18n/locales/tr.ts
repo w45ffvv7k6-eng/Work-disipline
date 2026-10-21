@@ -554,6 +554,11 @@ const dictionary: Dictionary = {
   'Voir le bilan': 'Özeti gör',
   'Volume : {volume} ({change} par rapport à ta dernière séance « {name} »)':
     'Hacim: {volume} (son « {name} » antrenmanına göre {change})',
+  'Supprimer ta photo de fond ?': 'Arka plan fotoğrafın silinsin mi?',
+  'Elle sera retirée de ce téléphone. Tu pourras en remettre une quand tu veux.':
+    'Bu telefondan kaldırılacak. İstediğin zaman yenisini ekleyebilirsin.',
+  'Photo de fond supprimée': 'Arka plan fotoğrafı silindi',
+  'Supprimer ma photo de fond': 'Arka plan fotoğrafımı sil',
 };
 
 export default dictionary;

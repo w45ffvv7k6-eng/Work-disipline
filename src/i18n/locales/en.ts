@@ -552,6 +552,11 @@ const dictionary: Dictionary = {
   'Voir le bilan': 'See summary',
   'Volume : {volume} ({change} par rapport à ta dernière séance « {name} »)':
     'Volume: {volume} ({change} vs. your last “{name}” workout)',
+  'Supprimer ta photo de fond ?': 'Delete your background photo?',
+  'Elle sera retirée de ce téléphone. Tu pourras en remettre une quand tu veux.':
+    'It will be removed from this phone. You can add another one anytime.',
+  'Photo de fond supprimée': 'Background photo deleted',
+  'Supprimer ma photo de fond': 'Delete my background photo',
 };
 
 export default dictionary;
