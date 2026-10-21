@@ -3,6 +3,7 @@ import { useRepositories, useSubscribable } from '../data';
 import { people } from '../data/people';
 import { haptic } from './feedback';
 import { personPhoto, splashPhotoUrl } from './splashPhotos';
+import { t } from '../i18n';
 
 /** Délai entre deux photos du fond. */
 const PHOTO_INTERVAL_MS = 1600;
@@ -31,7 +32,7 @@ export function WelcomeSplash() {
     <div
       className={`splash${photos.length > 0 ? ' with-photo' : ''}${phase === 'out' ? ' splash-out' : ''}`}
       role="dialog"
-      aria-label={`Work & Discipline. Bienvenue${name ? ` ${name}` : ''}`}
+      aria-label={`Work & Discipline. ${t('Bienvenue')}${name ? ` ${name}` : ''}`}
     >
       {/* Fond : photos qui se succèdent avec un zoom lent, sinon formes de couleur animées. */}
       <div className={`splash-bg${photos.length === 0 ? ' no-photo' : ''}`} aria-hidden="true">
@@ -68,7 +69,7 @@ export function WelcomeSplash() {
         </div>
 
         <div className="splash-hello">
-          <div className="splash-welcome">Bienvenue</div>
+          <div className="splash-welcome">{t('Bienvenue')}</div>
           {name && (
             <div className="splash-name" aria-hidden="true">
               {[...name].map((letter, i) => (
@@ -78,7 +79,7 @@ export function WelcomeSplash() {
               ))}
             </div>
           )}
-          <div className="splash-tagline">On n’aime pas, mais on n’a pas le choix !</div>
+          <div className="splash-tagline">{t('On n’aime pas, mais on n’a pas le choix !')}</div>
         </div>
       </div>
 

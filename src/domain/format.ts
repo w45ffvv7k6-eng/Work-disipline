@@ -1,12 +1,19 @@
 import { formatPace, formatRunDuration, paceSecPerKm } from './cardio';
 import { workingSets, type SetValues } from './prefill';
 import type { ExerciseKind } from './types';
+import { locale, t, tn } from '../i18n';
 
-const numberFormat = new Intl.NumberFormat('fr-FR', { maximumFractionDigits: 2 });
+const numberFormats = new Map<string, Intl.NumberFormat>();
 
-/** 57.5 → "57,5" */
+/** 57.5 → "57,5" (en français ; "57.5" en anglais). */
 export function formatKg(value: number): string {
-  return numberFormat.format(value);
+  const loc = locale();
+  let format = numberFormats.get(loc);
+  if (!format) {
+    format = new Intl.NumberFormat(loc, { maximumFractionDigits: 2 });
+    numberFormats.set(loc, format);
+  }
+  return format.format(value);
 }
 
 /** Objectif d'un exercice : "6–8 reps", "45 s", "8–10 reps par jambe". */
@@ -15,11 +22,12 @@ export function formatTarget(
   kind: ExerciseKind,
 ): string | null {
   const { repMin, repMax, note } = target;
-  if (kind === 'cardio') return note ?? null;
+  if (kind === 'cardio') return note ? t(note) : null;
   if (repMin === undefined && repMax === undefined) return null;
   const range =
     repMin !== undefined && repMax !== undefined && repMin !== repMax ? `${repMin}–${repMax}` : `${repMin ?? repMax}`;
-  return `${range} ${kind === 'duration' ? 's' : 'reps'}${note ? ` ${note}` : ''}`;
+  const text = kind === 'duration' ? t('{range} s', { range }) : t('{range} reps', { range });
+  return note ? `${text} ${t(note)}` : text;
 }
 
 /**
@@ -35,9 +43,12 @@ export function formatLastTime(
   const allSame = work.every((s) => s.weightKg === work[0].weightKg && s.reps === work[0].reps);
   if (kind === 'cardio') {
     return work
-      .map(
-        (s) =>
-          `${formatKg(s.distanceKm ?? 0)} km en ${formatRunDuration(s.reps)} (${formatPace(paceSecPerKm(s.distanceKm, s.reps))})`,
+      .map((s) =>
+        t('{km} km en {time} ({pace})', {
+          km: formatKg(s.distanceKm ?? 0),
+          time: formatRunDuration(s.reps),
+          pace: formatPace(paceSecPerKm(s.distanceKm, s.reps)),
+        }),
       )
       .join(', ');
   }
@@ -48,10 +59,10 @@ export function formatLastTime(
     const { weightKg, reps } = work[0];
     if (kind === 'bodyweight') {
       return weightKg > 0
-        ? `${work.length}×${reps} à +${formatKg(weightKg)} kg`
-        : `${work.length}×${reps} au poids du corps`;
+        ? t('{sets}×{reps} à +{kg} kg', { sets: work.length, reps, kg: formatKg(weightKg) })
+        : t('{sets}×{reps} au poids du corps', { sets: work.length, reps });
     }
-    return `${work.length}×${reps} à ${formatKg(weightKg)} kg`;
+    return t('{sets}×{reps} à {kg} kg', { sets: work.length, reps, kg: formatKg(weightKg) });
   }
   return work
     .map((s) => {
@@ -66,7 +77,7 @@ export function formatDuration(ms: number): string {
   const totalMin = Math.max(0, Math.floor(ms / 60000));
   const h = Math.floor(totalMin / 60);
   const m = totalMin % 60;
-  return h > 0 ? `${h} h ${String(m).padStart(2, '0')}` : `${m} min`;
+  return h > 0 ? t('{h} h {m}', { h, m: String(m).padStart(2, '0') }) : t('{m} min', { m });
 }
 
 /** Chronomètre "mm:ss" ou "h:mm:ss". */
@@ -80,13 +91,23 @@ export function formatClock(ms: number): string {
 }
 
 export function defaultWorkoutName(date = new Date()): string {
-  const day = date.toLocaleDateString('fr-FR', { weekday: 'long' });
+  const day = date.toLocaleDateString(locale(), { weekday: 'long' });
   const hour = date.getHours();
-  const moment = hour < 12 ? 'matin' : hour < 18 ? 'après-midi' : 'soir';
-  return `Séance du ${day} ${moment}`;
+  if (hour < 12) return t('Séance du {day} matin', { day });
+  if (hour < 18) return t('Séance du {day} après-midi', { day });
+  return t('Séance du {day} soir', { day });
 }
 
 /** "1 exercice", "6 exercices". */
-export function plural(count: number, word: string): string {
-  return `${count} ${word}${count > 1 ? 's' : ''}`;
+export function plural(count: number, word: 'exercice' | 'série' | 'séance' | 'record'): string {
+  switch (word) {
+    case 'exercice':
+      return tn(count, '{n} exercice', '{n} exercices');
+    case 'série':
+      return tn(count, '{n} série', '{n} séries');
+    case 'séance':
+      return tn(count, '{n} séance', '{n} séances');
+    case 'record':
+      return tn(count, '{n} record', '{n} records');
+  }
 }

@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import { createContext, useCallback, useContext, useRef, useState, type ReactNode } from 'react';
 import { Sheet } from './Sheet';
 
@@ -78,7 +79,7 @@ export function FeedbackProvider({ children }: { children: ReactNode }) {
               {confirmState.confirmLabel}
             </button>
             <button className="btn btn-block btn-ghost" onClick={() => closeConfirm(false)}>
-              Annuler
+              {t('Annuler')}
             </button>
           </div>
         </Sheet>

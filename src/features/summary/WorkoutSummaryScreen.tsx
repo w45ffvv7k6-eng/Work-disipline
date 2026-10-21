@@ -6,6 +6,7 @@ import { formatRecord } from '../../domain/records';
 import { formatPace, paceSecPerKm } from '../../domain/cardio';
 import { summarizeWorkout } from '../../domain/summary';
 import { haptic } from '../../ui/feedback';
+import { t } from '../../i18n';
 
 /** Confettis aux couleurs du thème choisi (variables CSS), avec du blanc et du doré. */
 const CONFETTI_COLORS = ['var(--accent)', 'var(--accent-2)', '#ffd166', '#f6f0e8', 'var(--accent)', 'var(--accent-2)'];
@@ -46,7 +47,9 @@ export function WorkoutSummaryScreen() {
     })),
   );
   const records = exercises.flatMap((e) =>
-    e.sets.flatMap((s) => (e.records.get(s.id) ?? []).map((hit) => ({ exercise: e.exercise.name, hit, setId: s.id }))),
+    e.sets.flatMap((s) =>
+      (e.records.get(s.id) ?? []).map((hit) => ({ exercise: t(e.exercise.name), hit, setId: s.id })),
+    ),
   );
 
   return (
@@ -69,30 +72,30 @@ export function WorkoutSummaryScreen() {
       <div className="bravo-head">
         <div className="bravo-emoji">{records.length > 0 ? '🏆' : '💪'}</div>
         <h1 className="screen-title" style={{ margin: '8px 0 4px' }}>
-          Bravo, séance terminée&nbsp;!
+          {t('Bravo, séance terminée !')}
         </h1>
-        <p className="muted">{workout.name}</p>
+        <p className="muted">{t(workout.name)}</p>
       </div>
 
       <div className="stat-grid">
         <div className="stat pop" style={{ animationDelay: '0.1s' }}>
-          <div className="stat-label">Durée</div>
+          <div className="stat-label">{t('Durée')}</div>
           <div className="stat-value">{formatDuration(summary.durationMs)}</div>
         </div>
         <div className="stat pop" style={{ animationDelay: '0.2s' }}>
-          <div className="stat-label">Séries</div>
+          <div className="stat-label">{t('Séries')}</div>
           <div className="stat-value">{summary.setCount}</div>
         </div>
         <div className="stat pop" style={{ animationDelay: '0.3s' }}>
           {/* Séance de course : la distance remplace le volume soulevé. */}
           {summary.distanceKm > 0 && summary.volumeKg === 0 ? (
             <>
-              <div className="stat-label">Distance</div>
+              <div className="stat-label">{t('Distance')}</div>
               <div className="stat-value">{formatKg(summary.distanceKm)} km</div>
             </>
           ) : (
             <>
-              <div className="stat-label">Volume soulevé</div>
+              <div className="stat-label">{t('Volume soulevé')}</div>
               <div className="stat-value">{formatKg(summary.volumeKg)} kg</div>
             </>
           )}
@@ -100,12 +103,12 @@ export function WorkoutSummaryScreen() {
         <div className="stat pop" style={{ animationDelay: '0.4s' }}>
           {summary.repCount === 0 && summary.distanceKm > 0 ? (
             <>
-              <div className="stat-label">Allure moyenne</div>
+              <div className="stat-label">{t('Allure moyenne')}</div>
               <div className="stat-value">{formatPace(paceSecPerKm(summary.distanceKm, summary.cardioSec))}</div>
             </>
           ) : (
             <>
-              <div className="stat-label">Répétitions</div>
+              <div className="stat-label">{t('Répétitions')}</div>
               <div className="stat-value">{summary.repCount}</div>
             </>
           )}
@@ -114,7 +117,7 @@ export function WorkoutSummaryScreen() {
 
       {records.length > 0 && (
         <>
-          <h2 className="section-title">Nouveaux records 🏆</h2>
+          <h2 className="section-title">{t('Nouveaux records')} 🏆</h2>
           <div className="card stack">
             {records.map((r, i) => (
               <div key={`${r.setId}-${r.hit.type}-${i}`} className="record-row">
@@ -127,7 +130,7 @@ export function WorkoutSummaryScreen() {
       )}
 
       <button className="btn btn-primary btn-block btn-big" style={{ marginTop: 24 }} onClick={() => navigate('/')}>
-        Retour au programme
+        {t('Retour au programme')}
       </button>
     </div>
   );

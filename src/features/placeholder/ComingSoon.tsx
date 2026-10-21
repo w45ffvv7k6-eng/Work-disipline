@@ -1,3 +1,4 @@
+import { t } from '../../i18n';
 import type { ReactNode } from 'react';
 import { PageHeader } from '../../ui/PageHeader';
 
@@ -17,7 +18,7 @@ export function ComingSoon({
       <PageHeader icon={icon} title={title} subtitle={subtitle} />
       <div className="empty">
         <div className="big">🚧</div>
-        <p>Cet écran arrive à l’étape « {step} ».</p>
+        <p>{t('Cet écran arrive à l’étape « {step} ».', { step })}</p>
       </div>
     </div>
   );

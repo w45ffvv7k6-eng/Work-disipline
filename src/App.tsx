@@ -14,14 +14,16 @@ import { FeedbackProvider } from './ui/feedback';
 import { AppBackground } from './ui/AppBackground';
 import { ThemeSync } from './ui/ThemeSync';
 import { WelcomeSplash } from './ui/WelcomeSplash';
+import { k, t as translate } from './i18n';
+import { LanguageProvider, useLanguage } from './i18n/react';
 import { DumbbellIcon, HistoryIcon, ListIcon, TemplateIcon, UserIcon } from './ui/icons';
 
 const TABS = [
-  { to: '/', label: 'Programme', icon: <DumbbellIcon />, end: true },
-  { to: '/seances', label: 'Séances', icon: <TemplateIcon /> },
-  { to: '/historique', label: 'Historique', icon: <HistoryIcon /> },
-  { to: '/exercices', label: 'Exercices', icon: <ListIcon /> },
-  { to: '/profil', label: 'Profil', icon: <UserIcon /> },
+  { to: '/', label: k('Programme'), icon: <DumbbellIcon />, end: true },
+  { to: '/seances', label: k('Séances'), icon: <TemplateIcon /> },
+  { to: '/historique', label: k('Historique'), icon: <HistoryIcon /> },
+  { to: '/exercices', label: k('Exercices'), icon: <ListIcon /> },
+  { to: '/profil', label: k('Profil'), icon: <UserIcon /> },
 ];
 
 /** Chaque changement d'écran apparaît en fondu (animation rejouée à chaque nouvelle adresse). */
@@ -48,7 +50,7 @@ function TabBar() {
           className={({ isActive }) => (isActive || (inWorkout && t.to === '/') ? 'active' : '')}
         >
           {t.icon}
-          {t.label}
+          {translate(t.label)}
         </NavLink>
       ))}
     </nav>
@@ -64,55 +66,67 @@ function AuthGate({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
+/** Au changement de langue, tout l'intérieur de l'appli est redessiné dans la nouvelle langue. */
+function TranslatedApp({ children }: { children: ReactNode }) {
+  const { lang } = useLanguage();
+  return (
+    <div className="app" key={lang}>
+      {children}
+    </div>
+  );
+}
+
 export function App() {
   return (
-    <HashRouter>
-      <FeedbackProvider>
-        <AuthProvider>
-          <PersonGate welcome={<WelcomeSplash />}>
-            <AuthGate>
-              <AppBackground />
-              <div className="app">
-                <PageTransition>
-                  <Routes>
-                    <Route path="/" element={<HomeScreen />} />
-                    <Route path="/seance/:id" element={<LiveWorkoutScreen />} />
-                    <Route
-                      path="/historique"
-                      element={
-                        <ComingSoon
-                          title="Historique"
-                          subtitle="Tes séances passées, en détail"
-                          icon={<HistoryIcon />}
-                          step="Historique et graphiques"
-                        />
-                      }
-                    />
-                    <Route
-                      path="/exercices"
-                      element={
-                        <ComingSoon
-                          title="Exercices"
-                          subtitle="Bibliothèque et courbes de progression"
-                          icon={<ListIcon />}
-                          step="Bibliothèque"
-                        />
-                      }
-                    />
-                    <Route path="/seances" element={<SessionsScreen />} />
-                    <Route path="/seances/:id" element={<SessionEditorScreen />} />
-                    <Route path="/bravo/:id" element={<WorkoutSummaryScreen />} />
-                    <Route path="/profil" element={<ProfileScreen />} />
-                    <Route path="*" element={<HomeScreen />} />
-                  </Routes>
-                </PageTransition>
-                <TabBar />
-              </div>
-            </AuthGate>
-          </PersonGate>
-          <ThemeSync />
-        </AuthProvider>
-      </FeedbackProvider>
-    </HashRouter>
+    <LanguageProvider>
+      <HashRouter>
+        <FeedbackProvider>
+          <AuthProvider>
+            <PersonGate welcome={<WelcomeSplash />}>
+              <AuthGate>
+                <AppBackground />
+                <TranslatedApp>
+                  <PageTransition>
+                    <Routes>
+                      <Route path="/" element={<HomeScreen />} />
+                      <Route path="/seance/:id" element={<LiveWorkoutScreen />} />
+                      <Route
+                        path="/historique"
+                        element={
+                          <ComingSoon
+                            title={translate('Historique')}
+                            subtitle={translate('Tes séances passées, en détail')}
+                            icon={<HistoryIcon />}
+                            step={translate('Historique et graphiques')}
+                          />
+                        }
+                      />
+                      <Route
+                        path="/exercices"
+                        element={
+                          <ComingSoon
+                            title={translate('Exercices')}
+                            subtitle={translate('Bibliothèque et courbes de progression')}
+                            icon={<ListIcon />}
+                            step={translate('Bibliothèque')}
+                          />
+                        }
+                      />
+                      <Route path="/seances" element={<SessionsScreen />} />
+                      <Route path="/seances/:id" element={<SessionEditorScreen />} />
+                      <Route path="/bravo/:id" element={<WorkoutSummaryScreen />} />
+                      <Route path="/profil" element={<ProfileScreen />} />
+                      <Route path="*" element={<HomeScreen />} />
+                    </Routes>
+                  </PageTransition>
+                  <TabBar />
+                </TranslatedApp>
+              </AuthGate>
+            </PersonGate>
+            <ThemeSync />
+          </AuthProvider>
+        </FeedbackProvider>
+      </HashRouter>
+    </LanguageProvider>
   );
 }

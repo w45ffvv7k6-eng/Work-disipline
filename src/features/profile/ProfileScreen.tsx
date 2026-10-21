@@ -12,10 +12,11 @@ import { switchPerson } from '../people/PersonGate';
 import { PhotoChoice } from '../../ui/PhotoChoice';
 import { personPhoto } from '../../ui/splashPhotos';
 import { PHOTO_CHANGED } from '../../ui/AppBackground';
-import { SettingsSection } from '../settings/SettingsSection';
+import { LanguageSection, SettingsSection } from '../settings/SettingsSection';
 import { UserIcon } from '../../ui/icons';
 import { PageHeader } from '../../ui/PageHeader';
 import { Avatar, photoToAvatar } from '../../ui/Avatar';
+import { locale, t } from '../../i18n';
 
 /** Le prénom du profil sert aussi dans la liste « Qui s'entraîne ? ». */
 function renameActive(firstName: string) {
@@ -23,7 +24,10 @@ function renameActive(firstName: string) {
   if (id) people.rename(id, firstName);
 }
 
-const dateFormat = new Intl.DateTimeFormat('fr-FR', { day: 'numeric', month: 'short', year: 'numeric' });
+const dateFormat = {
+  format: (date: number) =>
+    new Date(date).toLocaleDateString(locale(), { day: 'numeric', month: 'short', year: 'numeric' }),
+};
 
 function parseNumber(text: string): number {
   const n = Number(text.replace(',', '.'));
@@ -46,8 +50,8 @@ export function ProfileScreen() {
       <div className="screen">
         <PageHeader
           icon={<UserIcon />}
-          title="Mon profil"
-          subtitle="Quelques infos pour suivre ton évolution. Elles restent sur ton téléphone."
+          title={t('Mon profil')}
+          subtitle={t('Quelques infos pour suivre ton évolution. Elles restent sur ton téléphone.')}
         />
         <ProfileForm
           onSave={async (data, weightKg) => {
@@ -57,6 +61,7 @@ export function ProfileScreen() {
           }}
         />
         <PersonSection avatar={avatar} />
+        <LanguageSection />
       </div>
     );
   }
@@ -68,9 +73,9 @@ export function ProfileScreen() {
 
   const removeCheck = async (check: BodyCheck) => {
     const ok = await confirm({
-      title: 'Supprimer cette pesée ?',
-      message: `${formatKg(check.weightKg)} kg le ${dateFormat.format(check.date)}`,
-      confirmLabel: 'Supprimer',
+      title: t('Supprimer cette pesée ?'),
+      message: t('{kg} kg le {date}', { kg: formatKg(check.weightKg), date: dateFormat.format(check.date) }),
+      confirmLabel: t('Supprimer'),
       danger: true,
     });
     if (ok) await repo.deleteCheck(check.id);
@@ -79,57 +84,57 @@ export function ProfileScreen() {
   return (
     <div className="screen">
       <header className="page-header" style={{ marginTop: 12 }}>
-        <PhotoPicker className="avatar-btn" onFile={avatar.onFile} label="Changer ma photo de profil">
+        <PhotoPicker className="avatar-btn" onFile={avatar.onFile} label={t('Changer ma photo de profil')}>
           <Avatar name={profile.firstName} photo={avatar.photo} />
           <span className="avatar-camera" aria-hidden="true">
             📷
           </span>
         </PhotoPicker>
         <div className="grow">
-          <h1 className="page-title">{profile.firstName || 'Mon profil'}</h1>
-          <p className="page-subtitle">Membre Work &amp; Discipline</p>
+          <h1 className="page-title">{profile.firstName || t('Mon profil')}</h1>
+          <p className="page-subtitle">{t('Membre Work & Discipline')}</p>
         </div>
-        <button className="icon-btn edit-btn" onClick={() => setEditing(true)} aria-label="Modifier le profil">
+        <button className="icon-btn edit-btn" onClick={() => setEditing(true)} aria-label={t('Modifier le profil')}>
           ✏️
         </button>
       </header>
 
       <div className="stat-grid">
         <div className="stat">
-          <div className="stat-label">Poids actuel</div>
+          <div className="stat-label">{t('Poids actuel')}</div>
           <div className="stat-value">{latest ? `${formatKg(latest.weightKg)} kg` : '—'}</div>
-          <div className="stat-hint">{latest ? dateFormat.format(latest.date) : 'Aucune pesée'}</div>
+          <div className="stat-hint">{latest ? dateFormat.format(latest.date) : t('Aucune pesée')}</div>
         </div>
         <div className="stat">
-          <div className="stat-label">Taille</div>
+          <div className="stat-label">{t('Taille')}</div>
           <div className="stat-value">{profile.heightCm} cm</div>
           <div className="stat-hint">&nbsp;</div>
         </div>
         <div className="stat">
-          <div className="stat-label">IMC</div>
+          <div className="stat-label">{t('IMC')}</div>
           <div className="stat-value">{currentBmi !== null ? formatKg(currentBmi) : '—'}</div>
           <div className="stat-hint">{currentBmi !== null ? bmiCategory(currentBmi) : ''}</div>
         </div>
         <div className="stat">
-          <div className="stat-label">Évolution</div>
+          <div className="stat-label">{t('Évolution')}</div>
           <div
             className={`stat-value${totalDelta && totalDelta > 0 ? ' up' : totalDelta && totalDelta < 0 ? ' down' : ''}`}
           >
             {totalDelta !== null ? `${totalDelta > 0 ? '+' : ''}${formatKg(totalDelta)} kg` : '—'}
           </div>
           <div className="stat-hint">
-            {first && totalDelta !== null ? `depuis le ${dateFormat.format(first.date)}` : ''}
+            {first && totalDelta !== null ? t('depuis le {date}', { date: dateFormat.format(first.date) }) : ''}
           </div>
         </div>
       </div>
 
       <button className="btn btn-primary btn-block btn-big" style={{ marginTop: 16 }} onClick={() => setWeighing(true)}>
-        ⚖️ Nouvelle pesée
+        ⚖️ {t('Nouvelle pesée')}
       </button>
 
       {checks.length > 0 && (
         <>
-          <h2 className="section-title">Historique du poids</h2>
+          <h2 className="section-title">{t('Historique du poids')}</h2>
           <div className="card" style={{ padding: '4px 16px' }}>
             {checks.map((c, i) => {
               const previous = checks[i + 1];
@@ -150,7 +155,7 @@ export function ProfileScreen() {
               );
             })}
           </div>
-          <p className="muted small">Touche une pesée pour la supprimer.</p>
+          <p className="muted small">{t('Touche une pesée pour la supprimer.')}</p>
         </>
       )}
 
@@ -161,7 +166,7 @@ export function ProfileScreen() {
       <SettingsSection />
 
       {editing && (
-        <Sheet onClose={() => setEditing(false)} title="Modifier le profil">
+        <Sheet onClose={() => setEditing(false)} title={t('Modifier le profil')}>
           <ProfileForm
             initial={profile}
             onSave={async (data) => {
@@ -203,28 +208,28 @@ function ProfileForm({
   return (
     <div style={{ marginTop: 16 }}>
       <div className="form-field">
-        <label htmlFor="p-name">Prénom</label>
+        <label htmlFor="p-name">{t('Prénom')}</label>
         <input id="p-name" className="search" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
       </div>
       <div className="form-field">
-        <label htmlFor="p-height">Taille (cm)</label>
+        <label htmlFor="p-height">{t('Taille (cm)')}</label>
         <input
           id="p-height"
           className="search"
           inputMode="numeric"
-          placeholder="ex. 178"
+          placeholder={t('ex. {value}', { value: 178 })}
           value={height}
           onChange={(e) => setHeight(e.target.value)}
         />
       </div>
       {!initial && (
         <div className="form-field">
-          <label htmlFor="p-weight">Poids actuel (kg)</label>
+          <label htmlFor="p-weight">{t('Poids actuel (kg)')}</label>
           <input
             id="p-weight"
             className="search"
             inputMode="decimal"
-            placeholder="ex. 72,5"
+            placeholder={t('ex. {value}', { value: formatKg(72.5) })}
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
           />
@@ -247,7 +252,7 @@ function ProfileForm({
           )
         }
       >
-        Enregistrer
+        {t('Enregistrer')}
       </button>
     </div>
   );
@@ -265,11 +270,11 @@ function WeightSheet({
   const [weight, setWeight] = useState(formatKg(initial));
   const bump = (delta: number) => setWeight(formatKg(Math.max(0, Math.round((parseNumber(weight) + delta) * 10) / 10)));
   return (
-    <Sheet onClose={onClose} title="Nouvelle pesée">
+    <Sheet onClose={onClose} title={t('Nouvelle pesée')}>
       <div className="stepper">
-        <div className="stepper-label">Poids (kg)</div>
+        <div className="stepper-label">{t('Poids (kg)')}</div>
         <div className="stepper-row">
-          <button className="stepper-btn" onClick={() => bump(-0.1)} aria-label="Moins 100 grammes">
+          <button className="stepper-btn" onClick={() => bump(-0.1)} aria-label={t('Moins 100 grammes')}>
             −
           </button>
           <input
@@ -278,9 +283,9 @@ function WeightSheet({
             value={weight}
             onChange={(e) => setWeight(e.target.value)}
             onFocus={(e) => e.target.select()}
-            aria-label="Poids en kg"
+            aria-label={t('Poids en kg')}
           />
-          <button className="stepper-btn" onClick={() => bump(0.1)} aria-label="Plus 100 grammes">
+          <button className="stepper-btn" onClick={() => bump(0.1)} aria-label={t('Plus 100 grammes')}>
             +
           </button>
         </div>
@@ -298,7 +303,7 @@ function WeightSheet({
         disabled={parseNumber(weight) <= 0}
         onClick={() => onSave(parseNumber(weight))}
       >
-        Enregistrer
+        {t('Enregistrer')}
       </button>
     </Sheet>
   );
@@ -315,14 +320,14 @@ function useAvatar() {
     const id = people.activeId();
     if (!id) return;
     if (people.setAvatar(id, value)) setPhoto(value);
-    else toast('Impossible d’enregistrer la photo sur ce téléphone.');
+    else toast(t('Impossible d’enregistrer la photo sur ce téléphone.'));
   };
 
   const onFile = async (file: File) => {
     try {
       save(await photoToAvatar(file));
     } catch {
-      toast('Cette photo n’a pas pu être ouverte.');
+      toast(t('Cette photo n’a pas pu être ouverte.'));
     }
   };
 
@@ -366,22 +371,22 @@ function PersonSection({ avatar }: { avatar: AvatarState }) {
   const [photo, setPhoto] = useState(personPhoto());
   return (
     <>
-      <h2 className="section-title">Ma photo</h2>
+      <h2 className="section-title">{t('Ma photo')}</h2>
       <div className="card avatar-card">
         <Avatar name={people.active()?.name ?? ''} photo={avatar.photo} />
         <div className="grow stack">
           <PhotoPicker className="btn btn-block btn-small" onFile={avatar.onFile}>
-            📷 {avatar.photo ? 'Changer ma photo' : 'Mettre ma photo'}
+            📷 {avatar.photo ? t('Changer ma photo') : t('Mettre ma photo')}
           </PhotoPicker>
           {avatar.photo && (
             <button className="link-btn" onClick={avatar.remove}>
-              Retirer ma photo
+              {t('Retirer ma photo')}
             </button>
           )}
         </div>
       </div>
 
-      <h2 className="section-title">Photo d’accueil</h2>
+      <h2 className="section-title">{t('Photo d’accueil')}</h2>
       <div className="card">
         <PhotoChoice
           value={photo}
@@ -394,13 +399,13 @@ function PersonSection({ avatar }: { avatar: AvatarState }) {
         />
       </div>
 
-      <h2 className="section-title">Personne</h2>
+      <h2 className="section-title">{t('Personne')}</h2>
       <div className="card stack">
         <p className="muted small" style={{ margin: 0 }}>
-          Plusieurs personnes peuvent utiliser l’appli sur ce téléphone, chacune avec ses propres séances.
+          {t('Plusieurs personnes peuvent utiliser l’appli sur ce téléphone, chacune avec ses propres séances.')}
         </p>
         <button className="btn btn-block btn-small" onClick={() => switchPerson()}>
-          👥 Changer de personne
+          👥 {t('Changer de personne')}
         </button>
       </div>
     </>

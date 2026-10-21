@@ -1,3 +1,4 @@
+import { t } from '../i18n';
 import type { ExerciseKind } from './types';
 
 interface SummarySet {
@@ -63,7 +64,7 @@ export function summarizeWorkout(
 }
 
 /** Une phrase d'encouragement, choisie de façon stable selon le jour. */
-const QUOTES = [
+export const QUOTES = [
   'La régularité bat le talent.',
   'Une séance de plus que la semaine dernière, c’est déjà gagner.',
   'Le muscle se construit à la salle, dans l’assiette et dans le lit.',
@@ -75,5 +76,5 @@ const QUOTES = [
 
 export function quoteOfTheDay(date: Date): string {
   const day = Math.floor(date.getTime() / 86_400_000);
-  return QUOTES[day % QUOTES.length];
+  return t(QUOTES[day % QUOTES.length]);
 }

@@ -1,8 +1,14 @@
+import { t } from '../i18n';
 import { nextTemplateInProgram } from './program';
 import type { Program, Template, Workout } from './types';
 
 export const WEEKDAY_SHORT = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];
 export const WEEKDAY_LONG = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'];
+
+/** Nom court traduit du jour (1 = lundi … 7 = dimanche). */
+export const dayShort = (weekday: number) => t(WEEKDAY_SHORT[weekday - 1]);
+/** Nom complet traduit du jour (1 = lundi … 7 = dimanche). */
+export const dayLong = (weekday: number) => t(WEEKDAY_LONG[weekday - 1]);
 
 export interface DayPlan {
   date: Date;

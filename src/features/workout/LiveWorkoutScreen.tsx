@@ -11,6 +11,7 @@ import { ExerciseCard } from './ExerciseCard';
 import { ExercisePicker } from './ExercisePicker';
 import { RestTimerBar } from '../timer/RestTimerBar';
 import { useWakeLock } from '../../ui/useWakeLock';
+import { t, tn } from '../../i18n';
 
 export function LiveWorkoutScreen() {
   const { id = '' } = useParams();
@@ -31,9 +32,9 @@ export function LiveWorkoutScreen() {
       <div className="screen">
         <div className="empty">
           <div className="big">✅</div>
-          <p>Cette séance n’est plus en cours.</p>
+          <p>{t('Cette séance n’est plus en cours.')}</p>
           <button className="btn btn-primary" onClick={() => navigate('/')}>
-            Retour à l’accueil
+            {t('Retour à l’accueil')}
           </button>
         </div>
       </div>
@@ -53,9 +54,9 @@ export function LiveWorkoutScreen() {
   const finish = async () => {
     if (completedCount === 0) {
       const ok = await confirm({
-        title: 'Aucune série validée',
-        message: 'Il n’y a rien à enregistrer. Supprimer cette séance ?',
-        confirmLabel: 'Supprimer la séance',
+        title: t('Aucune série validée'),
+        message: t('Il n’y a rien à enregistrer. Supprimer cette séance ?'),
+        confirmLabel: t('Supprimer la séance'),
         danger: true,
       });
       if (ok) {
@@ -66,9 +67,12 @@ export function LiveWorkoutScreen() {
     }
     const pending = exercises.reduce((n, e) => n + e.sets.filter((s) => !s.completed).length, 0);
     const ok = await confirm({
-      title: 'Terminer la séance ?',
-      message: pending > 0 ? `${pending} série(s) non validée(s) seront supprimées.` : undefined,
-      confirmLabel: 'Terminer la séance',
+      title: t('Terminer la séance ?'),
+      message:
+        pending > 0
+          ? tn(pending, '{n} série non validée sera supprimée.', '{n} séries non validées seront supprimées.')
+          : undefined,
+      confirmLabel: t('Terminer la séance'),
     });
     if (!ok) return;
     await workouts.finish(workout.id);
@@ -78,9 +82,9 @@ export function LiveWorkoutScreen() {
   const discard = async () => {
     setMenuOpen(false);
     const ok = await confirm({
-      title: 'Abandonner la séance ?',
-      message: 'Toutes les séries de cette séance seront définitivement supprimées.',
-      confirmLabel: 'Abandonner',
+      title: t('Abandonner la séance ?'),
+      message: t('Toutes les séries de cette séance seront définitivement supprimées.'),
+      confirmLabel: t('Abandonner'),
       danger: true,
     });
     if (!ok) return;
@@ -92,23 +96,23 @@ export function LiveWorkoutScreen() {
     <>
       <header className="workout-header">
         <div className="workout-header-inner">
-          <button className="icon-btn" onClick={() => navigate('/')} aria-label="Retour à l’accueil">
+          <button className="icon-btn" onClick={() => navigate('/')} aria-label={t('Retour à l’accueil')}>
             <BackIcon />
           </button>
           <div className="grow">
             <button className="workout-name" onClick={() => setRenaming(true)} style={{ maxWidth: '100%' }}>
-              {workout.name}
+              {t(workout.name)}
             </button>
             <div className="workout-clock">⏱ {formatClock(now - workout.startedAt)}</div>
           </div>
-          <button className="icon-btn" onClick={() => setMenuOpen(true)} aria-label="Options de la séance">
+          <button className="icon-btn" onClick={() => setMenuOpen(true)} aria-label={t('Options de la séance')}>
             <MoreIcon />
           </button>
           <button className="btn btn-primary btn-small" onClick={finish}>
-            Terminer
+            {t('Terminer')}
           </button>
         </div>
-        <div className="workout-progress" aria-label={`${Math.round(progress * 100)} % de la séance`}>
+        <div className="workout-progress" aria-label={t('{n} % de la séance', { n: Math.round(progress * 100) })}>
           <div style={{ transform: `scaleX(${progress})` }} />
         </div>
       </header>
@@ -121,21 +125,26 @@ export function LiveWorkoutScreen() {
           {exercises.length === 0 && (
             <div className="empty">
               <div className="big">🏋️</div>
-              <p>Ajoute ton premier exercice pour commencer.</p>
+              <p>{t('Ajoute ton premier exercice pour commencer.')}</p>
             </div>
           )}
           <button className="btn btn-primary btn-block btn-big" onClick={() => setPicking(true)}>
-            + Ajouter un exercice
+            + {t('Ajouter un exercice')}
           </button>
         </div>
       </div>
 
-      <RestTimerBar labelFor={(weId) => exercises.find((e) => e.workoutExercise.id === weId)?.exercise.name} />
+      <RestTimerBar
+        labelFor={(weId) => {
+          const name = exercises.find((e) => e.workoutExercise.id === weId)?.exercise.name;
+          return name ? t(name) : undefined;
+        }}
+      />
 
       {picking && <ExercisePicker onClose={() => setPicking(false)} onPick={addExercise} />}
 
       {menuOpen && (
-        <Sheet onClose={() => setMenuOpen(false)} title="Séance">
+        <Sheet onClose={() => setMenuOpen(false)} title={t('Séance')}>
           <div className="stack">
             <button
               className="btn btn-block"
@@ -144,10 +153,10 @@ export function LiveWorkoutScreen() {
                 setRenaming(true);
               }}
             >
-              Renommer la séance
+              {t('Renommer la séance')}
             </button>
             <button className="btn btn-block btn-danger" onClick={discard}>
-              Abandonner la séance
+              {t('Abandonner la séance')}
             </button>
           </div>
         </Sheet>
@@ -155,7 +164,7 @@ export function LiveWorkoutScreen() {
 
       {renaming && (
         <RenameSheet
-          initial={workout.name}
+          initial={t(workout.name)}
           onClose={() => setRenaming(false)}
           onSave={async (name) => {
             setRenaming(false);
@@ -178,7 +187,7 @@ function RenameSheet({
 }) {
   const [name, setName] = useState(initial);
   return (
-    <Sheet onClose={onClose} title="Nom de la séance">
+    <Sheet onClose={onClose} title={t('Nom de la séance')}>
       <input className="search" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
       <button
         className="btn btn-primary btn-block"
@@ -186,7 +195,7 @@ function RenameSheet({
         disabled={!name.trim()}
         onClick={() => onSave(name.trim())}
       >
-        Enregistrer
+        {t('Enregistrer')}
       </button>
     </Sheet>
   );

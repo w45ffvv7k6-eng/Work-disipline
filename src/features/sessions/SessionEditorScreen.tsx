@@ -9,6 +9,7 @@ import { BackIcon } from '../../ui/icons';
 import { MUSCLE_COLORS } from '../../ui/muscles';
 import { RestPickerSheet } from '../timer/RestPickerSheet';
 import { ExercisePicker } from '../workout/ExercisePicker';
+import { t } from '../../i18n';
 
 /** Modification d'une séance détaillée. Chaque changement est enregistré immédiatement. */
 export function SessionEditorScreen() {
@@ -30,9 +31,9 @@ export function SessionEditorScreen() {
     return (
       <div className="screen">
         <div className="empty">
-          <p>Cette séance n’existe plus.</p>
+          <p>{t('Cette séance n’existe plus.')}</p>
           <button className="btn btn-primary" onClick={() => navigate('/seances')}>
-            Retour aux séances
+            {t('Retour aux séances')}
           </button>
         </div>
       </div>
@@ -41,7 +42,7 @@ export function SessionEditorScreen() {
 
   const program = all.find((p) => p.program.id === template.programId);
   // Programme à jours fixes : chaque séance a son jour de la semaine.
-  const fixedDays = program?.templates.some((t) => t.weekday !== undefined) ?? false;
+  const fixedDays = program?.templates.some((tpl) => tpl.weekday !== undefined) ?? false;
   const list = template.exercises;
 
   const save = (next: TemplateExercise[]) => templates.update(template.id, { exercises: next });
@@ -55,8 +56,9 @@ export function SessionEditorScreen() {
     void save(next);
   };
   const remove = async (index: number) => {
-    const name = exerciseById.get(list[index].exerciseId)?.name ?? 'cet exercice';
-    if (await confirm({ title: `Retirer « ${name} » ?`, confirmLabel: 'Retirer', danger: true })) {
+    const exercise = exerciseById.get(list[index].exerciseId);
+    const name = exercise ? t(exercise.name) : t('cet exercice');
+    if (await confirm({ title: t('Retirer « {name} » ?', { name }), confirmLabel: t('Retirer'), danger: true })) {
       await save(list.filter((_, i) => i !== index));
     }
   };
@@ -73,9 +75,9 @@ export function SessionEditorScreen() {
 
   const deleteSession = async () => {
     const ok = await confirm({
-      title: `Supprimer « ${template.name} » ?`,
-      message: 'Les séances déjà faites restent dans ton historique.',
-      confirmLabel: 'Supprimer la séance',
+      title: t('Supprimer « {name} » ?', { name: t(template.name) }),
+      message: t('Les séances déjà faites restent dans ton historique.'),
+      confirmLabel: t('Supprimer la séance'),
       danger: true,
     });
     if (!ok) return;
@@ -85,7 +87,7 @@ export function SessionEditorScreen() {
 
   const start = async () => {
     if (active) {
-      toast('Termine d’abord la séance en cours.');
+      toast(t('Termine d’abord la séance en cours.'));
       navigate(`/seance/${active.id}`);
       return;
     }
@@ -97,28 +99,28 @@ export function SessionEditorScreen() {
     <>
       <header className="workout-header">
         <div className="workout-header-inner">
-          <button className="icon-btn" onClick={() => navigate('/seances')} aria-label="Retour aux séances">
+          <button className="icon-btn" onClick={() => navigate('/seances')} aria-label={t('Retour aux séances')}>
             <BackIcon />
           </button>
-          <div className="grow muted small">{program?.program.name ?? 'Séance'}</div>
-          <span className="saved-hint">Enregistré automatiquement</span>
+          <div className="grow muted small">{t(program?.program.name ?? 'Séance')}</div>
+          <span className="saved-hint">{t('Enregistré automatiquement')}</span>
         </div>
       </header>
 
       <div className="screen" style={{ paddingTop: 16 }}>
         <NameField
           key={template.id}
-          initial={template.name}
+          initial={t(template.name)}
           onSave={(name) => templates.update(template.id, { name })}
         />
 
         {fixedDays && (
           <>
-            <h2 className="section-title">Jour de la semaine</h2>
+            <h2 className="section-title">{t('Jour de la semaine')}</h2>
             <div className="weekday-picker">
               {WEEKDAY_SHORT.map((label, i) => {
                 const day = i + 1;
-                const takenBy = program?.templates.find((t) => t.weekday === day && t.id !== template.id);
+                const takenBy = program?.templates.find((tpl) => tpl.weekday === day && tpl.id !== template.id);
                 return (
                   <button
                     key={day}
@@ -127,18 +129,18 @@ export function SessionEditorScreen() {
                     onClick={() =>
                       templates.update(template.id, { weekday: template.weekday === day ? undefined : day })
                     }
-                    aria-label={`${label}${takenBy ? ` (déjà : ${takenBy.name})` : ''}`}
+                    aria-label={`${t(label)}${takenBy ? ` (${t('déjà : {name}', { name: t(takenBy.name) })})` : ''}`}
                   >
-                    {label}
+                    {t(label)}
                   </button>
                 );
               })}
             </div>
-            <p className="muted small">Les jours grisés sont déjà pris par une autre séance du programme.</p>
+            <p className="muted small">{t('Les jours grisés sont déjà pris par une autre séance du programme.')}</p>
           </>
         )}
 
-        <h2 className="section-title">Exercices ({list.length})</h2>
+        <h2 className="section-title">{t('Exercices ({n})', { n: list.length })}</h2>
         <div className="stack">
           {list.map((item, index) => {
             const exercise = exerciseById.get(item.exerciseId);
@@ -154,18 +156,18 @@ export function SessionEditorScreen() {
                 <div className="row" style={{ alignItems: 'flex-start' }}>
                   <div className="grow">
                     <div className="exercise-name" style={{ marginTop: 0 }}>
-                      {index + 1}. {exercise?.name ?? 'Exercice supprimé'}
+                      {index + 1}. {exercise ? t(exercise.name) : t('Exercice supprimé')}
                     </div>
                     <div className="muted small">
-                      {exercise ? MUSCLE_GROUP_LABELS[exercise.muscleGroup] : ''}
-                      {item.note ? ` · ${item.note}` : ''}
+                      {exercise ? t(MUSCLE_GROUP_LABELS[exercise.muscleGroup]) : ''}
+                      {item.note ? ` · ${t(item.note)}` : ''}
                     </div>
                   </div>
                   <button
                     className="mini-btn"
                     onClick={() => move(index, -1)}
                     disabled={index === 0}
-                    aria-label="Monter"
+                    aria-label={t('Monter')}
                   >
                     ↑
                   </button>
@@ -173,18 +175,22 @@ export function SessionEditorScreen() {
                     className="mini-btn"
                     onClick={() => move(index, 1)}
                     disabled={index === list.length - 1}
-                    aria-label="Descendre"
+                    aria-label={t('Descendre')}
                   >
                     ↓
                   </button>
-                  <button className="mini-btn danger" onClick={() => remove(index)} aria-label="Retirer l’exercice">
+                  <button
+                    className="mini-btn danger"
+                    onClick={() => remove(index)}
+                    aria-label={t('Retirer l’exercice')}
+                  >
                     ✕
                   </button>
                 </div>
 
                 <div className="edit-grid">
                   <MiniStepper
-                    label={exercise?.kind === 'cardio' ? 'Fois' : 'Séries'}
+                    label={exercise?.kind === 'cardio' ? t('Fois') : t('Séries')}
                     value={item.plannedSets}
                     min={1}
                     onChange={(v) => patch(index, { plannedSets: v })}
@@ -192,14 +198,14 @@ export function SessionEditorScreen() {
                   {exercise?.kind !== 'cardio' && (
                     <>
                       <MiniStepper
-                        label={`${unit === 's' ? 'Durée' : 'Reps'} min`}
+                        label={unit === 's' ? t('Durée min') : t('Reps min')}
                         value={item.repMin ?? item.repMax ?? 10}
                         min={1}
                         step={step}
                         onChange={(v) => patch(index, { repMin: v, repMax: Math.max(v, item.repMax ?? v) })}
                       />
                       <MiniStepper
-                        label={`${unit === 's' ? 'Durée' : 'Reps'} max`}
+                        label={unit === 's' ? t('Durée max') : t('Reps max')}
                         value={item.repMax ?? item.repMin ?? 10}
                         min={1}
                         step={step}
@@ -208,7 +214,7 @@ export function SessionEditorScreen() {
                     </>
                   )}
                   <div className="mini-stepper">
-                    <div className="mini-label">Repos</div>
+                    <div className="mini-label">{t('Repos')}</div>
                     <button className="mini-value-btn" onClick={() => setRestFor(index)}>
                       {formatClock(rest * 1000)}
                     </button>
@@ -218,22 +224,22 @@ export function SessionEditorScreen() {
             );
           })}
           <button className="btn btn-block" onClick={() => setPicking(true)}>
-            + Ajouter un exercice
+            + {t('Ajouter un exercice')}
           </button>
         </div>
 
         <button className="btn btn-primary btn-block btn-big" style={{ marginTop: 24 }} onClick={start}>
-          Démarrer cette séance
+          {t('Démarrer cette séance')}
         </button>
         <button className="btn btn-danger btn-block" style={{ marginTop: 12 }} onClick={deleteSession}>
-          Supprimer la séance
+          {t('Supprimer la séance')}
         </button>
       </div>
 
       {picking && <ExercisePicker onClose={() => setPicking(false)} onPick={add} />}
       {restFor !== null && (
         <RestPickerSheet
-          title="Temps de repos"
+          title={t('Temps de repos')}
           current={list[restFor]?.restSec ?? settings.defaultRestSec}
           onClose={() => setRestFor(null)}
           onPick={(sec) => {
@@ -266,13 +272,13 @@ function MiniStepper({
       <div className="mini-row">
         <button
           onClick={() => onChange(Math.max(min, value - step))}
-          aria-label={`${label} : moins`}
+          aria-label={t('{label} : moins', { label })}
           disabled={value <= min}
         >
           −
         </button>
         <span>{value}</span>
-        <button onClick={() => onChange(value + step)} aria-label={`${label} : plus`}>
+        <button onClick={() => onChange(value + step)} aria-label={t('{label} : plus', { label })}>
           +
         </button>
       </div>
@@ -289,14 +295,14 @@ function NameField({ initial, onSave }: { initial: string; onSave: (name: string
     <input
       className="name-input"
       value={value}
-      aria-label="Nom de la séance"
+      aria-label={t('Nom de la séance')}
       onChange={(e) => {
         setValue(e.target.value);
         window.clearTimeout(timer.current);
         const name = e.target.value.trim();
         if (name) timer.current = window.setTimeout(() => onSave(name), 400);
       }}
-      onBlur={() => value.trim() && onSave(value.trim())}
+      onBlur={() => value.trim() && value.trim() !== initial && onSave(value.trim())}
     />
   );
 }

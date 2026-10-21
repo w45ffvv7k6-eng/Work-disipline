@@ -3,6 +3,7 @@ import { formatPace, paceSecPerKm, speedKmh } from '../../domain/cardio';
 import { formatKg } from '../../domain/format';
 import type { ExerciseKind, WorkoutSet } from '../../domain/types';
 import { Sheet } from '../../ui/Sheet';
+import { t } from '../../i18n';
 
 interface Props {
   set: WorkoutSet;
@@ -48,13 +49,13 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
   const bumpDistance = (delta: number) => setDistance(formatKg(Math.max(0, roundTo(parseNumber(distance) + delta))));
 
   return (
-    <Sheet onClose={onClose} title={`Série ${set.order + 1}`}>
+    <Sheet onClose={onClose} title={t('Série {n}', { n: set.order + 1 })}>
       {kind === 'cardio' && (
         <>
           <div className="stepper">
-            <div className="stepper-label">Distance (km)</div>
+            <div className="stepper-label">{t('Distance (km)')}</div>
             <div className="stepper-row">
-              <button className="stepper-btn" onClick={() => bumpDistance(-0.5)} aria-label="Moins 500 mètres">
+              <button className="stepper-btn" onClick={() => bumpDistance(-0.5)} aria-label={t('Moins 500 mètres')}>
                 −
               </button>
               <input
@@ -63,9 +64,9 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
                 value={distance}
                 onChange={(e) => setDistance(e.target.value)}
                 onFocus={(e) => e.target.select()}
-                aria-label="Distance en km"
+                aria-label={t('Distance en km')}
               />
-              <button className="stepper-btn" onClick={() => bumpDistance(0.5)} aria-label="Plus 500 mètres">
+              <button className="stepper-btn" onClick={() => bumpDistance(0.5)} aria-label={t('Plus 500 mètres')}>
                 +
               </button>
             </div>
@@ -79,7 +80,7 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
             </div>
           </div>
           <div className="stepper">
-            <div className="stepper-label">Durée</div>
+            <div className="stepper-label">{t('Durée')}</div>
             <div className="duration-row">
               <TimeStepper label="min" value={minutes} max={600} onChange={setMinutes} />
               <span className="duration-sep">:</span>
@@ -87,7 +88,7 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
             </div>
           </div>
           <div className="pace-preview">
-            Allure : <b>{formatPace(paceSecPerKm(parseNumber(distance), cardioSec))}</b> ·{' '}
+            {t('Allure :')} <b>{formatPace(paceSecPerKm(parseNumber(distance), cardioSec))}</b> ·{' '}
             {formatKg(speedKmh(parseNumber(distance), cardioSec))} km/h
           </div>
         </>
@@ -95,9 +96,15 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
 
       {kind !== 'duration' && kind !== 'cardio' && (
         <div className="stepper">
-          <div className="stepper-label">{kind === 'bodyweight' ? 'Lest (kg) — 0 si sans lest' : 'Charge (kg)'}</div>
+          <div className="stepper-label">
+            {kind === 'bodyweight' ? t('Lest (kg) — 0 si sans lest') : t('Charge (kg)')}
+          </div>
           <div className="stepper-row">
-            <button className="stepper-btn" onClick={() => bumpWeight(-weightStep)} aria-label="Diminuer la charge">
+            <button
+              className="stepper-btn"
+              onClick={() => bumpWeight(-weightStep)}
+              aria-label={t('Diminuer la charge')}
+            >
               −
             </button>
             <input
@@ -106,9 +113,13 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
               value={weight}
               onChange={(e) => setWeight(e.target.value)}
               onFocus={(e) => e.target.select()}
-              aria-label="Charge en kg"
+              aria-label={t('Charge en kg')}
             />
-            <button className="stepper-btn" onClick={() => bumpWeight(weightStep)} aria-label="Augmenter la charge">
+            <button
+              className="stepper-btn"
+              onClick={() => bumpWeight(weightStep)}
+              aria-label={t('Augmenter la charge')}
+            >
               +
             </button>
           </div>
@@ -124,9 +135,9 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
 
       {kind !== 'cardio' && (
         <div className="stepper">
-          <div className="stepper-label">{kind === 'duration' ? 'Durée (secondes)' : 'Répétitions'}</div>
+          <div className="stepper-label">{kind === 'duration' ? t('Durée (secondes)') : t('Répétitions')}</div>
           <div className="stepper-row">
-            <button className="stepper-btn" onClick={() => bumpReps(-repStep)} aria-label="Diminuer">
+            <button className="stepper-btn" onClick={() => bumpReps(-repStep)} aria-label={t('Diminuer')}>
               −
             </button>
             <input
@@ -135,9 +146,9 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
               value={reps}
               onChange={(e) => setReps(e.target.value)}
               onFocus={(e) => e.target.select()}
-              aria-label={kind === 'duration' ? 'Durée en secondes' : 'Répétitions'}
+              aria-label={kind === 'duration' ? t('Durée en secondes') : t('Répétitions')}
             />
-            <button className="stepper-btn" onClick={() => bumpReps(repStep)} aria-label="Augmenter">
+            <button className="stepper-btn" onClick={() => bumpReps(repStep)} aria-label={t('Augmenter')}>
               +
             </button>
           </div>
@@ -146,8 +157,8 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
 
       <button className="toggle-row" onClick={() => setIsWarmup(!isWarmup)} role="switch" aria-checked={isWarmup}>
         <span>
-          Série d’échauffement
-          <div className="muted small">Ne compte ni dans les records ni dans le volume</div>
+          {t('Série d’échauffement')}
+          <div className="muted small">{t('Ne compte ni dans les records ni dans le volume')}</div>
         </span>
         <span className={`switch${isWarmup ? ' on' : ''}`} />
       </button>
@@ -155,14 +166,14 @@ export function SetEditorSheet({ set, kind, weightStep, onClose, onSave, onDelet
       <div className="stack" style={{ marginTop: 16 }}>
         {!set.completed && (
           <button className="btn btn-primary btn-block btn-big" onClick={() => save(true)}>
-            Valider la série
+            {t('Valider la série')}
           </button>
         )}
         <button className={`btn btn-block ${set.completed ? 'btn-primary' : ''}`} onClick={() => save(false)}>
-          Enregistrer
+          {t('Enregistrer')}
         </button>
         <button className="btn btn-block btn-danger" onClick={onDelete}>
-          Supprimer la série
+          {t('Supprimer la série')}
         </button>
       </div>
     </Sheet>
@@ -188,7 +199,7 @@ function TimeStepper({
       <button
         className="stepper-btn small"
         onClick={() => onChange(Math.min(max, value + step))}
-        aria-label={`Plus de ${label}`}
+        aria-label={label === 's' ? t('Plus de secondes') : t('Plus de minutes')}
       >
         +
       </button>
@@ -201,12 +212,12 @@ function TimeStepper({
           onChange(Math.min(max, n));
         }}
         onFocus={(e) => e.target.select()}
-        aria-label={label === 's' ? 'Secondes' : 'Minutes'}
+        aria-label={label === 's' ? t('Secondes') : t('Minutes')}
       />
       <button
         className="stepper-btn small"
         onClick={() => onChange(Math.max(0, value - step))}
-        aria-label={`Moins de ${label}`}
+        aria-label={label === 's' ? t('Moins de secondes') : t('Moins de minutes')}
       >
         −
       </button>

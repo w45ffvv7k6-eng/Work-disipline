@@ -5,6 +5,7 @@ import { ALARM_GRACE_MS, remainingMs } from '../../domain/timer';
 import { playAlarm } from '../../ui/alarm';
 import { haptic } from '../../ui/feedback';
 import { useNow } from '../../ui/useNow';
+import { t } from '../../i18n';
 
 /** Barre du minuteur de repos, fixée en bas de l'écran pendant la séance. */
 export function RestTimerBar({ labelFor }: { labelFor: (workoutExerciseId: string) => string | undefined }) {
@@ -45,16 +46,19 @@ export function RestTimerBar({ labelFor }: { labelFor: (workoutExerciseId: strin
         <div className="rest-bar-inner">
           <div className="rest-info">
             <div className="rest-clock">{formatClock(remaining + 999)}</div>
-            <div className="rest-label">Repos{label ? ` · ${label}` : ''}</div>
+            <div className="rest-label">
+              {t('Repos')}
+              {label ? ` · ${label}` : ''}
+            </div>
           </div>
-          <button className="rest-btn" onClick={() => timerRepo.adjust(-15)} aria-label="Retirer 15 secondes">
+          <button className="rest-btn" onClick={() => timerRepo.adjust(-15)} aria-label={t('Retirer 15 secondes')}>
             −15
           </button>
-          <button className="rest-btn" onClick={() => timerRepo.adjust(15)} aria-label="Ajouter 15 secondes">
+          <button className="rest-btn" onClick={() => timerRepo.adjust(15)} aria-label={t('Ajouter 15 secondes')}>
             +15
           </button>
           <button className="rest-btn rest-skip" onClick={() => timerRepo.stop()}>
-            Passer
+            {t('Passer')}
           </button>
         </div>
       </div>
@@ -65,7 +69,7 @@ export function RestTimerBar({ labelFor }: { labelFor: (workoutExerciseId: strin
     return (
       <button className="rest-bar rest-done" onClick={() => setFinishedAt(null)}>
         <div className="rest-bar-inner">
-          <div className="rest-clock">✅ Repos terminé, c’est reparti !</div>
+          <div className="rest-clock">✅ {t('Repos terminé, c’est reparti !')}</div>
         </div>
       </button>
     );

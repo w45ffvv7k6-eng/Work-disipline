@@ -6,6 +6,8 @@ import { ALARM_SOUNDS, playAlarm, unlockAudio } from '../../ui/alarm';
 import { haptic } from '../../ui/feedback';
 import { BACKGROUNDS, backgroundFor, THEMES } from '../../ui/theme';
 import { RestPickerSheet } from '../timer/RestPickerSheet';
+import { k, t } from '../../i18n';
+import { LANGUAGES, useLanguage } from '../../i18n/react';
 
 const WEIGHT_STEPS = [1, 1.25, 2.5, 5];
 
@@ -21,33 +23,38 @@ export function SettingsSection() {
 
   return (
     <>
-      <h2 className="section-title">Couleur principale</h2>
+      <LanguageSection />
+
+      <h2 className="section-title">{t('Couleur principale')}</h2>
       <div className="card">
         <div className="theme-grid">
-          {THEMES.map((t) => (
+          {THEMES.map((theme) => (
             <button
-              key={t.id}
-              className={`theme-swatch${settings.theme === t.id ? ' selected' : ''}`}
+              key={theme.id}
+              className={`theme-swatch${settings.theme === theme.id ? ' selected' : ''}`}
               onClick={() => {
                 haptic();
-                void repo.update({ theme: t.id });
+                void repo.update({ theme: theme.id });
               }}
-              aria-pressed={settings.theme === t.id}
+              aria-pressed={settings.theme === theme.id}
             >
-              <span className="swatch" style={{ background: `linear-gradient(135deg, ${t.accent}, ${t.accent2})` }}>
-                {settings.theme === t.id && '✓'}
+              <span
+                className="swatch"
+                style={{ background: `linear-gradient(135deg, ${theme.accent}, ${theme.accent2})` }}
+              >
+                {settings.theme === theme.id && '✓'}
               </span>
-              <span className="swatch-name">{t.name}</span>
+              <span className="swatch-name">{t(theme.name)}</span>
             </button>
           ))}
         </div>
       </div>
 
-      <h2 className="section-title">Couleur du fond</h2>
+      <h2 className="section-title">{t('Couleur du fond')}</h2>
       <div className="card">
         <div className="bg-grid">
           {[
-            { id: 'assorti', name: 'Assorti', base: backgroundFor(settings.theme, 'assorti').base },
+            { id: 'assorti', name: k('Assorti'), base: backgroundFor(settings.theme, 'assorti').base },
             ...BACKGROUNDS,
           ].map((b) => {
             const selected = (settings.background ?? 'assorti') === b.id;
@@ -65,32 +72,32 @@ export function SettingsSection() {
                   <span className="bg-dot" />
                   {b.id === 'assorti' && <span className="bg-auto">A</span>}
                 </span>
-                <span className="swatch-name">{b.name}</span>
+                <span className="swatch-name">{t(b.name)}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      <h2 className="section-title">Minuteur de repos</h2>
+      <h2 className="section-title">{t('Minuteur de repos')}</h2>
       <div className="card stack">
         <button className="toggle-row" onClick={() => setPickingRest(true)}>
           <span>
-            Repos par défaut
-            <div className="muted small">Si l’exercice ou le modèle n’en précise pas</div>
+            {t('Repos par défaut')}
+            <div className="muted small">{t('Si l’exercice ou le modèle n’en précise pas')}</div>
           </span>
           <span className="value-pill">{formatClock(settings.defaultRestSec * 1000)}</span>
         </button>
         <ToggleRow
-          label="Son à la fin du repos"
-          hint="Coupé si l’iPhone est en mode silencieux"
+          label={t('Son à la fin du repos')}
+          hint={t('Coupé si l’iPhone est en mode silencieux')}
           on={settings.sound}
           onClick={() => toggle('sound')}
         />
         {settings.sound && (
           <div>
-            <div className="mini-label" style={{ textAlign: 'left', marginBottom: 8 }}>
-              Son de fin de repos (touche pour écouter)
+            <div className="mini-label" style={{ textAlign: 'start', marginBottom: 8 }}>
+              {t('Son de fin de repos (touche pour écouter)')}
             </div>
             <div className="sound-grid">
               {ALARM_SOUNDS.map((sound) => (
@@ -105,15 +112,15 @@ export function SettingsSection() {
                   aria-pressed={settings.alarmSound === sound.id}
                 >
                   <span className="sound-emoji">{sound.emoji}</span>
-                  {sound.name}
+                  {t(sound.name)}
                 </button>
               ))}
             </div>
           </div>
         )}
         <ToggleRow
-          label="Vibration à la fin du repos"
-          hint="Android uniquement (l’iPhone ne le permet pas)"
+          label={t('Vibration à la fin du repos')}
+          hint={t('Android uniquement (l’iPhone ne le permet pas)')}
           on={settings.vibration}
           onClick={() => toggle('vibration')}
         />
@@ -125,21 +132,21 @@ export function SettingsSection() {
             if (settings.vibration) haptic([300, 150, 300]);
           }}
         >
-          Tester l’alerte
+          {t('Tester l’alerte')}
         </button>
       </div>
 
-      <h2 className="section-title">Séance</h2>
+      <h2 className="section-title">{t('Séance')}</h2>
       <div className="card stack">
         <ToggleRow
-          label="Garder l’écran allumé"
-          hint="Pendant une séance en cours, pour voir le minuteur"
+          label={t('Garder l’écran allumé')}
+          hint={t('Pendant une séance en cours, pour voir le minuteur')}
           on={settings.keepAwake}
           onClick={() => toggle('keepAwake')}
         />
         <div>
           <div className="toggle-row" style={{ minHeight: 0, paddingBottom: 8 }}>
-            Pas des boutons − / + (kg)
+            {t('Pas des boutons − / + (kg)')}
           </div>
           <div className="segmented">
             {WEIGHT_STEPS.map((step) => (
@@ -157,7 +164,7 @@ export function SettingsSection() {
 
       {pickingRest && (
         <RestPickerSheet
-          title="Repos par défaut"
+          title={t('Repos par défaut')}
           current={settings.defaultRestSec}
           onClose={() => setPickingRest(false)}
           onPick={async (sec) => {
@@ -179,5 +186,36 @@ function ToggleRow({ label, hint, on, onClick }: { label: string; hint?: string;
       </span>
       <span className={`switch switch-accent${on ? ' on' : ''}`} />
     </button>
+  );
+}
+
+/** Choix de la langue de l'appli (enregistré pour la personne). */
+export function LanguageSection() {
+  const { lang, change } = useLanguage();
+  return (
+    <>
+      <h2 className="section-title">{t('Langue')}</h2>
+      <div className="card">
+        <div className="lang-grid">
+          {LANGUAGES.map((l) => (
+            <button
+              key={l.id}
+              className={`lang-choice${lang === l.id ? ' selected' : ''}`}
+              onClick={() => {
+                haptic();
+                change(l.id);
+              }}
+              aria-pressed={lang === l.id}
+              lang={l.id}
+            >
+              <span className="lang-flag" aria-hidden="true">
+                {l.flag}
+              </span>
+              {l.name}
+            </button>
+          ))}
+        </div>
+      </div>
+    </>
   );
 }

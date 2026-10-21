@@ -11,6 +11,8 @@ export interface Person {
   photo?: string;
   /** Photo de profil de la personne (petite image JPEG en data URL). */
   avatar?: string;
+  /** Langue de l'appli choisie par la personne ("fr", "en"…). */
+  lang?: string;
   createdAt: number;
 }
 
@@ -66,12 +68,13 @@ export function createPeopleRegistry(store: KeyValueStore | null = browserStore(
       return r.people.find((p) => p.id === r.active);
     },
     /** Ajoute une personne ; la toute première reprend la base d'origine. */
-    add(name: string, photo?: string): Person {
+    add(name: string, photo?: string, lang?: string): Person {
       const r = read();
       const person: Person = {
         id: r.people.some((p) => p.id === DEFAULT_PERSON) || r.people.length > 0 ? newId() : DEFAULT_PERSON,
         name: name.trim(),
         ...(photo ? { photo } : {}),
+        ...(lang ? { lang } : {}),
         createdAt: Date.now(),
       };
       write({ ...r, people: [...r.people, person] });
@@ -90,6 +93,10 @@ export function createPeopleRegistry(store: KeyValueStore | null = browserStore(
     setPhoto(id: string, photo: string): void {
       const r = read();
       write({ ...r, people: r.people.map((p) => (p.id === id ? { ...p, photo } : p)) });
+    },
+    setLang(id: string, lang: string): void {
+      const r = read();
+      write({ ...r, people: r.people.map((p) => (p.id === id ? { ...p, lang } : p)) });
     },
     setAvatar(id: string, avatar: string | undefined): boolean {
       const r = read();

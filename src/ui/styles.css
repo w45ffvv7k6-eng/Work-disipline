@@ -147,6 +147,7 @@ button:disabled {
 
 .tabbar a {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -156,6 +157,12 @@ button:disabled {
   text-decoration: none;
   font-size: 0.72rem;
   font-weight: 600;
+  /* Libellés longs (selon la langue) : coupés proprement plutôt que de déborder de l'écran. */
+  text-align: center;
+  line-height: 1.1;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  padding: 0 2px;
 }
 
 .tabbar a.active {
@@ -247,7 +254,7 @@ button:disabled {
 .card-button {
   display: block;
   width: 100%;
-  text-align: left;
+  text-align: start;
   background: var(--surface);
   border-radius: var(--radius);
   padding: 16px;
@@ -260,7 +267,7 @@ button:disabled {
 .banner-active {
   display: block;
   width: 100%;
-  text-align: left;
+  text-align: start;
   background: var(--accent-soft);
   border: 2px solid var(--accent);
   border-radius: var(--radius);
@@ -297,7 +304,7 @@ button:disabled {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  text-align: left;
+  text-align: start;
   padding: 0;
 }
 
@@ -564,7 +571,7 @@ button:disabled {
   width: 100%;
   padding: 0 4px;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
   gap: 12px;
 }
 
@@ -653,7 +660,7 @@ button:disabled {
   width: 100%;
   min-height: 60px;
   padding: 10px 4px;
-  text-align: left;
+  text-align: start;
   border-bottom: 1px solid var(--border);
 }
 .list-item:active {
@@ -1077,7 +1084,7 @@ button:disabled {
   color: var(--accent);
   font-size: 0.85rem;
   font-weight: 600;
-  text-align: left;
+  text-align: start;
 }
 
 .days {
@@ -1118,7 +1125,7 @@ button:disabled {
   width: 100%;
   min-height: 64px;
   padding: 10px 14px;
-  text-align: left;
+  text-align: start;
 }
 .day-head:disabled {
   opacity: 1;
@@ -1495,7 +1502,7 @@ button:disabled {
   padding: 8px 14px;
   border-radius: var(--radius);
   background: var(--surface-2);
-  text-align: left;
+  text-align: start;
   font-weight: 600;
 }
 .move-target:active {
@@ -1792,7 +1799,7 @@ button:disabled {
 .page-header::before {
   content: '';
   position: absolute;
-  left: -40px;
+  inset-inline-start: -40px;
   top: -60px;
   width: 220px;
   height: 180px;
@@ -1864,6 +1871,7 @@ button:disabled {
   cursor: pointer;
 }
 label.btn {
+  position: relative;
   cursor: pointer;
   -webkit-user-select: none;
   user-select: none;
@@ -1871,6 +1879,8 @@ label.btn {
 /* Champ invisible mais toujours utilisable (choix de photo). */
 .visually-hidden {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 1px;
   height: 1px;
   opacity: 0;
@@ -1981,6 +1991,33 @@ label.btn {
 }
 .sound-emoji {
   font-size: 1.35rem;
+}
+
+/* Choix de la langue */
+.lang-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+.lang-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  font-weight: 700;
+  color: var(--text-dim);
+  text-align: start;
+}
+.lang-choice.selected {
+  background: var(--accent-soft);
+  color: var(--accent);
+  outline: 2px solid var(--accent);
+}
+.lang-flag {
+  font-size: 1.4rem;
 }
 
 .edit-btn {

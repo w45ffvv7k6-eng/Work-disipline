@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useRepositories, useSubscribable } from '../../data';
 import { MUSCLE_GROUP_LABELS, type Exercise, type ExerciseKind, type MuscleGroup } from '../../domain/types';
 import { Sheet } from '../../ui/Sheet';
+import { t } from '../../i18n';
 
 interface Props {
   onClose: () => void;
@@ -24,7 +25,11 @@ export function ExercisePicker({ onClose, onPick }: Props) {
 
   const filtered = useMemo(() => {
     const q = normalize(query.trim());
-    return (all ?? []).filter((e) => (!group || e.muscleGroup === group) && (!q || normalize(e.name).includes(q)));
+    return (all ?? []).filter(
+      (e) =>
+        (!group || e.muscleGroup === group) &&
+        (!q || normalize(t(e.name)).includes(q) || normalize(e.name).includes(q)),
+    );
   }, [all, query, group]);
 
   if (creating) {
@@ -39,22 +44,22 @@ export function ExercisePicker({ onClose, onPick }: Props) {
   }
 
   return (
-    <Sheet onClose={onClose} title="Ajouter un exercice" full>
+    <Sheet onClose={onClose} title={t('Ajouter un exercice')} full>
       <input
         className="search"
         type="search"
-        placeholder="Rechercher…"
+        placeholder={t('Rechercher…')}
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        aria-label="Rechercher un exercice"
+        aria-label={t('Rechercher un exercice')}
       />
       <div className="chips">
         <button className={`chip${group === null ? ' active' : ''}`} onClick={() => setGroup(null)}>
-          Tous
+          {t('Tous')}
         </button>
         {GROUPS.map((g) => (
           <button key={g} className={`chip${group === g ? ' active' : ''}`} onClick={() => setGroup(g)}>
-            {MUSCLE_GROUP_LABELS[g]}
+            {t(MUSCLE_GROUP_LABELS[g])}
           </button>
         ))}
       </div>
@@ -62,19 +67,20 @@ export function ExercisePicker({ onClose, onPick }: Props) {
         {filtered.map((e) => (
           <button key={e.id} className="list-item" onClick={() => onPick(e)}>
             <div className="grow">
-              <div className="title">{e.name}</div>
+              <div className="title">{t(e.name)}</div>
               <div className="subtitle">
-                {MUSCLE_GROUP_LABELS[e.muscleGroup]}
-                {e.kind === 'bodyweight' && ' · poids du corps'}
-                {e.kind === 'duration' && ' · durée'}
-                {e.isCustom && ' · perso'}
+                {t(MUSCLE_GROUP_LABELS[e.muscleGroup])}
+                {e.kind === 'bodyweight' && ` · ${t('poids du corps')}`}
+                {e.kind === 'duration' && ` · ${t('durée')}`}
+                {e.isCustom && ` · ${t('perso')}`}
               </div>
             </div>
           </button>
         ))}
-        {all && filtered.length === 0 && <div className="empty">Aucun exercice trouvé.</div>}
+        {all && filtered.length === 0 && <div className="empty">{t('Aucun exercice trouvé.')}</div>}
         <button className="btn btn-outline btn-block" style={{ margin: '16px 0' }} onClick={() => setCreating(true)}>
-          + Créer un exercice{query.trim() ? ` « ${query.trim()} »` : ''}
+          + {t('Créer un exercice')}
+          {query.trim() ? ` « ${query.trim()} »` : ''}
         </button>
       </div>
     </Sheet>
@@ -103,22 +109,22 @@ function CreateExerciseSheet({
   };
 
   return (
-    <Sheet onClose={onClose} title="Nouvel exercice">
+    <Sheet onClose={onClose} title={t('Nouvel exercice')}>
       <div className="form-field">
-        <label htmlFor="ex-name">Nom</label>
+        <label htmlFor="ex-name">{t('Nom')}</label>
         <input id="ex-name" className="search" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
       </div>
       <div className="form-field">
-        <label>Type</label>
+        <label>{t('Type')}</label>
         <div className="segmented">
           <button className={kind === 'weighted' ? 'active' : ''} onClick={() => setKind('weighted')}>
-            Charge
+            {t('Charge')}
           </button>
           <button className={kind === 'bodyweight' ? 'active' : ''} onClick={() => setKind('bodyweight')}>
-            Poids du corps
+            {t('Poids du corps')}
           </button>
           <button className={kind === 'duration' ? 'active' : ''} onClick={() => setKind('duration')}>
-            Durée
+            {t('Durée')}
           </button>
           <button
             className={kind === 'cardio' ? 'active' : ''}
@@ -127,22 +133,22 @@ function CreateExerciseSheet({
               setGroup('cardio');
             }}
           >
-            Cardio
+            {t('Cardio')}
           </button>
         </div>
       </div>
       <div className="form-field">
-        <label>Groupe musculaire</label>
+        <label>{t('Groupe musculaire')}</label>
         <div className="chips" style={{ flexWrap: 'wrap', paddingTop: 0 }}>
           {GROUPS.map((g) => (
             <button key={g} className={`chip${group === g ? ' active' : ''}`} onClick={() => setGroup(g)}>
-              {MUSCLE_GROUP_LABELS[g]}
+              {t(MUSCLE_GROUP_LABELS[g])}
             </button>
           ))}
         </div>
       </div>
       <button className="btn btn-primary btn-block" disabled={!name.trim()} onClick={create}>
-        Créer et ajouter
+        {t('Créer et ajouter')}
       </button>
     </Sheet>
   );

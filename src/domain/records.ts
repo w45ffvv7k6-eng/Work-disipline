@@ -1,6 +1,7 @@
 import { speedKmh, formatPace } from './cardio';
 import { epley1RM } from './oneRepMax';
 import type { ExerciseKind } from './types';
+import { t } from '../i18n';
 
 export type RecordType = 'maxWeight' | 'est1RM' | 'maxReps' | 'maxLest' | 'maxDuration' | 'maxDistance' | 'bestSpeed';
 
@@ -100,6 +101,6 @@ export function formatRecord(hit: RecordHit, formatNumber: (n: number) => string
   const value =
     hit.type === 'bestSpeed'
       ? formatPace(hit.value > 0 ? Math.round(3600 / hit.value) : null)
-      : `${formatNumber(hit.value)} ${RECORD_UNITS[hit.type]}`;
-  return `${RECORD_LABELS[hit.type]} : ${value}`;
+      : `${formatNumber(hit.value)} ${t(RECORD_UNITS[hit.type])}`;
+  return t('{label} : {value}', { label: t(RECORD_LABELS[hit.type]), value });
 }
