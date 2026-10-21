@@ -106,7 +106,6 @@ const dictionary: Dictionary = {
   'Corpulence normale': 'Peso normal',
   'Couleur du fond': 'Cor de fundo',
   'Couleur principale': 'Cor principal',
-  'Coupé si l’iPhone est en mode silencieux': 'Sem som se o iPhone estiver em silêncio',
   'Course – Footing': 'Corrida – Contínua',
   'Course – Fractionné': 'Corrida – Intervalada',
   'Course à pied': 'Corrida',
@@ -507,6 +506,11 @@ const dictionary: Dictionary = {
   'Touche un exercice pour voir tes records et ta progression':
     'Toca num exercício para veres os teus recordes e a tua progressão',
   'Volume soulevé par semaine': 'Volume levantado por semana',
+  'Baisser le son': 'Baixar o som',
+  'Monter le son': 'Aumentar o som',
+  'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
+    'O volume do telemóvel também conta: aumenta-o com os botões laterais.',
+  'Volume du son': 'Volume do som',
 };
 
 export default dictionary;

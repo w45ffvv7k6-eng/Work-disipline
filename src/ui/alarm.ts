@@ -3,6 +3,7 @@
 // on appelle unlockAudio() lors du tap qui valide une série.
 
 let ctx: AudioContext | null = null;
+let output: GainNode | null = null;
 
 export function unlockAudio() {
   try {
@@ -45,13 +46,59 @@ function tone(
   gain.gain.setValueAtTime(0.0001, start);
   gain.gain.exponentialRampToValueAtTime(volume, start + 0.015);
   gain.gain.exponentialRampToValueAtTime(0.0001, start + duration);
-  osc.connect(gain).connect(ac.destination);
+  osc.connect(gain).connect(output ?? ac.destination);
   osc.start(start);
   osc.stop(start + duration + 0.02);
 }
 
-export function playAlarm(sound: string = DEFAULT_ALARM_SOUND) {
+/** Gain maximal (100 %) : plus fort que les sons d'origine, le compresseur évite la saturation. */
+const MAX_GAIN = 1.6;
+/** Durée la plus longue d'un son (gong), pour rendre la main à la musique ensuite. */
+const LONGEST_SOUND_MS = 3000;
+
+type AudioSessionNavigator = Navigator & { audioSession?: { type: string } };
+let restoreSession: number | undefined;
+
+/**
+ * Sur iPhone (iOS 17 et plus) : pendant le son, la musique d'une autre appli baisse un instant
+ * au lieu de s'arrêter, puis reprend normalement.
+ */
+function duckOtherAudio() {
+  const session = (navigator as AudioSessionNavigator).audioSession;
+  if (!session) return;
+  try {
+    session.type = 'transient';
+    window.clearTimeout(restoreSession);
+    restoreSession = window.setTimeout(() => {
+      session.type = 'auto';
+    }, LONGEST_SOUND_MS);
+  } catch {
+    // non pris en charge : sans conséquence
+  }
+}
+
+/** Sortie commune à tous les sons : volume réglable puis compresseur (pas de grésillement à fond). */
+function outputFor(ac: AudioContext, volume: number): GainNode {
+  if (!output || output.context !== ac) {
+    const compressor = ac.createDynamicsCompressor();
+    compressor.threshold.value = -10;
+    compressor.knee.value = 6;
+    compressor.ratio.value = 12;
+    compressor.attack.value = 0.003;
+    compressor.release.value = 0.15;
+    compressor.connect(ac.destination);
+    output = ac.createGain();
+    output.connect(compressor);
+  }
+  output.gain.value = (Math.min(100, Math.max(10, volume)) / 100) * MAX_GAIN;
+  return output;
+}
+
+/** Joue un son de fin de repos. `volume` : de 10 à 100 (%). */
+export function playAlarm(sound: string = DEFAULT_ALARM_SOUND, volume = 70) {
   if (!ctx) return;
+  outputFor(ctx, volume);
+  duckOtherAudio();
   const t = ctx.currentTime + 0.05;
   switch (sound as AlarmSoundId) {
     case 'cloche':

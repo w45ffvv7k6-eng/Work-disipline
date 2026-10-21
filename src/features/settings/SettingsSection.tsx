@@ -90,7 +90,7 @@ export function SettingsSection() {
         </button>
         <ToggleRow
           label={t('Son à la fin du repos')}
-          hint={t('Coupé si l’iPhone est en mode silencieux')}
+          hint={t('Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.')}
           on={settings.sound}
           onClick={() => toggle('sound')}
         />
@@ -106,7 +106,7 @@ export function SettingsSection() {
                   className={`sound-choice${settings.alarmSound === sound.id ? ' selected' : ''}`}
                   onClick={() => {
                     unlockAudio();
-                    playAlarm(sound.id);
+                    playAlarm(sound.id, settings.alarmVolume);
                     void repo.update({ alarmSound: sound.id });
                   }}
                   aria-pressed={settings.alarmSound === sound.id}
@@ -116,6 +116,14 @@ export function SettingsSection() {
                 </button>
               ))}
             </div>
+            <VolumeSlider
+              value={settings.alarmVolume}
+              onChange={(volume) => void repo.update({ alarmVolume: volume })}
+              onPreview={(volume) => {
+                unlockAudio();
+                playAlarm(settings.alarmSound, volume);
+              }}
+            />
           </div>
         )}
         <ToggleRow
@@ -128,7 +136,7 @@ export function SettingsSection() {
           className="btn btn-block btn-small"
           onClick={() => {
             unlockAudio();
-            if (settings.sound) playAlarm(settings.alarmSound);
+            if (settings.sound) playAlarm(settings.alarmSound, settings.alarmVolume);
             if (settings.vibration) haptic([300, 150, 300]);
           }}
         >
@@ -217,5 +225,65 @@ export function LanguageSection() {
         </div>
       </div>
     </>
+  );
+}
+
+/** Volume du son de fin de repos (10 à 100 %). Le son est rejoué quand on lâche le curseur. */
+function VolumeSlider({
+  value,
+  onChange,
+  onPreview,
+}: {
+  value: number;
+  onChange: (volume: number) => void;
+  onPreview: (volume: number) => void;
+}) {
+  const [volume, setVolume] = useState(value);
+  const commit = () => {
+    onChange(volume);
+    onPreview(volume);
+  };
+  const bump = (delta: number) => {
+    const next = Math.min(100, Math.max(10, volume + delta));
+    setVolume(next);
+    onChange(next);
+    onPreview(next);
+  };
+  return (
+    <div className="volume">
+      <div className="mini-label" style={{ textAlign: 'start' }}>
+        {t('Volume du son')} · <b>{volume} %</b>
+      </div>
+      <div className="volume-row">
+        <button
+          className="volume-btn"
+          onClick={() => bump(-10)}
+          disabled={volume <= 10}
+          aria-label={t('Baisser le son')}
+        >
+          🔈
+        </button>
+        <input
+          type="range"
+          min={10}
+          max={100}
+          step={10}
+          value={volume}
+          onChange={(e) => setVolume(Number(e.target.value))}
+          onPointerUp={commit}
+          onKeyUp={commit}
+          aria-label={t('Volume du son')}
+          style={{ ['--fill' as string]: `${((volume - 10) / 90) * 100}%` }}
+        />
+        <button
+          className="volume-btn"
+          onClick={() => bump(10)}
+          disabled={volume >= 100}
+          aria-label={t('Monter le son')}
+        >
+          🔊
+        </button>
+      </div>
+    </div>
   );
 }

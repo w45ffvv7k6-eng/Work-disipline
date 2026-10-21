@@ -148,6 +148,8 @@ export interface Settings {
   background: string;
   /** Son joué à la fin du repos. */
   alarmSound: string;
+  /** Volume du son de fin de repos, de 10 à 100 (%). */
+  alarmVolume: number;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
@@ -160,6 +162,7 @@ export const DEFAULT_SETTINGS: Settings = {
   theme: 'ambre',
   background: 'assorti',
   alarmSound: 'bips',
+  alarmVolume: 70,
 };
 
 export interface Profile {

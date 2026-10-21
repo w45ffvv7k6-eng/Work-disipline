@@ -106,7 +106,6 @@ const dictionary: Dictionary = {
   'Corpulence normale': 'وزن طبيعي',
   'Couleur du fond': 'لون الخلفية',
   'Couleur principale': 'اللون الرئيسي',
-  'Coupé si l’iPhone est en mode silencieux': 'يُكتم إذا كان الآيفون في الوضع الصامت',
   'Course – Footing': 'جري – هرولة',
   'Course – Fractionné': 'جري – تدريب متقطع',
   'Course à pied': 'الجري',
@@ -499,6 +498,11 @@ const dictionary: Dictionary = {
     'حصصك محفوظة على هذا الهاتف فقط. أنشئ نسخة احتياطية من حين لآخر واحتفظ بالملف في الملفات أو iCloud Drive أو عبر البريد الإلكتروني: ستتمكن من استرجاع كل شيء على هاتف جديد.',
   'Touche un exercice pour voir tes records et ta progression': 'اضغط على تمرين لترى أرقامك القياسية وتقدمك',
   'Volume soulevé par semaine': 'الحجم المرفوع في الأسبوع',
+  'Baisser le son': 'خفض الصوت',
+  'Monter le son': 'رفع الصوت',
+  'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
+    'مستوى صوت الهاتف مهم أيضًا: ارفعه بالأزرار الجانبية.',
+  'Volume du son': 'مستوى الصوت',
 };
 
 export default dictionary;

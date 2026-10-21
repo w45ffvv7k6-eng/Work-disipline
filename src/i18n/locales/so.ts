@@ -106,7 +106,6 @@ const dictionary: Dictionary = {
   'Corpulence normale': 'Miisaan caadi ah',
   'Couleur du fond': 'Midabka gadaasha',
   'Couleur principale': 'Midabka koowaad',
-  'Coupé si l’iPhone est en mode silencieux': 'Waa la damiyaa haddii iPhone-ku ku jiro qaab aamus',
   'Course – Footing': 'Orod – Jogging',
   'Course – Fractionné': 'Orod – Interval',
   'Course à pied': 'Orod',
@@ -509,6 +508,11 @@ const dictionary: Dictionary = {
   'Touche un exercice pour voir tes records et ta progression':
     'Taabo jimicsi si aad u aragto rikoorradaada iyo horumarkaaga',
   'Volume soulevé par semaine': 'Mugga la qaaday toddobaadkii',
+  'Baisser le son': 'Cod yaree',
+  'Monter le son': 'Cod kordhi',
+  'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
+    'Codka taleefanka sidoo kale wuu muhiim yahay: ku kordhi badhamada dhinaca.',
+  'Volume du son': 'Heerka codka',
 };
 
 export default dictionary;

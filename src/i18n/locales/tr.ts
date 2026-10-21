@@ -106,7 +106,6 @@ const dictionary: Dictionary = {
   'Corpulence normale': 'Normal kilo',
   'Couleur du fond': 'Arka plan rengi',
   'Couleur principale': 'Ana renk',
-  'Coupé si l’iPhone est en mode silencieux': 'iPhone sessizdeyse çalmaz',
   'Course – Footing': 'Koşu – Hafif tempo',
   'Course – Fractionné': 'Koşu – İnterval',
   'Course à pied': 'Koşu',
@@ -503,6 +502,11 @@ const dictionary: Dictionary = {
   'Touche un exercice pour voir tes records et ta progression':
     'Rekorlarını ve ilerlemeni görmek için bir egzersize dokun',
   'Volume soulevé par semaine': 'Haftalık kaldırılan hacim',
+  'Baisser le son': 'Sesi kıs',
+  'Monter le son': 'Sesi aç',
+  'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
+    'Telefonun ses seviyesi de önemli: yan tuşlarla artır.',
+  'Volume du son': 'Ses seviyesi',
 };
 
 export default dictionary;

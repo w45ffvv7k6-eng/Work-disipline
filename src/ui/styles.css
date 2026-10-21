@@ -2736,3 +2736,65 @@ body {
 .backup-status.warn {
   color: var(--gold);
 }
+
+/* Volume du son de fin de repos */
+.volume {
+  margin-top: 14px;
+}
+.volume-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+.volume-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+.volume-row input[type='range'] {
+  flex: 1;
+  min-width: 0;
+  height: 32px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+.volume-row input[type='range']::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to right, var(--accent) var(--fill), var(--surface-3) var(--fill));
+}
+[dir='rtl'] .volume-row input[type='range']::-webkit-slider-runnable-track {
+  background: linear-gradient(to left, var(--accent) var(--fill), var(--surface-3) var(--fill));
+}
+.volume-row input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
+  margin-top: -10px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+.volume-row input[type='range']::-moz-range-track {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--surface-3);
+}
+.volume-row input[type='range']::-moz-range-progress {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--accent);
+}
+.volume-row input[type='range']::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 3px solid var(--bg);
+}
