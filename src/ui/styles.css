@@ -3151,3 +3151,32 @@ body {
   font-size: 0.85rem;
   font-weight: 600;
 }
+
+/* En-tête des panneaux : reste visible en haut, avec le bouton ✕ pour fermer. */
+.sheet-head {
+  position: sticky;
+  top: -10px;
+  z-index: 2;
+  margin: -10px -16px 0;
+  padding: 10px 16px 0;
+  background: var(--surface);
+}
+.sheet-head-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.sheet-head-row .sheet-title {
+  flex: 1;
+}
+.sheet-close {
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  margin-top: -4px;
+  border-radius: 50%;
+  background: var(--surface-3);
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 800;
+}
