@@ -7,6 +7,11 @@ declare const __BUILD_DATE__: string;
 /** Numéro de version, ex. "1.38" : il augmente à chaque mise à jour de l'appli. */
 export const APP_VERSION = __APP_VERSION__;
 
+/** "Version 1.38" */
+export function shortVersionLabel(prefix: string): string {
+  return `${prefix} ${APP_VERSION}`;
+}
+
 /** "Version 1.38 · 22/10/2026" */
 export function versionLabel(prefix: string): string {
   const date = new Date(__BUILD_DATE__).toLocaleDateString(locale(), {
