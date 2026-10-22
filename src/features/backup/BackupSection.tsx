@@ -3,9 +3,15 @@ import { db } from '../../data';
 import { exportAll, importAll, isBackupFile, type BackupFile } from '../../data/backup';
 import { people } from '../../data/people';
 import { formatLongDate } from '../../domain/format';
-import { t, tn } from '../../i18n';
+import { isLang, t, tn } from '../../i18n';
 import { useFeedback } from '../../ui/feedback';
-import { getCustomBackground, setCustomBackground } from '../../ui/splashPhotos';
+import {
+  CUSTOM_PHOTO,
+  getCustomBackground,
+  isImageDataUrl,
+  setCustomBackground,
+  SPLASH_PHOTOS,
+} from '../../ui/splashPhotos';
 
 /** Au-delà, on rappelle de refaire une sauvegarde. */
 const REMIND_AFTER_DAYS = 14;
@@ -126,9 +132,11 @@ export function BackupSection() {
       await importAll(db, backup);
       const id = people.activeId();
       if (id && backup.person) {
-        if (backup.person.avatar) people.setAvatar(id, backup.person.avatar);
-        if (backup.person.photo) people.setPhoto(id, backup.person.photo);
-        if (backup.person.lang) people.setLang(id, backup.person.lang);
+        // Données d'un fichier : on n'accepte que des valeurs attendues.
+        if (isImageDataUrl(backup.person.avatar)) people.setAvatar(id, backup.person.avatar);
+        if (typeof backup.person.photo === 'string' && [...SPLASH_PHOTOS, CUSTOM_PHOTO].includes(backup.person.photo))
+          people.setPhoto(id, backup.person.photo);
+        if (isLang(backup.person.lang)) people.setLang(id, backup.person.lang);
         if (backup.person.background) setCustomBackground(backup.person.background, id);
       }
       toast(t('Sauvegarde restaurée ✅'));

@@ -13,10 +13,16 @@ export const CUSTOM_PHOTO = 'ma-photo';
 
 const customKey = (personId: string | undefined) => `wd-bg-${personId ?? 'default'}`;
 
+/** Seules de vraies images encodées (data:image/…) sont acceptées, jamais du texte ou du code. */
+export function isImageDataUrl(value: unknown): value is string {
+  return typeof value === 'string' && /^data:image\/(jpeg|png|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(value);
+}
+
 /** Photo personnelle de la personne (image JPEG en data URL), ou null. */
 export function getCustomBackground(personId = people.activeId()): string | null {
   try {
-    return localStorage.getItem(customKey(personId));
+    const value = localStorage.getItem(customKey(personId));
+    return isImageDataUrl(value) ? value : null;
   } catch {
     return null;
   }
@@ -25,6 +31,7 @@ export function getCustomBackground(personId = people.activeId()): string | null
 /** Enregistre (ou efface avec null) la photo personnelle. Renvoie false si le téléphone manque de place. */
 export function setCustomBackground(dataUrl: string | null, personId = people.activeId()): boolean {
   try {
+    if (dataUrl && !isImageDataUrl(dataUrl)) return false;
     if (dataUrl) localStorage.setItem(customKey(personId), dataUrl);
     else localStorage.removeItem(customKey(personId));
     return true;

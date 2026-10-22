@@ -1,10 +1,11 @@
 import { initials } from './PageHeader';
+import { isImageDataUrl } from './splashPhotos';
 
 /** Rond avec la photo de profil de la personne, ou ses initiales si elle n'en a pas. */
 export function Avatar({ name, photo, className = '' }: { name: string; photo?: string; className?: string }) {
   return (
     <span className={`avatar${photo ? ' has-photo' : ''} ${className}`.trim()} aria-hidden="true">
-      {photo ? <img src={photo} alt="" /> : initials(name || '?')}
+      {photo && isImageDataUrl(photo) ? <img src={photo} alt="" /> : initials(name || '?')}
     </span>
   );
 }
