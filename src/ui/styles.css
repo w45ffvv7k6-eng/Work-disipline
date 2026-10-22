@@ -3096,3 +3096,41 @@ body {
   margin: 12px auto 0;
   font-weight: 700;
 }
+
+/* Planning de la semaine repliable */
+.planning-toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 22px;
+  padding: 14px 16px;
+  border-radius: var(--radius);
+  background: rgba(var(--surface-rgb), 0.85);
+  border: 1px solid var(--border);
+  text-align: start;
+}
+.planning-toggle .grow {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.planning-title {
+  font-weight: 800;
+  font-size: 1.02rem;
+}
+.planning-sub {
+  color: var(--text-dim);
+  font-size: 0.88rem;
+}
+.planning-chevron {
+  font-size: 1.3rem;
+  color: var(--accent);
+  transition: transform 0.2s ease;
+}
+.planning-toggle.open .planning-chevron {
+  transform: rotate(180deg);
+}
+.planning-body {
+  animation: rise 0.25s ease both;
+}

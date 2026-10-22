@@ -61,6 +61,7 @@ export function HomeScreen() {
   const [openDay, setOpenDay] = useState<number | null>(null);
   // Ouvrir directement la liste des séances (« Choisir une autre séance »).
   const [openOnChange, setOpenOnChange] = useState(false);
+  const [weekOpen, setWeekOpen] = useState(false);
 
   const exerciseById = useMemo(() => new Map((library ?? []).map((e) => [e.id, e])), [library]);
   const current = allPrograms?.find((p) => p.program.id === settings?.activeProgramId);
@@ -168,59 +169,80 @@ export function HomeScreen() {
 
       {current && plan && (
         <>
-          <h2 className="section-title home-section">{t('Mon planning de la semaine')}</h2>
-          <div className="week-summary">
-            <ProgressRing value={doneThisWeek} max={goal} />
-            <div className="grow">
-              <div className="muted small">{t('Cette semaine')}</div>
-              <div className="program-name">
+          {/* Planning replié par défaut : seul le jour J est ouvert, un toucher déplie la semaine. */}
+          <button
+            className={`planning-toggle${weekOpen ? ' open' : ''}`}
+            onClick={() => setWeekOpen(!weekOpen)}
+            aria-expanded={weekOpen}
+          >
+            <span className="grow">
+              <span className="planning-title">🗓️ {t('Mon planning de la semaine')}</span>
+              <span className="planning-sub">
                 {goal > 0 && doneThisWeek >= goal
                   ? t('Semaine bouclée, bravo ! 🔥')
                   : tn(doneThisWeek, '{n} séance sur {goal}', '{n} séances sur {goal}', { goal })}
+              </span>
+            </span>
+            <span className="planning-chevron" aria-hidden="true">
+              ▾
+            </span>
+          </button>
+          {weekOpen && (
+            <div className="planning-body">
+              <div className="week-summary">
+                <ProgressRing value={doneThisWeek} max={goal} />
+                <div className="grow">
+                  <div className="muted small">{t('Cette semaine')}</div>
+                  <div className="program-name">
+                    {goal > 0 && doneThisWeek >= goal
+                      ? t('Semaine bouclée, bravo ! 🔥')
+                      : tn(doneThisWeek, '{n} séance sur {goal}', '{n} séances sur {goal}', { goal })}
+                  </div>
+                  <button className="link-btn" onClick={() => setChoosingProgram(true)}>
+                    {t(current.program.name)} · {t('changer')}
+                  </button>
+                </div>
               </div>
-              <button className="link-btn" onClick={() => setChoosingProgram(true)}>
-                {t(current.program.name)} · {t('changer')}
-              </button>
+
+              <div className="days">
+                {plan.map((day) => (
+                  <DayRow
+                    key={day.weekday}
+                    day={day}
+                    since={since}
+                    onOpen={() => {
+                      setOpenOnChange(false);
+                      setOpenDay(day.weekday);
+                    }}
+                  />
+                ))}
+              </div>
+
+              {!assignment && (
+                <div className="plan-banner compact">
+                  <p>
+                    🗓️{' '}
+                    <Rich
+                      text={t(
+                        'Voici le planning proposé par ton programme. Touche un jour pour <b>déplacer</b>, <b>changer</b> ou <b>ajouter</b> une séance.',
+                      )}
+                    />
+                  </p>
+                  <button
+                    className="link-btn"
+                    onClick={() => editWeek((a) => a, t('Semaine validée ✅ Tu pourras toujours la modifier.'))}
+                  >
+                    {t('Valider ce planning')}
+                  </button>
+                </div>
+              )}
+
+              {assignment && (
+                <button className="link-btn" style={{ marginTop: 10 }} onClick={resetWeek}>
+                  ↺ {t('Revenir au planning du programme')}
+                </button>
+              )}
             </div>
-          </div>
-
-          <div className="days">
-            {plan.map((day) => (
-              <DayRow
-                key={day.weekday}
-                day={day}
-                since={since}
-                onOpen={() => {
-                  setOpenOnChange(false);
-                  setOpenDay(day.weekday);
-                }}
-              />
-            ))}
-          </div>
-
-          {!assignment && (
-            <div className="plan-banner compact">
-              <p>
-                🗓️{' '}
-                <Rich
-                  text={t(
-                    'Voici le planning proposé par ton programme. Touche un jour pour <b>déplacer</b>, <b>changer</b> ou <b>ajouter</b> une séance.',
-                  )}
-                />
-              </p>
-              <button
-                className="link-btn"
-                onClick={() => editWeek((a) => a, t('Semaine validée ✅ Tu pourras toujours la modifier.'))}
-              >
-                {t('Valider ce planning')}
-              </button>
-            </div>
-          )}
-
-          {assignment && (
-            <button className="link-btn" style={{ marginTop: 10 }} onClick={resetWeek}>
-              ↺ {t('Revenir au planning du programme')}
-            </button>
           )}
         </>
       )}
