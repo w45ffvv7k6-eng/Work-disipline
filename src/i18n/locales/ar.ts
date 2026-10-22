@@ -553,6 +553,8 @@ const dictionary: Dictionary = {
   'Photo de fond supprimée': 'تم حذف صورة الخلفية',
   'Supprimer ma photo de fond': 'حذف صورة الخلفية الخاصة بي',
   Version: 'الإصدار',
+  'Mon planning de la semaine': 'خطتي لهذا الأسبوع',
+  'Choisir une autre séance': 'اختر حصة أخرى',
 };
 
 export default dictionary;

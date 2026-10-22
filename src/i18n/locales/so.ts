@@ -566,6 +566,8 @@ const dictionary: Dictionary = {
   'Photo de fond supprimée': 'Sawirka gadaashiisa waa la tirtiray',
   'Supprimer ma photo de fond': 'Tirtir sawirkayga gadaashiisa',
   Version: 'Nooca',
+  'Mon planning de la semaine': 'Qorshahayga toddobaadka',
+  'Choisir une autre séance': 'Dooro tababar kale',
 };
 
 export default dictionary;

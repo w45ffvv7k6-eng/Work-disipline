@@ -25,7 +25,7 @@ import { MUSCLE_COLORS } from '../../ui/muscles';
 import { ProgressRing } from '../../ui/ProgressRing';
 import { Sheet } from '../../ui/Sheet';
 import { useNow } from '../../ui/useNow';
-import { t, tn } from '../../i18n';
+import { locale, t, tn } from '../../i18n';
 import { Rich } from '../../i18n/react';
 
 /** "Haut A (force)" → "Haut A", "Full body A" → "FB A". */
@@ -59,6 +59,8 @@ export function HomeScreen() {
   const savedWeek = useSubscribable(() => weekPlans.watch(key), [key]);
   const [choosingProgram, setChoosingProgram] = useState(false);
   const [openDay, setOpenDay] = useState<number | null>(null);
+  // Ouvrir directement la liste des séances (« Choisir une autre séance »).
+  const [openOnChange, setOpenOnChange] = useState(false);
 
   const exerciseById = useMemo(() => new Map((library ?? []).map((e) => [e.id, e])), [library]);
   const current = allPrograms?.find((p) => p.program.id === settings?.activeProgramId);
@@ -144,6 +146,7 @@ export function HomeScreen() {
         </>
       )}
 
+      {current && plan && todayPlan && !active && <h2 className="section-title home-section">{t('Aujourd’hui')}</h2>}
       {current && plan && todayPlan && !active && (
         <TodayCard
           day={todayPlan}
@@ -155,12 +158,17 @@ export function HomeScreen() {
           defaultRestSec={settings.defaultRestSec}
           onStart={startTemplate}
           onOpenWorkout={(id) => navigate(`/historique/${id}`)}
+          onChooseOther={() => {
+            setOpenOnChange(true);
+            setOpenDay(todayPlan.weekday);
+          }}
         />
       )}
       <ProgressLine history={history} now={today} />
 
       {current && plan && (
         <>
+          <h2 className="section-title home-section">{t('Mon planning de la semaine')}</h2>
           <div className="week-summary">
             <ProgressRing value={doneThisWeek} max={goal} />
             <div className="grow">
@@ -178,7 +186,15 @@ export function HomeScreen() {
 
           <div className="days">
             {plan.map((day) => (
-              <DayRow key={day.weekday} day={day} since={since} onOpen={() => setOpenDay(day.weekday)} />
+              <DayRow
+                key={day.weekday}
+                day={day}
+                since={since}
+                onOpen={() => {
+                  setOpenOnChange(false);
+                  setOpenDay(day.weekday);
+                }}
+              />
             ))}
           </div>
 
@@ -232,6 +248,7 @@ export function HomeScreen() {
           plan={plan}
           templates={current.templates}
           exerciseById={exerciseById}
+          startOnChange={openOnChange}
           onClose={() => setOpenDay(null)}
           onStart={(template) => {
             setOpenDay(null);
@@ -324,6 +341,7 @@ function TodayCard({
   defaultRestSec,
   onStart,
   onOpenWorkout,
+  onChooseOther,
 }: {
   day: DayPlan;
   plan: DayPlan[];
@@ -334,8 +352,16 @@ function TodayCard({
   defaultRestSec: number;
   onStart: (template: Template, plannedFor?: number) => void;
   onOpenWorkout: (workoutId: string) => void;
+  /** Choisir une autre séance pour aujourd'hui. */
+  onChooseOther: () => void;
 }) {
-  const label = `${t('Aujourd’hui')} · ${dayLong(day.weekday)} ${day.date.getDate()}`;
+  const dayLabel = day.date.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' });
+  const label = dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1);
+  const chooseOther = (
+    <button className="link-btn today-other" onClick={onChooseOther}>
+      🔄 {t('Choisir une autre séance')}
+    </button>
+  );
 
   if (day.done.length > 0) {
     const last = day.done[day.done.length - 1];
@@ -375,6 +401,7 @@ function TodayCard({
         <button className="btn btn-primary btn-block btn-big glow" onClick={() => onStart(template)}>
           ▶ {t('Commencer la séance')}
         </button>
+        {chooseOther}
       </div>
     );
   }
@@ -400,6 +427,7 @@ function TodayCard({
           </button>
         </>
       )}
+      {chooseOther}
     </div>
   );
 }
@@ -430,6 +458,7 @@ function DaySheet({
   plan,
   templates,
   exerciseById,
+  startOnChange,
   onClose,
   onStart,
   onMove,
@@ -439,13 +468,14 @@ function DaySheet({
   plan: DayPlan[];
   templates: Template[];
   exerciseById: Map<string, Exercise>;
+  startOnChange?: boolean;
   onClose: () => void;
   onStart: (t: Template) => void;
   onMove: (to: number) => void;
   onSet: (templateId: string | null) => void;
 }) {
   const template = day.scheduled;
-  const [mode, setMode] = useState<'menu' | 'move' | 'change'>(template ? 'menu' : 'change');
+  const [mode, setMode] = useState<'menu' | 'move' | 'change'>(template && !startOnChange ? 'menu' : 'change');
   const dayLabel = `${dayLong(day.weekday)} ${day.date.getDate()}`;
   const title = dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1);
 

@@ -565,6 +565,8 @@ const dictionary: Dictionary = {
   'Photo de fond supprimée': 'Foto di sfondo eliminata',
   'Supprimer ma photo de fond': 'Elimina la mia foto di sfondo',
   Version: 'Versione',
+  'Mon planning de la semaine': 'Il mio piano della settimana',
+  'Choisir une autre séance': 'Scegli un altro allenamento',
 };
 
 export default dictionary;

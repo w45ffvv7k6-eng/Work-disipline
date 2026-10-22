@@ -560,6 +560,8 @@ const dictionary: Dictionary = {
   'Photo de fond supprimée': 'Arka plan fotoğrafı silindi',
   'Supprimer ma photo de fond': 'Arka plan fotoğrafımı sil',
   Version: 'Sürüm',
+  'Mon planning de la semaine': 'Haftalık planım',
+  'Choisir une autre séance': 'Başka bir antrenman seç',
 };
 
 export default dictionary;

@@ -3082,3 +3082,17 @@ body {
   font-size: 0.8rem;
   font-variant-numeric: tabular-nums;
 }
+
+/* Onglet Programme : deux parties bien séparées (Aujourd'hui / planning de la semaine) */
+.home-section {
+  margin-top: 26px;
+}
+.home-section + .today-card,
+.home-section + .week-summary {
+  margin-top: 8px;
+}
+.today-other {
+  display: block;
+  margin: 12px auto 0;
+  font-weight: 700;
+}
