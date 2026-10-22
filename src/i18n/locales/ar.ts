@@ -449,8 +449,6 @@ const dictionary: Dictionary = {
   'Fais cet exercice une première fois pour voir ta courbe.': 'أدِّ هذا التمرين مرة أولى لترى منحناك.',
   'La restauration a échoué : tes données n’ont pas été modifiées.': 'فشلت الاستعادة: لم تتغير بياناتك.',
   'La sauvegarde n’a pas pu être créée.': 'تعذّر إنشاء النسخة الاحتياطية.',
-  'Le poids total soulevé (charge × répétitions) apparaîtra ici.':
-    'سيظهر هنا الوزن الإجمالي المرفوع (الوزن × التكرارات).',
   'Les données actuelles de ce profil seront remplacées.': 'سيتم استبدال البيانات الحالية لهذا الملف الشخصي.',
   'Mes records': 'أرقامي القياسية',
   'Pas encore fait': 'لم يُنجز بعد',
@@ -479,7 +477,6 @@ const dictionary: Dictionary = {
   'Tes séances sont enregistrées uniquement sur ce téléphone. Fais une sauvegarde de temps en temps et garde le fichier dans Fichiers, iCloud Drive ou par e-mail : tu pourras tout récupérer sur un nouveau téléphone.':
     'حصصك محفوظة على هذا الهاتف فقط. أنشئ نسخة احتياطية من حين لآخر واحتفظ بالملف في الملفات أو iCloud Drive أو عبر البريد الإلكتروني: ستتمكن من استرجاع كل شيء على هاتف جديد.',
   'Touche un exercice pour voir tes records et ta progression': 'اضغط على تمرين لترى أرقامك القياسية وتقدمك',
-  'Volume soulevé par semaine': 'الحجم المرفوع في الأسبوع',
   'Baisser le son': 'خفض الصوت',
   'Monter le son': 'رفع الصوت',
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
@@ -574,6 +571,21 @@ const dictionary: Dictionary = {
   Sèche: 'تنشيف',
   'Suivre ce programme': 'اتبع هذا البرنامج',
   'Supprimer le programme': 'حذف البرنامج',
+  '1 humeur pour l’instant : ta courbe apparaîtra dès la prochaine séance.':
+    'مزاج واحد حتى الآن: سيظهر منحناك بعد الحصة القادمة.',
+  'Arrête de m’emboucanner ohhhh, souris !': 'كفى إزعاجًا أوووه، ابتسم!',
+  'Au début de chaque séance, dis-nous ton humeur : elle s’affichera ici.':
+    'في بداية كل حصة، أخبرنا بمزاجك: سيظهر هنا.',
+  'EHHH OUII mon gatéé !': 'إيييه نعم يا بطل!',
+  'Gamberge un peu et au boulot !': 'فكّر قليلًا ثم إلى العمل!',
+  'Humeur moyenne ce mois-ci : {emoji} {value} / 5': 'متوسط المزاج هذا الشهر: {emoji} {value} / 5',
+  'Mon humeur': 'مزاجي',
+  'Pourquoi ?!? La vie est belle !': 'لماذا؟!؟ الحياة جميلة!',
+  'Quelle est ton humeur aujourd’hui ?': 'كيف مزاجك اليوم؟',
+  'Touche pour commencer': 'المس للبدء',
+  'Tu es la meilleure, change pas !': 'أنتِ الأفضل، لا تتغيّري!',
+  'Tu es le meilleur, change pas !': 'أنت الأفضل، لا تتغيّر!',
+  'Tu es le/la meilleur(e), change pas !': 'أنت الأفضل، لا تتغيّر!',
 };
 
 export default dictionary;

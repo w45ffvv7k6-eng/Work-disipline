@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import { formatClock } from '../../domain/format';
@@ -11,6 +11,7 @@ import { ExerciseCard } from './ExerciseCard';
 import { ExercisePicker } from './ExercisePicker';
 import { RestTimerBar } from '../timer/RestTimerBar';
 import { useWakeLock } from '../../ui/useWakeLock';
+import { MOODS, moodEmoji, moodPhrase } from '../../ui/mood';
 import { k, t, tn } from '../../i18n';
 import { people } from '../../data/people';
 
@@ -44,7 +45,9 @@ export function LiveWorkoutScreen() {
   }
 
   const { workout, exercises } = detail;
+  // Humeur demandée au début de la séance (une seule fois, avant la première série).
   const completedCount = exercises.reduce((n, e) => n + e.sets.filter((s) => s.completed).length, 0);
+  const askMood = workout.mood === undefined && completedCount === 0;
   const workSets = exercises.flatMap((e) => e.sets.filter((s) => !s.isWarmup));
   const progress = workSets.length > 0 ? workSets.filter((s) => s.completed).length / workSets.length : 0;
 
@@ -150,7 +153,16 @@ export function LiveWorkoutScreen() {
 
       {picking && <ExercisePicker onClose={() => setPicking(false)} onPick={addExercise} />}
 
-      {coachStep !== null && exercises.length > 0 && (
+      {askMood && (
+        <MoodSheet
+          onPick={(mood) => {
+            void workouts.setMood(workout.id, mood);
+          }}
+          onSkip={() => void workouts.setMood(workout.id, 0)}
+        />
+      )}
+
+      {!askMood && coachStep !== null && exercises.length > 0 && (
         <CoachTip
           step={coachStep}
           onNext={() => {
@@ -266,6 +278,53 @@ function CoachTip({ step, onNext, onSkip }: { step: number; onNext: () => void; 
         <button className="btn btn-primary btn-small" onClick={onNext}>
           {last ? t('J’ai compris') : t('Suivant')}
         </button>
+      </div>
+    </div>
+  );
+}
+
+/** « Quelle est ton humeur aujourd'hui ? » : un toucher, la phrase s'affiche, et la séance commence. */
+function MoodSheet({ onPick, onSkip }: { onPick: (mood: number) => void; onSkip: () => void }) {
+  const [picked, setPicked] = useState<number | null>(null);
+  // L'écran se redessine chaque seconde (chrono) : on garde la dernière fonction sans relancer le délai.
+  const pick = useRef(onPick);
+  pick.current = onPick;
+
+  useEffect(() => {
+    if (picked === null) return;
+    const id = window.setTimeout(() => pick.current(picked), 2200);
+    return () => window.clearTimeout(id);
+  }, [picked]);
+
+  return (
+    <div className="mood-overlay" role="dialog" aria-label={t('Quelle est ton humeur aujourd’hui ?')}>
+      <div className="mood-card">
+        {picked === null ? (
+          <>
+            <h2 className="mood-title">{t('Quelle est ton humeur aujourd’hui ?')}</h2>
+            <div className="mood-choices">
+              {MOODS.map((m) => (
+                <button
+                  key={m.value}
+                  className="mood-choice"
+                  onClick={() => setPicked(m.value)}
+                  aria-label={String(m.value)}
+                >
+                  {m.emoji}
+                </button>
+              ))}
+            </div>
+            <button className="link-btn" onClick={onSkip}>
+              {t('Passer')}
+            </button>
+          </>
+        ) : (
+          <button className="mood-answer" onClick={() => onPick(picked)}>
+            <span className="mood-big">{moodEmoji(picked)}</span>
+            <span className="mood-phrase">{moodPhrase(picked)}</span>
+            <span className="muted small">{t('Touche pour commencer')}</span>
+          </button>
+        )}
       </div>
     </div>
   );

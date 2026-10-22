@@ -233,6 +233,10 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
       await db.workouts.update(workoutId, { name, updatedAt: now() });
     },
 
+    async setMood(workoutId, mood) {
+      await db.workouts.update(workoutId, { mood, updatedAt: now() });
+    },
+
     async updateNotes(workoutId, notes) {
       await db.workouts.update(workoutId, { notes, updatedAt: now() });
     },

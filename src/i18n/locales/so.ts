@@ -456,8 +456,6 @@ const dictionary: Dictionary = {
   'La restauration a échoué : tes données n’ont pas été modifiées.':
     'Soo celintu way guuldareysatay: xogtaada lama beddelin.',
   'La sauvegarde n’a pas pu être créée.': 'Kaydka lama abuuri karin.',
-  'Le poids total soulevé (charge × répétitions) apparaîtra ici.':
-    'Culeyska guud ee la qaaday (culeys × ku celin) halkan ayuu ka muuqan doonaa.',
   'Les données actuelles de ce profil seront remplacées.': 'Xogta hadda ee profile-kan waa la beddeli doonaa.',
   'Mes records': 'Rikoorradayda',
   'Pas encore fait': 'Weli lama samayn',
@@ -488,7 +486,6 @@ const dictionary: Dictionary = {
     'Tababaradaada waxaa lagu kaydiyaa taleefankan oo keliya. Mar mar samee kayd oo faylka ku hay Files, iCloud Drive ama email: wax walba waad ku soo celin kartaa taleefan cusub.',
   'Touche un exercice pour voir tes records et ta progression':
     'Taabo jimicsi si aad u aragto rikoorradaada iyo horumarkaaga',
-  'Volume soulevé par semaine': 'Mugga la qaaday toddobaadkii',
   'Baisser le son': 'Cod yaree',
   'Monter le son': 'Cod kordhi',
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
@@ -587,6 +584,21 @@ const dictionary: Dictionary = {
   Sèche: 'Dhuubasho',
   'Suivre ce programme': 'Raac barnaamijkan',
   'Supprimer le programme': 'Tirtir barnaamijka',
+  '1 humeur pour l’instant : ta courbe apparaîtra dès la prochaine séance.':
+    'Hal niyad oo keliya hadda: qalooccaagu wuxuu soo muuqan doonaa tababarka xiga kadib.',
+  'Arrête de m’emboucanner ohhhh, souris !': 'Iga daa dhibka ohhh, dhoola caddee!',
+  'Au début de chaque séance, dis-nous ton humeur : elle s’affichera ici.':
+    'Bilowga tababar kasta, noo sheeg niyaddaada: halkan ayay ka muuqan doontaa.',
+  'EHHH OUII mon gatéé !': 'HAAAA, waa geesigayga!',
+  'Gamberge un peu et au boulot !': 'Wax yar ka fikir oo shaqada u gal!',
+  'Humeur moyenne ce mois-ci : {emoji} {value} / 5': 'Celceliska niyadda bishan: {emoji} {value} / 5',
+  'Mon humeur': 'Niyaddayda',
+  'Pourquoi ?!? La vie est belle !': 'Maxaa?!? Noloshu waa qurux!',
+  'Quelle est ton humeur aujourd’hui ?': 'Sidee tahay niyaddaadu maanta?',
+  'Touche pour commencer': 'Taabo si aad u bilowdo',
+  'Tu es la meilleure, change pas !': 'Adigu waad ugu fiican tahay, ha is beddelin!',
+  'Tu es le meilleur, change pas !': 'Adigu waad ugu fiican tahay, ha is beddelin!',
+  'Tu es le/la meilleur(e), change pas !': 'Adigu waad ugu fiican tahay, ha is beddelin!',
 };
 
 export default dictionary;

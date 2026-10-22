@@ -453,8 +453,6 @@ const dictionary: Dictionary = {
   'La restauration a échoué : tes données n’ont pas été modifiées.':
     'La restauración ha fallado: tus datos no se han modificado.',
   'La sauvegarde n’a pas pu être créée.': 'No se ha podido crear la copia de seguridad.',
-  'Le poids total soulevé (charge × répétitions) apparaîtra ici.':
-    'El peso total levantado (peso × repeticiones) aparecerá aquí.',
   'Les données actuelles de ce profil seront remplacées.': 'Los datos actuales de este perfil se reemplazarán.',
   'Mes records': 'Mis récords',
   'Pas encore fait': 'Aún sin hacer',
@@ -483,7 +481,6 @@ const dictionary: Dictionary = {
   'Tes séances sont enregistrées uniquement sur ce téléphone. Fais une sauvegarde de temps en temps et garde le fichier dans Fichiers, iCloud Drive ou par e-mail : tu pourras tout récupérer sur un nouveau téléphone.':
     'Tus entrenos solo se guardan en este teléfono. Haz una copia de seguridad de vez en cuando y guarda el archivo en Archivos, iCloud Drive o por correo: podrás recuperarlo todo en un teléfono nuevo.',
   'Touche un exercice pour voir tes records et ta progression': 'Toca un ejercicio para ver tus récords y tu progreso',
-  'Volume soulevé par semaine': 'Volumen levantado por semana',
   'Baisser le son': 'Bajar el volumen',
   'Monter le son': 'Subir el volumen',
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
@@ -582,6 +579,21 @@ const dictionary: Dictionary = {
   Sèche: 'Definición',
   'Suivre ce programme': 'Seguir este programa',
   'Supprimer le programme': 'Eliminar programa',
+  '1 humeur pour l’instant : ta courbe apparaîtra dès la prochaine séance.':
+    '1 estado de ánimo por ahora: tu curva aparecerá tras el próximo entreno.',
+  'Arrête de m’emboucanner ohhhh, souris !': '¡Deja de agobiarme ohhh, sonríe!',
+  'Au début de chaque séance, dis-nous ton humeur : elle s’affichera ici.':
+    'Al empezar cada entreno, dinos tu estado de ánimo: aparecerá aquí.',
+  'EHHH OUII mon gatéé !': '¡SIIII, ese es mi campeón!',
+  'Gamberge un peu et au boulot !': '¡Piénsalo un poco y a currar!',
+  'Humeur moyenne ce mois-ci : {emoji} {value} / 5': 'Ánimo medio este mes: {emoji} {value} / 5',
+  'Mon humeur': 'Mi ánimo',
+  'Pourquoi ?!? La vie est belle !': '¿¡¿Por qué?!? ¡La vida es bella!',
+  'Quelle est ton humeur aujourd’hui ?': '¿Cómo está tu ánimo hoy?',
+  'Touche pour commencer': 'Toca para empezar',
+  'Tu es la meilleure, change pas !': '¡Eres la mejor, no cambies!',
+  'Tu es le meilleur, change pas !': '¡Eres el mejor, no cambies!',
+  'Tu es le/la meilleur(e), change pas !': '¡Eres lo mejor, no cambies!',
 };
 
 export default dictionary;

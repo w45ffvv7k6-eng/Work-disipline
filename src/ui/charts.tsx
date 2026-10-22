@@ -134,6 +134,7 @@ export function LineChart({
   title,
   empty,
   single,
+  fixedTicks,
 }: {
   points: Point[];
   format: (v: number) => string;
@@ -143,14 +144,20 @@ export function LineChart({
   empty: string;
   /** Texte affiché sous le graphique quand il n'y a encore qu'un seul point. */
   single?: string;
+  /** Graduations fixes (ex. humeur de 1 à 5) au lieu de les calculer. */
+  fixedTicks?: number[];
 }) {
   const [selected, setSelected] = useState(points.length - 1);
   const values = points.map((p) => p.value);
   // Axe qui part du bas des valeurs (un poids de 75 kg ne commence pas à 0).
   const min = values.length > 0 ? Math.min(...values) : 0;
   const max = values.length > 0 ? Math.max(...values) : 0;
-  const base = values.length > 0 ? Math.max(0, Math.floor((min - (max - min) * 0.3 - 1) / 5) * 5) : 0;
-  const ticks = niceScale(max - base, fallbackMax).map((tick) => tick + base);
+  const base = fixedTicks
+    ? fixedTicks[0]
+    : values.length > 0
+      ? Math.max(0, Math.floor((min - (max - min) * 0.3 - 1) / 5) * 5)
+      : 0;
+  const ticks = fixedTicks ?? niceScale(max - base, fallbackMax).map((tick) => tick + base);
   const top = ticks[ticks.length - 1];
   const t0 = points[0]?.date ?? 0;
   const t1 = points[points.length - 1]?.date ?? 1;

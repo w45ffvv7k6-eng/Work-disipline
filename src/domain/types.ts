@@ -62,6 +62,8 @@ export interface Workout {
   templateId?: string;
   /** Jour prévu (minuit) quand la séance d'un autre jour est faite en avance ou en retard : elle compte pour ce jour-là. */
   plannedFor?: number;
+  /** Humeur donnée au début de la séance : 1 (😫) à 5 (😃), 0 = la personne a passé la question. */
+  mood?: number;
   updatedAt: number;
   deletedAt?: number;
 }

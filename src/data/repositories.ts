@@ -81,6 +81,8 @@ export interface WorkoutRepository {
   /** Démarre une séance préparée à partir d'un modèle (exercices, séries prévues, objectifs, repos). */
   startFromTemplate(templateId: string, plannedFor?: number): Promise<Workout>;
   rename(workoutId: string, name: string): Promise<void>;
+  /** Humeur du jour (1 à 5, 0 = passé). */
+  setMood(workoutId: string, mood: number): Promise<void>;
   updateNotes(workoutId: string, notes: string): Promise<void>;
   /** Termine la séance (les séries non validées sont supprimées). */
   finish(workoutId: string): Promise<void>;

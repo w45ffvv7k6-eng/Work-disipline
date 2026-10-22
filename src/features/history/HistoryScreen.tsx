@@ -14,6 +14,7 @@ import { t, tn } from '../../i18n';
 import { BarChart, LineChart } from '../../ui/charts';
 import { HistoryIcon } from '../../ui/icons';
 import { PageHeader } from '../../ui/PageHeader';
+import { moodEmoji } from '../../ui/mood';
 import { useNow } from '../../ui/useNow';
 
 /** Nombre de semaines affichées sur les graphiques. */
@@ -49,6 +50,13 @@ export function HistoryScreen() {
     .filter((h) => h.workout.startedAt >= weekStart)
     .reduce((n, h) => n + h.summary.recordCount, 0);
   const weekVolumeChange = thisWeek.volumeKg > 0 ? percentChange(thisWeek.volumeKg, lastWeek?.volumeKg) : null;
+  // Humeurs données au début des séances (0 = question passée), de la plus ancienne à la plus récente.
+  const moods = history
+    .filter((h) => (h.workout.mood ?? 0) > 0)
+    .map((h) => ({ date: h.workout.startedAt, value: h.workout.mood! }))
+    .sort((a, b) => a.date - b.date);
+  const monthMoods = moods.filter((m) => m.date >= monthStart);
+  const monthMood = monthMoods.length > 0 ? monthMoods.reduce((n, m) => n + m.value, 0) / monthMoods.length : null;
   const weekDetail = (start: Date, value: string) =>
     t('Semaine du {date} : {value}', { date: formatShortDate(start), value });
 
@@ -137,17 +145,24 @@ export function HistoryScreen() {
         fallbackMax={3}
         empty={t('Tes séances de chaque semaine apparaîtront ici.')}
       />
-      <BarChart
-        title={t('Volume soulevé par semaine')}
-        bars={weeks.map((w) => ({
-          label: formatNumericDate(w.start),
-          value: w.volumeKg,
-          detail: weekDetail(w.start, formatVolume(w.volumeKg)),
-        }))}
-        format={(v) => (v >= 1000 ? `${formatKg(v / 1000)} t` : formatKg(v))}
-        fallbackMax={6000}
-        empty={t('Le poids total soulevé (charge × répétitions) apparaîtra ici.')}
+      <LineChart
+        title={t('Mon humeur')}
+        points={moods}
+        format={(v) => moodEmoji(v)}
+        formatDate={formatShortDate}
+        fallbackMax={5}
+        fixedTicks={[1, 2, 3, 4, 5]}
+        empty={t('Au début de chaque séance, dis-nous ton humeur : elle s’affichera ici.')}
+        single={t('1 humeur pour l’instant : ta courbe apparaîtra dès la prochaine séance.')}
       />
+      {monthMood !== null && (
+        <p className="muted small mood-average">
+          {t('Humeur moyenne ce mois-ci : {emoji} {value} / 5', {
+            emoji: moodEmoji(monthMood),
+            value: formatKg(Math.round(monthMood * 10) / 10),
+          })}
+        </p>
+      )}
       {hasRunning && (
         <BarChart
           title={t('Distance courue par semaine')}

@@ -451,8 +451,6 @@ const dictionary: Dictionary = {
   'La restauration a échoué : tes données n’ont pas été modifiées.':
     'Geri yükleme başarısız: verilerin değiştirilmedi.',
   'La sauvegarde n’a pas pu être créée.': 'Yedek oluşturulamadı.',
-  'Le poids total soulevé (charge × répétitions) apparaîtra ici.':
-    'Kaldırılan toplam ağırlık (ağırlık × tekrar) burada görünecek.',
   'Les données actuelles de ce profil seront remplacées.': 'Bu profilin mevcut verilerinin üzerine yazılacak.',
   'Mes records': 'Rekorlarım',
   'Pas encore fait': 'Henüz yapılmadı',
@@ -482,7 +480,6 @@ const dictionary: Dictionary = {
     'Antrenmanların yalnızca bu telefonda kayıtlı. Arada bir yedek al ve dosyayı Dosyalar’da, iCloud Drive’da ya da e-postada sakla: yeni bir telefonda her şeyi geri alabilirsin.',
   'Touche un exercice pour voir tes records et ta progression':
     'Rekorlarını ve ilerlemeni görmek için bir egzersize dokun',
-  'Volume soulevé par semaine': 'Haftalık kaldırılan hacim',
   'Baisser le son': 'Sesi kıs',
   'Monter le son': 'Sesi aç',
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
@@ -581,6 +578,21 @@ const dictionary: Dictionary = {
   Sèche: 'Definasyon',
   'Suivre ce programme': 'Bu programı takip et',
   'Supprimer le programme': 'Programı sil',
+  '1 humeur pour l’instant : ta courbe apparaîtra dès la prochaine séance.':
+    'Şimdilik 1 ruh hâli: eğrin bir sonraki antrenmandan sonra görünecek.',
+  'Arrête de m’emboucanner ohhhh, souris !': 'Sıkma canımı ohhh, gülümse!',
+  'Au début de chaque séance, dis-nous ton humeur : elle s’affichera ici.':
+    'Her antrenmanın başında ruh hâlini söyle: burada görünecek.',
+  'EHHH OUII mon gatéé !': 'EVEEET, işte benim şampiyonum!',
+  'Gamberge un peu et au boulot !': 'Biraz düşün ve işe koyul!',
+  'Humeur moyenne ce mois-ci : {emoji} {value} / 5': 'Bu ayki ortalama ruh hâli: {emoji} {value} / 5',
+  'Mon humeur': 'Ruh hâlim',
+  'Pourquoi ?!? La vie est belle !': 'Neden?!? Hayat güzel!',
+  'Quelle est ton humeur aujourd’hui ?': 'Bugün ruh hâlin nasıl?',
+  'Touche pour commencer': 'Başlamak için dokun',
+  'Tu es la meilleure, change pas !': 'Sen en iyisisin, sakın değişme!',
+  'Tu es le meilleur, change pas !': 'Sen en iyisisin, sakın değişme!',
+  'Tu es le/la meilleur(e), change pas !': 'Sen en iyisisin, sakın değişme!',
 };
 
 export default dictionary;

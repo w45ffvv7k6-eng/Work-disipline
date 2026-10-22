@@ -452,8 +452,6 @@ const dictionary: Dictionary = {
   'Fais cet exercice une première fois pour voir ta courbe.': 'Do this exercise once to see your chart.',
   'La restauration a échoué : tes données n’ont pas été modifiées.': 'Restore failed: your data hasn’t been changed.',
   'La sauvegarde n’a pas pu être créée.': 'The backup couldn’t be created.',
-  'Le poids total soulevé (charge × répétitions) apparaîtra ici.':
-    'The total weight lifted (weight × reps) will show up here.',
   'Les données actuelles de ce profil seront remplacées.': 'This profile’s current data will be replaced.',
   'Mes records': 'My PRs',
   'Pas encore fait': 'Not done yet',
@@ -482,7 +480,6 @@ const dictionary: Dictionary = {
   'Tes séances sont enregistrées uniquement sur ce téléphone. Fais une sauvegarde de temps en temps et garde le fichier dans Fichiers, iCloud Drive ou par e-mail : tu pourras tout récupérer sur un nouveau téléphone.':
     'Your workouts are only stored on this phone. Make a backup now and then and keep the file in Files or iCloud Drive, or email it to yourself: you’ll be able to get everything back on a new phone.',
   'Touche un exercice pour voir tes records et ta progression': 'Tap an exercise to see your PRs and progress',
-  'Volume soulevé par semaine': 'Volume lifted per week',
   'Baisser le son': 'Lower the volume',
   'Monter le son': 'Turn the volume up',
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
@@ -579,6 +576,21 @@ const dictionary: Dictionary = {
   Sèche: 'Cutting',
   'Suivre ce programme': 'Follow this program',
   'Supprimer le programme': 'Delete program',
+  '1 humeur pour l’instant : ta courbe apparaîtra dès la prochaine séance.':
+    '1 mood so far: your curve will show up after your next workout.',
+  'Arrête de m’emboucanner ohhhh, souris !': 'Stop bugging me ohhh, smile!',
+  'Au début de chaque séance, dis-nous ton humeur : elle s’affichera ici.':
+    'At the start of each workout, tell us your mood: it will show up here.',
+  'EHHH OUII mon gatéé !': 'YEAHHH, that’s my champ!',
+  'Gamberge un peu et au boulot !': 'Think it over and get to work!',
+  'Humeur moyenne ce mois-ci : {emoji} {value} / 5': 'Average mood this month: {emoji} {value} / 5',
+  'Mon humeur': 'My mood',
+  'Pourquoi ?!? La vie est belle !': 'Why?!? Life is beautiful!',
+  'Quelle est ton humeur aujourd’hui ?': 'How are you feeling today?',
+  'Touche pour commencer': 'Tap to start',
+  'Tu es la meilleure, change pas !': 'You’re the best, never change!',
+  'Tu es le meilleur, change pas !': 'You’re the best, never change!',
+  'Tu es le/la meilleur(e), change pas !': 'You’re the best, never change!',
 };
 
 export default dictionary;

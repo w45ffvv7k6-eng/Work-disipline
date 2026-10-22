@@ -455,8 +455,6 @@ const dictionary: Dictionary = {
   'La restauration a échoué : tes données n’ont pas été modifiées.':
     'Ripristino non riuscito: i tuoi dati non sono stati modificati.',
   'La sauvegarde n’a pas pu être créée.': 'Non è stato possibile creare il backup.',
-  'Le poids total soulevé (charge × répétitions) apparaîtra ici.':
-    'Il peso totale sollevato (carico × ripetizioni) comparirà qui.',
   'Les données actuelles de ce profil seront remplacées.': 'I dati attuali di questo profilo saranno sostituiti.',
   'Mes records': 'I miei record',
   'Pas encore fait': 'Non ancora fatto',
@@ -486,7 +484,6 @@ const dictionary: Dictionary = {
     'I tuoi allenamenti sono salvati solo su questo telefono. Fai un backup ogni tanto e conserva il file in File, iCloud Drive o via e-mail: potrai recuperare tutto su un nuovo telefono.',
   'Touche un exercice pour voir tes records et ta progression':
     'Tocca un esercizio per vedere i tuoi record e i tuoi progressi',
-  'Volume soulevé par semaine': 'Volume sollevato a settimana',
   'Baisser le son': 'Abbassa il volume',
   'Monter le son': 'Alza il volume',
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
@@ -586,6 +583,21 @@ const dictionary: Dictionary = {
   Sèche: 'Definizione',
   'Suivre ce programme': 'Segui questo programma',
   'Supprimer le programme': 'Elimina programma',
+  '1 humeur pour l’instant : ta courbe apparaîtra dès la prochaine séance.':
+    '1 umore per ora: la tua curva apparirà dopo il prossimo allenamento.',
+  'Arrête de m’emboucanner ohhhh, souris !': 'Smettila di scocciarmi ohhh, sorridi!',
+  'Au début de chaque séance, dis-nous ton humeur : elle s’affichera ici.':
+    'All’inizio di ogni allenamento, dicci il tuo umore: apparirà qui.',
+  'EHHH OUII mon gatéé !': 'SIIII, sei un grande!',
+  'Gamberge un peu et au boulot !': 'Pensaci un attimo e al lavoro!',
+  'Humeur moyenne ce mois-ci : {emoji} {value} / 5': 'Umore medio questo mese: {emoji} {value} / 5',
+  'Mon humeur': 'Il mio umore',
+  'Pourquoi ?!? La vie est belle !': 'Perché?!? La vita è bella!',
+  'Quelle est ton humeur aujourd’hui ?': 'Come ti senti oggi?',
+  'Touche pour commencer': 'Tocca per iniziare',
+  'Tu es la meilleure, change pas !': 'Sei la migliore, non cambiare!',
+  'Tu es le meilleur, change pas !': 'Sei il migliore, non cambiare!',
+  'Tu es le/la meilleur(e), change pas !': 'Sei il/la migliore, non cambiare!',
 };
 
 export default dictionary;

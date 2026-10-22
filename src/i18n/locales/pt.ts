@@ -455,8 +455,6 @@ const dictionary: Dictionary = {
   'La restauration a échoué : tes données n’ont pas été modifiées.':
     'O restauro falhou: os teus dados não foram alterados.',
   'La sauvegarde n’a pas pu être créée.': 'Não foi possível criar a cópia de segurança.',
-  'Le poids total soulevé (charge × répétitions) apparaîtra ici.':
-    'O peso total levantado (carga × repetições) vai aparecer aqui.',
   'Les données actuelles de ce profil seront remplacées.': 'Os dados atuais deste perfil vão ser substituídos.',
   'Mes records': 'Os meus recordes',
   'Pas encore fait': 'Ainda não feito',
@@ -486,7 +484,6 @@ const dictionary: Dictionary = {
     'Os teus treinos ficam guardados só neste telemóvel. Faz uma cópia de segurança de vez em quando e guarda o ficheiro em Ficheiros, iCloud Drive ou por e-mail: vais poder recuperar tudo num telemóvel novo.',
   'Touche un exercice pour voir tes records et ta progression':
     'Toca num exercício para veres os teus recordes e a tua progressão',
-  'Volume soulevé par semaine': 'Volume levantado por semana',
   'Baisser le son': 'Baixar o som',
   'Monter le son': 'Aumentar o som',
   'Le volume du téléphone compte aussi : monte-le avec les boutons sur le côté.':
@@ -584,6 +581,21 @@ const dictionary: Dictionary = {
   Sèche: 'Definição',
   'Suivre ce programme': 'Seguir este programa',
   'Supprimer le programme': 'Apagar programa',
+  '1 humeur pour l’instant : ta courbe apparaîtra dès la prochaine séance.':
+    '1 humor por agora: a tua curva aparece depois do próximo treino.',
+  'Arrête de m’emboucanner ohhhh, souris !': 'Para de me chatear ohhh, sorri!',
+  'Au début de chaque séance, dis-nous ton humeur : elle s’affichera ici.':
+    'No início de cada treino, diz-nos o teu humor: vai aparecer aqui.',
+  'EHHH OUII mon gatéé !': 'SIIIM, és o maior!',
+  'Gamberge un peu et au boulot !': 'Pensa um bocado e ao trabalho!',
+  'Humeur moyenne ce mois-ci : {emoji} {value} / 5': 'Humor médio este mês: {emoji} {value} / 5',
+  'Mon humeur': 'O meu humor',
+  'Pourquoi ?!? La vie est belle !': 'Porquê?!? A vida é bela!',
+  'Quelle est ton humeur aujourd’hui ?': 'Como está o teu humor hoje?',
+  'Touche pour commencer': 'Toca para começar',
+  'Tu es la meilleure, change pas !': 'És a melhor, não mudes!',
+  'Tu es le meilleur, change pas !': 'És o melhor, não mudes!',
+  'Tu es le/la meilleur(e), change pas !': 'És o/a melhor, não mudes!',
 };
 
 export default dictionary;
