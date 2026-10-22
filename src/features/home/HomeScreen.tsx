@@ -38,6 +38,9 @@ function greeting(date: Date): string {
   return h >= 5 && h < 18 ? t('Bonjour') : t('Bonsoir');
 }
 
+/** Nombre d'exercices montrés dans l'aperçu de la séance du jour. */
+const PREVIEW_COUNT = 3;
+
 /** Un jour peut être réorganisé s'il n'est pas passé et qu'aucune séance n'y a encore été faite. */
 const isEditable = (d: DayPlan) => !d.isPast && d.done.length === 0;
 
@@ -59,7 +62,8 @@ export function HomeScreen() {
   const [openDay, setOpenDay] = useState<number | null>(null);
   // Ouvrir directement la liste des séances (« Choisir une autre séance »).
   const [openOnChange, setOpenOnChange] = useState(false);
-  const [weekOpen, setWeekOpen] = useState(false);
+  const [doingOther, setDoingOther] = useState(false);
+  const [organizing, setOrganizing] = useState(false);
 
   const exerciseById = useMemo(() => new Map((library ?? []).map((e) => [e.id, e])), [library]);
   const current = allPrograms?.find((p) => p.program.id === settings?.activeProgramId);
@@ -115,16 +119,28 @@ export function HomeScreen() {
   // Jours d'avant l'inscription : jamais marqués « Pas faite ».
   const since = startOfDay(new Date(people.active()?.createdAt ?? 0)).getTime();
 
+  const streak = weekStreak(
+    history.map((h) => h.workout.startedAt),
+    today,
+  );
+  const extras = current?.templates.filter((tpl) => tpl.extra) ?? [];
+  const mainTemplates = current?.templates.filter((tpl) => !tpl.extra) ?? [];
+
   return (
     <div className="screen">
-      <div className="hello">
-        <div className="brand-mini">WORK &amp; DISCIPLINE</div>
-        <h1 className="screen-title" style={{ margin: 0 }}>
+      {/* En-tête compact : bonjour + série de semaines. */}
+      <div className="home-head">
+        <h1 className="screen-title home-hello">
           {greeting(today)}
           {firstName ? ` ${firstName}` : ''} 👋
         </h1>
-        <p className="quote">« {quoteOfTheDay(today)} »</p>
+        {streak >= 1 && (
+          <span className="streak-chip" title={t('{n} semaines d’affilée', { n: streak })}>
+            🔥 {t('{n} sem.', { n: streak })}
+          </span>
+        )}
       </div>
+      <p className="quote small-quote">« {quoteOfTheDay(today)} »</p>
 
       {active && (
         <button className="banner-active pulse" onClick={() => navigate(`/seance/${active.id}`)}>
@@ -143,7 +159,22 @@ export function HomeScreen() {
         </>
       )}
 
-      {current && plan && todayPlan && !active && <h2 className="section-title home-section">{t('Aujourd’hui')}</h2>}
+      {current && plan && (
+        <WeekStrip
+          plan={plan}
+          since={since}
+          programName={t(current.program.name)}
+          onDay={(day) => {
+            if (day.done.length > 0) navigate(`/historique/${day.done[day.done.length - 1].id}`);
+            else {
+              setOpenOnChange(false);
+              setOpenDay(day.weekday);
+            }
+          }}
+          onMenu={() => setOrganizing(true)}
+        />
+      )}
+
       {current && plan && todayPlan && !active && (
         <TodayCard
           day={todayPlan}
@@ -155,86 +186,82 @@ export function HomeScreen() {
           defaultRestSec={settings.defaultRestSec}
           onStart={startTemplate}
           onOpenWorkout={(id) => navigate(`/historique/${id}`)}
-          onChooseOther={() => {
-            setOpenOnChange(true);
+          onOpenDetails={() => {
+            setOpenOnChange(false);
             setOpenDay(todayPlan.weekday);
           }}
         />
       )}
-      <ProgressLine history={history} now={today} />
 
-      {current && plan && (
-        <>
-          {/* Planning replié par défaut : seul le jour J est ouvert, un toucher déplie la semaine. */}
-          <button
-            className={`planning-toggle${weekOpen ? ' open' : ''}`}
-            onClick={() => setWeekOpen(!weekOpen)}
-            aria-expanded={weekOpen}
-          >
-            <span className="grow">
-              <span className="planning-title">🗓️ {t('Mon planning de la semaine')}</span>
-              <span className="planning-sub">{t(current.program.name)}</span>
-            </span>
-            <span className="planning-chevron" aria-hidden="true">
-              ▾
-            </span>
-          </button>
-          {weekOpen && (
-            <div className="planning-body">
-              <div className="program-row">
-                <span className="muted small">{t('Programme')}</span>
-                <span className="grow program-name">{t(current.program.name)}</span>
-                <button className="link-btn" onClick={() => setChoosingProgram(true)}>
-                  {t('changer')}
-                </button>
-              </div>
-
-              <div className="days">
-                {plan.map((day) => (
-                  <DayRow
-                    key={day.weekday}
-                    day={day}
-                    since={since}
-                    onOpen={() => {
-                      setOpenOnChange(false);
-                      setOpenDay(day.weekday);
-                    }}
-                  />
-                ))}
-              </div>
-
-              {!assignment && (
-                <div className="plan-banner compact">
-                  <p>
-                    🗓️{' '}
-                    <Rich
-                      text={t(
-                        'Voici le planning proposé par ton programme. Touche un jour pour <b>déplacer</b>, <b>changer</b> ou <b>ajouter</b> une séance.',
-                      )}
-                    />
-                  </p>
-                  <button
-                    className="link-btn"
-                    onClick={() => editWeek((a) => a, t('Semaine validée ✅ Tu pourras toujours la modifier.'))}
-                  >
-                    {t('Valider ce planning')}
-                  </button>
-                </div>
-              )}
-
-              {assignment && (
-                <button className="link-btn" style={{ marginTop: 10 }} onClick={resetWeek}>
-                  ↺ {t('Revenir au planning du programme')}
-                </button>
-              )}
-            </div>
-          )}
-        </>
+      {!active && (
+        <button className="btn btn-block other-btn" onClick={() => setDoingOther(true)}>
+          🔄 {t('Faire autre chose')}
+        </button>
       )}
 
-      <button className="btn btn-outline btn-block" style={{ marginTop: 20 }} onClick={startEmpty} disabled={!!active}>
-        + {t('Séance libre (sans programme)')}
-      </button>
+      {doingOther && (
+        <OtherSessionSheet
+          templates={mainTemplates}
+          runs={extras}
+          onClose={() => setDoingOther(false)}
+          onStart={(template) => {
+            setDoingOther(false);
+            void startTemplate(template);
+          }}
+          onFree={() => {
+            setDoingOther(false);
+            void startEmpty();
+          }}
+        />
+      )}
+
+      {organizing && current && (
+        <Sheet onClose={() => setOrganizing(false)} title={t('Organiser ma semaine')}>
+          <div className="program-row">
+            <span className="muted small">{t('Programme')}</span>
+            <span className="grow program-name">{t(current.program.name)}</span>
+            <button
+              className="link-btn"
+              onClick={() => {
+                setOrganizing(false);
+                setChoosingProgram(true);
+              }}
+            >
+              {t('changer')}
+            </button>
+          </div>
+          <p className="muted small">
+            <Rich
+              text={t(
+                'Voici le planning proposé par ton programme. Touche un jour pour <b>déplacer</b>, <b>changer</b> ou <b>ajouter</b> une séance.',
+              )}
+            />
+          </p>
+          <div className="stack">
+            {!assignment ? (
+              <button
+                className="btn btn-primary btn-block"
+                onClick={() => {
+                  setOrganizing(false);
+                  void editWeek((a) => a, t('Semaine validée ✅ Tu pourras toujours la modifier.'));
+                }}
+              >
+                ✅ {t('Valider ce planning')}
+              </button>
+            ) : (
+              <button
+                className="btn btn-block"
+                onClick={() => {
+                  setOrganizing(false);
+                  void resetWeek();
+                }}
+              >
+                ↺ {t('Revenir au planning du programme')}
+              </button>
+            )}
+          </div>
+        </Sheet>
+      )}
 
       {choosingProgram && (
         <Sheet onClose={() => setChoosingProgram(false)} title={t('Changer de programme')}>
@@ -284,53 +311,113 @@ export function HomeScreen() {
   );
 }
 
-function DayRow({ day, since, onOpen }: { day: DayPlan; since: number; onOpen: () => void }) {
-  const done = day.done;
-  const template = day.scheduled;
-  const beforeStart = day.date.getTime() < since;
-  const status =
-    done.length > 0
-      ? 'done'
-      : day.planned
-        ? 'planned'
-        : day.isTrainingDay && day.isPast && !beforeStart
-          ? 'missed'
-          : 'rest';
-  const title =
-    done.length > 0
-      ? done.map((w) => t(w.name)).join(' + ')
-      : beforeStart && day.isPast
-        ? '—'
-        : t(template ? template.name : day.isTrainingDay ? 'Séance' : 'Repos');
-  const doneMs = done.reduce((n, w) => n + (w.endedAt ? w.endedAt - w.startedAt : 0), 0);
-  const subtitle =
-    done.length > 0
-      ? `${done.length > 1 ? tn(done.length, '{n} séance faite', '{n} séances faites') : t('Faite')}${doneMs > 0 ? ` · ${formatDuration(doneMs)}` : ''}`
-      : status === 'missed'
-        ? t('Pas faite')
-        : beforeStart && day.isPast
-          ? ''
-          : template
-            ? plural(template.exercises.length, 'exercice')
-            : isEditable(day)
-              ? t('Récupération 😴 · touche pour ajouter une séance')
-              : t('Récupération 😴');
-  const editable = isEditable(day);
-
+/**
+ * La semaine en une ligne : une pastille par jour (✅ fait, ● aujourd'hui, ○ prévu, – repos).
+ * Toucher un jour ouvre sa séance (déplacer, changer, mettre en repos) ; ⋯ pour organiser la semaine.
+ */
+function WeekStrip({
+  plan,
+  since,
+  programName,
+  onDay,
+  onMenu,
+}: {
+  plan: DayPlan[];
+  since: number;
+  programName: string;
+  onDay: (day: DayPlan) => void;
+  onMenu: () => void;
+}) {
   return (
-    <div className={`day ${status}${day.isToday ? ' today' : ''}${beforeStart && day.isPast ? ' before' : ''}`}>
-      <button className="day-head" onClick={onOpen} disabled={!editable}>
-        <div className="day-date">
-          <span className="day-name">{day.isToday ? t('Auj.') : dayShort(day.weekday)}</span>
-          <span className="day-num">{day.date.getDate()}</span>
-        </div>
-        <div className="grow">
-          <div className="day-title">{title}</div>
-          <div className="day-sub">{subtitle}</div>
-        </div>
-        <span className="day-icon">{status === 'done' ? '✅' : editable ? '⋯' : ''}</span>
-      </button>
+    <div className="week-strip">
+      <div className="week-strip-head">
+        <span className="grow">
+          <span className="week-strip-title">{t('Ma semaine')}</span>
+          <span className="week-strip-program">{programName}</span>
+        </span>
+        <button className="icon-btn week-menu" onClick={onMenu} aria-label={t('Organiser ma semaine')}>
+          ⋯
+        </button>
+      </div>
+      <div className="week-days">
+        {plan.map((day) => {
+          const beforeStart = day.isPast && day.date.getTime() < since;
+          const status =
+            day.done.length > 0
+              ? 'done'
+              : day.isToday && day.planned
+                ? 'today'
+                : day.planned
+                  ? 'planned'
+                  : day.isTrainingDay && day.isPast && !beforeStart
+                    ? 'missed'
+                    : 'rest';
+          const icon = { done: '✅', today: '●', planned: '○', missed: '✕', rest: '–' }[status];
+          const name = day.done[0]?.name ?? day.scheduled?.name;
+          const label = `${dayLong(day.weekday)} ${day.date.getDate()}${name ? ` : ${t(name)}` : ''}`;
+          return (
+            <button
+              key={day.weekday}
+              className={`week-day ${status}${day.isToday ? ' is-today' : ''}`}
+              onClick={() => onDay(day)}
+              disabled={day.done.length === 0 && !isEditable(day)}
+              aria-label={label}
+            >
+              <span className="week-day-name">{dayShort(day.weekday)}</span>
+              <span className="week-day-num">{day.date.getDate()}</span>
+              <span className="week-day-icon" aria-hidden="true">
+                {icon}
+              </span>
+            </button>
+          );
+        })}
+      </div>
     </div>
+  );
+}
+
+/** « Faire autre chose » : une autre séance du programme, une course ou une séance libre. */
+function OtherSessionSheet({
+  templates,
+  runs,
+  onClose,
+  onStart,
+  onFree,
+}: {
+  templates: Template[];
+  runs: Template[];
+  onClose: () => void;
+  onStart: (template: Template) => void;
+  onFree: () => void;
+}) {
+  return (
+    <Sheet onClose={onClose} title={t('Faire autre chose')}>
+      <h3 className="other-group">📋 {t('Une autre séance du programme')}</h3>
+      <div className="stack">
+        {templates.map((tpl) => (
+          <button key={tpl.id} className="card-button" onClick={() => onStart(tpl)}>
+            <div style={{ fontWeight: 800 }}>{t(tpl.name)}</div>
+            <div className="muted small">{plural(tpl.exercises.length, 'exercice')}</div>
+          </button>
+        ))}
+      </div>
+      {runs.length > 0 && (
+        <>
+          <h3 className="other-group">🏃 {t('Une séance de course')}</h3>
+          <div className="stack">
+            {runs.map((tpl) => (
+              <button key={tpl.id} className="card-button" onClick={() => onStart(tpl)}>
+                <div style={{ fontWeight: 800 }}>{t(tpl.name)}</div>
+              </button>
+            ))}
+          </div>
+        </>
+      )}
+      <h3 className="other-group">✏️ {t('Une séance libre')}</h3>
+      <button className="btn btn-block" onClick={onFree}>
+        {t('Je choisis mes exercices')}
+      </button>
+    </Sheet>
   );
 }
 
@@ -348,7 +435,7 @@ function TodayCard({
   defaultRestSec,
   onStart,
   onOpenWorkout,
-  onChooseOther,
+  onOpenDetails,
 }: {
   day: DayPlan;
   plan: DayPlan[];
@@ -359,16 +446,11 @@ function TodayCard({
   defaultRestSec: number;
   onStart: (template: Template, plannedFor?: number) => void;
   onOpenWorkout: (workoutId: string) => void;
-  /** Choisir une autre séance pour aujourd'hui. */
-  onChooseOther: () => void;
+  /** Voir la séance du jour en entier (et la déplacer, la changer…). */
+  onOpenDetails: () => void;
 }) {
   const dayLabel = day.date.toLocaleDateString(locale(), { weekday: 'long', day: 'numeric', month: 'long' });
   const label = dayLabel.charAt(0).toUpperCase() + dayLabel.slice(1);
-  const chooseOther = (
-    <button className="link-btn today-other" onClick={onChooseOther}>
-      🔄 {t('Choisir une autre séance')}
-    </button>
-  );
 
   if (day.done.length > 0) {
     const last = day.done[day.done.length - 1];
@@ -408,7 +490,15 @@ function TodayCard({
         <button className="btn btn-primary btn-block btn-big glow" onClick={() => onStart(template)}>
           ▶ {t('Commencer la séance')}
         </button>
-        {chooseOther}
+        {/* Aperçu : les premiers exercices, toucher pour tout voir. */}
+        <button className="today-preview" onClick={onOpenDetails}>
+          <TemplateExerciseList template={template} exerciseById={exerciseById} limit={PREVIEW_COUNT} />
+          {template.exercises.length > PREVIEW_COUNT && (
+            <span className="today-more">
+              {tn(template.exercises.length - PREVIEW_COUNT, '+ {n} autre exercice', '+ {n} autres exercices')} ›
+            </span>
+          )}
+        </button>
       </div>
     );
   }
@@ -418,12 +508,18 @@ function TodayCard({
   return (
     <div className="today-card rest">
       <div className="today-label">{label}</div>
-      <div className="today-title">😴 {t('Jour de repos, récupère bien !')}</div>
+      <div className="today-title">😴 {t('Repos aujourd’hui, récupère bien !')}</div>
       {next && (
         <>
           <div className="today-sub">
             {next.day
-              ? t('Prochaine séance : {name} · {day}', { name: t(next.template.name), day: dayLong(next.day.weekday) })
+              ? t('Prochaine séance : {name} · {day}', {
+                  name: t(next.template.name),
+                  day:
+                    next.day.date.getTime() - day.date.getTime() === 86_400_000
+                      ? t('demain')
+                      : dayLong(next.day.weekday),
+                })
               : t('Prochaine séance : {name}', { name: t(next.template.name) })}
           </div>
           <button
@@ -434,29 +530,8 @@ function TodayCard({
           </button>
         </>
       )}
-      {chooseOther}
     </div>
   );
-}
-
-/** Une phrase de motivation qui change selon les résultats (série de semaines, records du mois…). */
-function ProgressLine({ history, now }: { history: HistoryEntry[]; now: Date }) {
-  if (history.length === 0) return null;
-  const streak = weekStreak(
-    history.map((h) => h.workout.startedAt),
-    now,
-  );
-  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).getTime();
-  const monthRecords = history
-    .filter((h) => h.workout.startedAt >= monthStart)
-    .reduce((n, h) => n + h.summary.recordCount, 0);
-  const text =
-    streak >= 2
-      ? `🔥 ${t('{n} semaines d’affilée', { n: streak })}`
-      : monthRecords > 0
-        ? `🏆 ${tn(monthRecords, '{n} record ce mois-ci', '{n} records ce mois-ci')}`
-        : `💪 ${tn(history.length, '{n} séance au compteur', '{n} séances au compteur')}`;
-  return <div className="progress-line">{text}</div>;
 }
 
 /** Actions sur un jour : démarrer, déplacer, changer de séance, mettre en repos, ajouter une séance. */
@@ -586,13 +661,16 @@ function ProgramChoices({
 export function TemplateExerciseList({
   template,
   exerciseById,
+  limit,
 }: {
   template: Template;
   exerciseById: Map<string, Exercise>;
+  /** Nombre maximum d'exercices affichés (aperçu). */
+  limit?: number;
 }) {
   return (
     <ul className="tpl-list">
-      {template.exercises.map((e, i) => {
+      {template.exercises.slice(0, limit).map((e, i) => {
         const exercise = exerciseById.get(e.exerciseId);
         const kind = exercise?.kind ?? 'weighted';
         const reps =

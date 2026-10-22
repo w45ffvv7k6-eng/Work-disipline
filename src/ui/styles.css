@@ -3092,43 +3092,6 @@ body {
   font-weight: 700;
 }
 
-/* Planning de la semaine repliable */
-.planning-toggle {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  margin-top: 22px;
-  padding: 14px 16px;
-  border-radius: var(--radius);
-  background: rgba(var(--surface-rgb), 0.85);
-  border: 1px solid var(--border);
-  text-align: start;
-}
-.planning-toggle .grow {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.planning-title {
-  font-weight: 800;
-  font-size: 1.02rem;
-}
-.planning-sub {
-  color: var(--text-dim);
-  font-size: 0.88rem;
-}
-.planning-chevron {
-  font-size: 1.3rem;
-  color: var(--accent);
-  transition: transform 0.2s ease;
-}
-.planning-toggle.open .planning-chevron {
-  transform: rotate(180deg);
-}
-.planning-body {
-  animation: rise 0.25s ease both;
-}
 .program-row {
   display: flex;
   align-items: baseline;
@@ -3179,4 +3142,156 @@ body {
   color: var(--text);
   font-size: 1rem;
   font-weight: 800;
+}
+
+/* ---------- Onglet Programme : en-tête, mini-semaine, aperçu ---------- */
+
+.home-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.home-hello {
+  flex: 1;
+  margin: 0;
+  font-size: 1.6rem;
+}
+.streak-chip {
+  flex-shrink: 0;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(var(--accent-rgb), 0.18);
+  color: var(--accent);
+  font-weight: 800;
+  font-size: 0.85rem;
+}
+.small-quote {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+}
+
+.week-strip {
+  margin-top: 16px;
+  padding: 12px 12px 10px;
+  border-radius: var(--radius);
+  background: rgba(var(--surface-rgb), 0.85);
+  border: 1px solid var(--border);
+}
+.week-strip-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 2px 8px;
+}
+.week-strip-head .grow {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+.week-strip-title {
+  font-weight: 800;
+}
+.week-strip-program {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.week-menu {
+  width: 36px;
+  height: 36px;
+  font-size: 1.3rem;
+  font-weight: 900;
+  background: var(--surface-2);
+}
+.week-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+.week-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1px;
+  padding: 7px 0 6px;
+  border-radius: 12px;
+  background: var(--surface-2);
+  min-width: 0;
+}
+.week-day:disabled {
+  opacity: 0.55;
+}
+.week-day-name {
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+.week-day-num {
+  font-size: 1rem;
+  font-weight: 800;
+}
+.week-day-icon {
+  font-size: 0.8rem;
+  line-height: 1.2;
+  color: var(--text-dim);
+}
+.week-day.planned .week-day-icon,
+.week-day.today .week-day-icon {
+  color: var(--accent);
+}
+.week-day.missed .week-day-icon {
+  color: var(--danger);
+}
+.week-day.is-today {
+  background: rgba(var(--accent-rgb), 0.2);
+  outline: 2px solid var(--accent);
+}
+
+.today-preview {
+  display: block;
+  width: 100%;
+  margin: 0 0 14px;
+  padding: 4px 12px 8px;
+  border-radius: 12px;
+  background: rgba(0, 0, 0, 0.22);
+  text-align: start;
+}
+.today-preview .tpl-list {
+  margin: 0;
+}
+.today-more {
+  display: block;
+  margin-top: 4px;
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+.other-btn {
+  margin-top: 12px;
+}
+.other-group {
+  margin: 18px 0 8px;
+  font-size: 0.95rem;
+}
+.other-group:first-of-type {
+  margin-top: 0;
+}
+.week-strip-title {
+  white-space: nowrap;
+}
+.today-preview {
+  margin: 14px 0 0;
+}
+.today-preview .tpl-list li {
+  padding: 5px 0;
+  font-size: 0.9rem;
+}
+.today-preview .tpl-note,
+.today-preview .tpl-list .muted.small {
+  display: none;
 }
