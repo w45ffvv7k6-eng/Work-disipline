@@ -599,6 +599,10 @@ const dictionary: Dictionary = {
   'Tu es la meilleure, change pas !': 'Adigu waad ugu fiican tahay, ha is beddelin!',
   'Tu es le meilleur, change pas !': 'Adigu waad ugu fiican tahay, ha is beddelin!',
   'Tu es le/la meilleur(e), change pas !': 'Adigu waad ugu fiican tahay, ha is beddelin!',
+  Favoris: 'Kuwa la jecel yahay',
+  'Tes exercices les plus faits': 'Jimicsiyada aad ugu badan samaysid',
+  'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
+    'Jimicsiyada aad ugu badan samaysid halkan ayay ka muuqan doonaan tababarradaada ugu horreeya kadib.',
 };
 
 export default dictionary;

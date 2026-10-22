@@ -591,6 +591,10 @@ const dictionary: Dictionary = {
   'Tu es la meilleure, change pas !': 'You’re the best, never change!',
   'Tu es le meilleur, change pas !': 'You’re the best, never change!',
   'Tu es le/la meilleur(e), change pas !': 'You’re the best, never change!',
+  Favoris: 'Favorites',
+  'Tes exercices les plus faits': 'Your most-done exercises',
+  'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
+    'Your most-done exercises will show up here after your first workouts.',
 };
 
 export default dictionary;

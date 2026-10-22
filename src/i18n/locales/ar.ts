@@ -586,6 +586,10 @@ const dictionary: Dictionary = {
   'Tu es la meilleure, change pas !': 'أنتِ الأفضل، لا تتغيّري!',
   'Tu es le meilleur, change pas !': 'أنت الأفضل، لا تتغيّر!',
   'Tu es le/la meilleur(e), change pas !': 'أنت الأفضل، لا تتغيّر!',
+  Favoris: 'المفضلة',
+  'Tes exercices les plus faits': 'تمارينك الأكثر أداءً',
+  'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
+    'ستظهر هنا تمارينك الأكثر أداءً بعد حصصك الأولى.',
 };
 
 export default dictionary;

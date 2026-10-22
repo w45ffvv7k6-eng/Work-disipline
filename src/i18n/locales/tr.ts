@@ -593,6 +593,10 @@ const dictionary: Dictionary = {
   'Tu es la meilleure, change pas !': 'Sen en iyisisin, sakın değişme!',
   'Tu es le meilleur, change pas !': 'Sen en iyisisin, sakın değişme!',
   'Tu es le/la meilleur(e), change pas !': 'Sen en iyisisin, sakın değişme!',
+  Favoris: 'Favoriler',
+  'Tes exercices les plus faits': 'En çok yaptığın egzersizler',
+  'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
+    'En çok yaptığın egzersizler ilk antrenmanlarından sonra burada görünecek.',
 };
 
 export default dictionary;

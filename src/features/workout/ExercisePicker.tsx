@@ -11,6 +11,10 @@ interface Props {
 
 const GROUPS = Object.keys(MUSCLE_GROUP_LABELS) as MuscleGroup[];
 
+/** Filtre « Favoris » (exercices les plus faits) et nombre maximum d'exercices montrés. */
+const FAVORITES = 'favoris';
+const FAVORITES_COUNT = 10;
+
 /** Recherche sans tenir compte des accents ni des majuscules. */
 export function normalize(text: string): string {
   return text.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
@@ -19,24 +23,32 @@ export function normalize(text: string): string {
 export function ExercisePicker({ onClose, onPick }: Props) {
   const { exercises } = useRepositories();
   const all = useSubscribable(() => exercises.watchAll(), []);
+  const summaries = useSubscribable(() => exercises.watchSummaries(), []);
   const [query, setQuery] = useState('');
-  const [group, setGroup] = useState<MuscleGroup | null>(null);
+  // undefined = choix automatique : « Favoris » si la personne a déjà des exercices faits, sinon « Tous ».
+  const [group, setGroup] = useState<MuscleGroup | null | typeof FAVORITES | undefined>(undefined);
+  const hasFavorites = !!summaries && Object.keys(summaries).length > 0;
+  const showFavorites = group === FAVORITES || (group === undefined && hasFavorites);
   const [creating, setCreating] = useState(false);
 
   const filtered = useMemo(() => {
     const q = normalize(query.trim());
-    return (all ?? []).filter(
+    const matches = (all ?? []).filter(
       (e) =>
-        (!group || e.muscleGroup === group) &&
+        (showFavorites ? !!summaries?.[e.id] : !group || e.muscleGroup === group) &&
         (!q || normalize(t(e.name)).includes(q) || normalize(e.name).includes(q)),
     );
-  }, [all, query, group]);
+    // Favoris : les exercices les plus faits en premier.
+    return showFavorites && summaries
+      ? matches.sort((a, b) => summaries[b.id].sessionCount - summaries[a.id].sessionCount).slice(0, FAVORITES_COUNT)
+      : matches;
+  }, [all, query, group, showFavorites, summaries]);
 
   if (creating) {
     return (
       <CreateExerciseSheet
         initialName={query}
-        initialGroup={group ?? 'pectoraux'}
+        initialGroup={group && group !== FAVORITES ? group : 'pectoraux'}
         onClose={() => setCreating(false)}
         onCreated={onPick}
       />
@@ -59,7 +71,10 @@ export function ExercisePicker({ onClose, onPick }: Props) {
         aria-label={t('Rechercher un exercice')}
       />
       <div className="chips">
-        <button className={`chip${group === null ? ' active' : ''}`} onClick={() => setGroup(null)}>
+        <button className={`chip${showFavorites ? ' active' : ''}`} onClick={() => setGroup(FAVORITES)}>
+          ⭐ {t('Favoris')}
+        </button>
+        <button className={`chip${!showFavorites && group == null ? ' active' : ''}`} onClick={() => setGroup(null)}>
           {t('Tous')}
         </button>
         {GROUPS.map((g) => (
@@ -82,7 +97,13 @@ export function ExercisePicker({ onClose, onPick }: Props) {
             </div>
           </button>
         ))}
-        {all && filtered.length === 0 && <div className="empty">{t('Aucun exercice trouvé.')}</div>}
+        {all && filtered.length === 0 && (
+          <div className="empty">
+            {showFavorites && !query.trim()
+              ? t('Tes exercices les plus faits apparaîtront ici après tes premières séances.')
+              : t('Aucun exercice trouvé.')}
+          </div>
+        )}
         <button className="btn btn-outline btn-block" style={{ margin: '16px 0' }} onClick={() => setCreating(true)}>
           + {t('Créer un exercice')}
           {query.trim() ? ` « ${query.trim()} »` : ''}

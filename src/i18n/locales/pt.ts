@@ -596,6 +596,10 @@ const dictionary: Dictionary = {
   'Tu es la meilleure, change pas !': 'És a melhor, não mudes!',
   'Tu es le meilleur, change pas !': 'És o melhor, não mudes!',
   'Tu es le/la meilleur(e), change pas !': 'És o/a melhor, não mudes!',
+  Favoris: 'Favoritos',
+  'Tes exercices les plus faits': 'Os teus exercícios mais feitos',
+  'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
+    'Os teus exercícios mais feitos vão aparecer aqui depois dos primeiros treinos.',
 };
 
 export default dictionary;
