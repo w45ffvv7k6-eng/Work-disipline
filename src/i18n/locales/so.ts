@@ -603,6 +603,9 @@ const dictionary: Dictionary = {
   'Tes exercices les plus faits': 'Jimicsiyada aad ugu badan samaysid',
   'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
     'Jimicsiyada aad ugu badan samaysid halkan ayay ka muuqan doonaan tababarradaada ugu horreeya kadib.',
+  'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.':
+    'Ku dar culeys dheeri ah (suun, jaakad…) si aad u aragto qalooccan.',
+  'Lest max par séance': 'Culeyska dheeriga ah ee ugu badan tababar kasta',
 };
 
 export default dictionary;

@@ -590,6 +590,8 @@ const dictionary: Dictionary = {
   'Tes exercices les plus faits': 'تمارينك الأكثر أداءً',
   'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
     'ستظهر هنا تمارينك الأكثر أداءً بعد حصصك الأولى.',
+  'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.': 'أضف وزنًا إضافيًا (حزام، سترة…) لترى هذا المنحنى.',
+  'Lest max par séance': 'أقصى وزن إضافي لكل حصة',
 };
 
 export default dictionary;

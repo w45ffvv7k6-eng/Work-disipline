@@ -51,14 +51,33 @@ export function progressMetric(kind: ExerciseKind): RecordType {
   return 'maxReps';
 }
 
-/** Un point par séance (la meilleure valeur de la séance), de la plus ancienne à la plus récente. */
+/** Courbes affichées sur la fiche d'un exercice, selon son type (la première est la principale). */
+export function chartMetrics(kind: ExerciseKind): RecordType[] {
+  if (kind === 'weighted') return ['maxWeight', 'maxReps'];
+  if (kind === 'bodyweight') return ['maxReps', 'maxLest'];
+  if (kind === 'duration') return ['maxDuration'];
+  return ['maxDistance'];
+}
+
+/** Meilleure valeur d'une séance pour une mesure (répétitions max calculées pour tous les types). */
+function sessionBest(sets: RecordInput[], kind: ExerciseKind, metric: RecordType): number {
+  if (metric === 'maxReps') {
+    return Math.max(0, ...sets.filter((s) => s.completed && !s.isWarmup).map((s) => s.reps));
+  }
+  return bestValues(sets, kind)[metric] ?? 0;
+}
+
+/**
+ * Un point par séance (la meilleure valeur de la séance), de la plus ancienne à la plus récente.
+ * Par défaut la mesure principale de l'exercice ; `metric` pour une autre courbe (répétitions, lest…).
+ */
 export function exerciseProgress(
   sessions: { startedAt: number; sets: RecordInput[] }[],
   kind: ExerciseKind,
+  metric: RecordType = progressMetric(kind),
 ): { date: number; value: number }[] {
-  const metric = progressMetric(kind);
   return sessions
-    .map((s) => ({ date: s.startedAt, value: bestValues(s.sets, kind)[metric] ?? 0 }))
+    .map((s) => ({ date: s.startedAt, value: sessionBest(s.sets, kind, metric) }))
     .filter((p) => p.value > 0)
     .sort((a, b) => a.date - b.date);
 }

@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import {
+  chartMetrics,
   compareToLast,
   estimatedMinutes,
   exerciseProgress,
@@ -117,5 +118,37 @@ describe('comparaison avec la dernière fois', () => {
     expect(percentChange(3240, 3000)).toBe(8);
     expect(percentChange(2700, 3000)).toBe(-10);
     expect(percentChange(100, undefined)).toBeNull();
+  });
+});
+
+describe('courbes de la fiche exercice', () => {
+  const set = (weightKg: number, reps: number, extra = {}) => ({
+    id: `${weightKg}-${reps}-${Math.random()}`,
+    workoutId: 'w',
+    weightKg,
+    reps,
+    isWarmup: false,
+    completed: true,
+    ...extra,
+  });
+
+  it('propose les bonnes courbes selon le type d’exercice', () => {
+    expect(chartMetrics('weighted')).toEqual(['maxWeight', 'maxReps']);
+    expect(chartMetrics('bodyweight')).toEqual(['maxReps', 'maxLest']);
+  });
+
+  it('répétitions max et lest max par séance, échauffement exclu', () => {
+    const sessions = [
+      { startedAt: 1, sets: [set(0, 10), set(0, 15, { isWarmup: true })] },
+      { startedAt: 2, sets: [set(5, 8), set(0, 12)] },
+    ];
+    expect(exerciseProgress(sessions, 'bodyweight', 'maxReps')).toEqual([
+      { date: 1, value: 10 },
+      { date: 2, value: 12 },
+    ]);
+    expect(exerciseProgress(sessions, 'bodyweight', 'maxLest')).toEqual([{ date: 2, value: 5 }]);
+    expect(exerciseProgress([{ startedAt: 3, sets: [set(60, 8), set(62.5, 6)] }], 'weighted', 'maxReps')).toEqual([
+      { date: 3, value: 8 },
+    ]);
   });
 });

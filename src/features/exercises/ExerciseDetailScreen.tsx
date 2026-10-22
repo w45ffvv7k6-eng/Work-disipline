@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import { formatKg, formatLongDate, formatShortDate } from '../../domain/format';
 import { bestValues, formatRecordValue, RECORD_LABELS, type RecordType } from '../../domain/records';
-import { exerciseProgress, progressMetric } from '../../domain/stats';
+import { chartMetrics, exerciseProgress } from '../../domain/stats';
 import { MUSCLE_GROUP_LABELS, type ExerciseKind } from '../../domain/types';
 import { k, t } from '../../i18n';
 import { LineChart } from '../../ui/charts';
@@ -32,6 +32,7 @@ const CHART_TITLES: Partial<Record<RecordType, string>> = {
   maxReps: k('Répétitions max par séance'),
   maxDuration: k('Durée max par séance'),
   maxDistance: k('Distance par séance'),
+  maxLest: k('Lest max par séance'),
 };
 
 /** Fiche d'un exercice : records, courbe de progression et dernières séances. */
@@ -62,12 +63,12 @@ export function ExerciseDetailScreen() {
     sessions.flatMap((s) => s.sets),
     exercise.kind,
   );
-  const metric = progressMetric(exercise.kind);
-  const points = exerciseProgress(
-    sessions.map((s) => ({ startedAt: s.workout.startedAt, sets: s.sets })),
-    exercise.kind,
-  );
-  const formatMetric = (value: number) => formatRecordValue({ type: metric, value }, formatKg);
+  const done = sessions.map((s) => ({ startedAt: s.workout.startedAt, sets: s.sets }));
+  // Une courbe par mesure : charge et répétitions, ou répétitions et lest (poids du corps)…
+  const charts = chartMetrics(exercise.kind).map((metric) => ({
+    metric,
+    points: exerciseProgress(done, exercise.kind, metric),
+  }));
 
   return (
     <>
@@ -120,15 +121,22 @@ export function ExerciseDetailScreen() {
         </div>
 
         <h2 className="section-title">{t('Progression')}</h2>
-        <LineChart
-          title={t(CHART_TITLES[metric] ?? 'Progression')}
-          points={points}
-          format={formatMetric}
-          formatDate={formatShortDate}
-          fallbackMax={exercise.kind === 'weighted' ? 60 : 15}
-          empty={t('Fais cet exercice une première fois pour voir ta courbe.')}
-          single={t('1 séance pour l’instant : reviens la prochaine fois pour voir ta courbe.')}
-        />
+        {charts.map(({ metric, points }) => (
+          <LineChart
+            key={metric}
+            title={t(CHART_TITLES[metric] ?? 'Progression')}
+            points={points}
+            format={(value) => formatRecordValue({ type: metric, value }, formatKg)}
+            formatDate={formatShortDate}
+            fallbackMax={metric === 'maxWeight' ? 60 : metric === 'maxLest' ? 20 : 15}
+            empty={
+              metric === 'maxLest'
+                ? t('Ajoute du lest (ceinture, gilet…) pour voir cette courbe.')
+                : t('Fais cet exercice une première fois pour voir ta courbe.')
+            }
+            single={t('1 séance pour l’instant : reviens la prochaine fois pour voir ta courbe.')}
+          />
+        ))}
 
         <h2 className="section-title">{t('Dernières séances')}</h2>
         {sessions.length === 0 ? (

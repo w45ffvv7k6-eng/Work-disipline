@@ -600,6 +600,9 @@ const dictionary: Dictionary = {
   'Tes exercices les plus faits': 'Os teus exercícios mais feitos',
   'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
     'Os teus exercícios mais feitos vão aparecer aqui depois dos primeiros treinos.',
+  'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.':
+    'Adiciona lastro (cinto, colete…) para veres esta curva.',
+  'Lest max par séance': 'Lastro máx. por treino',
 };
 
 export default dictionary;

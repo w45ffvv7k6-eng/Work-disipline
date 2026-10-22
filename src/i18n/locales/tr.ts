@@ -597,6 +597,8 @@ const dictionary: Dictionary = {
   'Tes exercices les plus faits': 'En çok yaptığın egzersizler',
   'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
     'En çok yaptığın egzersizler ilk antrenmanlarından sonra burada görünecek.',
+  'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.': 'Bu eğriyi görmek için ek ağırlık ekle (kemer, yelek…).',
+  'Lest max par séance': 'Antrenman başına maks. ek ağırlık',
 };
 
 export default dictionary;

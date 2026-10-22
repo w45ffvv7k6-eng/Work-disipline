@@ -595,6 +595,8 @@ const dictionary: Dictionary = {
   'Tes exercices les plus faits': 'Your most-done exercises',
   'Tes exercices les plus faits apparaîtront ici après tes premières séances.':
     'Your most-done exercises will show up here after your first workouts.',
+  'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.': 'Add extra weight (belt, vest…) to see this curve.',
+  'Lest max par séance': 'Max added weight per workout',
 };
 
 export default dictionary;
