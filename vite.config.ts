@@ -3,21 +3,20 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { execSync } from 'node:child_process';
 
+/** Nombre de mises à jour avant la numérotation 1.40.xxx (la 1re mise à jour suivante est la 1.40.001). */
+const UPDATES_BEFORE_1_40 = 41;
+
 /**
- * Numéro de version « 1.40.003 » :
- * - 40 = nombre total de mises à jour (augmente à chaque mise en ligne) ;
- * - 003 = 3e mise à jour de la journée (heure de Suisse).
+ * Numéro de version « 1.40.001 », comme un compteur kilométrique :
+ * le dernier nombre augmente à chaque mise à jour ; arrivé à 100, il repart à 000 et le 40 passe à 41.
  */
 function appVersion(): string {
   try {
-    const times = execSync('git log --format=%ct').toString().trim().split('\n').map(Number);
-    const day = (seconds: number) =>
-      new Date(seconds * 1000).toLocaleDateString('fr-CH', { timeZone: 'Europe/Zurich' });
-    const today = day(times[0]);
-    const ofTheDay = times.filter((s) => day(s) === today).length;
-    return `1.${times.length}.${String(ofTheDay).padStart(3, '0')}`;
+    const updates = Number(execSync('git rev-list --count HEAD').toString().trim()) - UPDATES_BEFORE_1_40;
+    const step = Math.max(0, updates);
+    return `1.${40 + Math.floor(step / 100)}.${String(step % 100).padStart(3, '0')}`;
   } catch {
-    return '1.0.000';
+    return '1.40.000';
   }
 }
 
