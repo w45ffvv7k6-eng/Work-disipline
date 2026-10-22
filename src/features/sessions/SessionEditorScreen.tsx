@@ -73,7 +73,10 @@ export function SessionEditorScreen() {
 
   const program = all.find((p) => p.program.id === template.programId);
   // Programme à jours fixes : chaque séance a son jour de la semaine.
-  const fixedDays = program?.templates.some((tpl) => tpl.weekday !== undefined) ?? false;
+  // Nouveau programme personnel (aucun jour encore) : on peut aussi choisir les jours. Jamais pour une course.
+  const fixedDays =
+    !template.extra &&
+    (program?.templates.some((tpl) => tpl.weekday !== undefined) || program?.program.trainingDays.length === 0);
   const list = template.exercises;
   const minutes = estimatedMinutes(
     list.map((e) => ({ ...e, kind: exerciseById.get(e.exerciseId)?.kind })),

@@ -183,7 +183,7 @@ const dictionary: Dictionary = {
   'Footing 30 à 40 min, allure où tu peux parler': 'Jogging 30 ilaa 40 daqiiqo, xawaare aad ku hadli karto',
   Forêt: 'Kayn',
   'Front squat': 'Front squat',
-  'Full body (3 séances)': 'Full body (3 tababar)',
+  'Full body': 'Full body',
   'Full body A': 'Full body A',
   'Full body B': 'Full body B',
   'Gainage (planche)': 'Plank',
@@ -308,7 +308,7 @@ const dictionary: Dictionary = {
   'Première fois sur cet exercice': 'Markii ugu horreysay jimicsigan',
   Prénom: 'Magaca hore',
   'Presse à cuisses': 'Leg press',
-  'Prise de masse (4 séances)': 'Muruq kordhin (4 tababar)',
+  'Prise de masse': 'Muruq kordhin',
   Profil: 'Profile',
   Programme: 'Barnaamij',
   'Pull-over à la poulie': 'Cable pullover',
@@ -561,7 +561,6 @@ const dictionary: Dictionary = {
   '{name} (copie)': '{name} (nuqul)',
   'Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».':
     'Weli tababar ma jiro. Ku samee kan ugu horreeya «+ Cusub».',
-  'Course (à ajouter à ta semaine)': 'Orod (ku dar toddobaadkaaga)',
   'Démarre ou modifie tes séances': 'Bilow ama wax ka beddel tababarradaada',
   Démarrer: 'Bilow',
   'Dupliquer la séance': 'Nuqul ka samee tababarka',
@@ -572,6 +571,22 @@ const dictionary: Dictionary = {
   'Partir d’une séance vide': 'Ka bilow tababar madhan',
   'Remplacer l’exercice': 'Beddel jimicsiga',
   'Séance copiée ✅': 'Tababarka waa la nuqulay ✅',
+  '« {name} » est maintenant ton programme ✅': '«{name}» hadda waa barnaamijkaaga ✅',
+  Course: 'Orod',
+  'Donne-lui le nom que tu veux, puis ajoute tes séances avec « + Nouvelle ».':
+    'U bixi magac kasta oo aad rabto, kadibna ku dar tababarradaada «+ Cusub».',
+  'Le programme et ses séances seront supprimés. Les séances déjà faites restent dans ton historique.':
+    'Barnaamijka iyo tababarradiisa waa la tirtiri doonaa. Tababarrada aad samaysay taariikhda ayay ku jirayaan.',
+  'Nouveau programme': 'Barnaamij cusub',
+  'Nouvelle course': 'Orod cusub',
+  'Nouvelle séance de course': 'Tababar orod oo cusub',
+  'Options du programme': 'Doorashooyinka barnaamijka',
+  'Programme « {name} » créé ✅': 'Barnaamijka «{name}» waa la sameeyay ✅',
+  'Programme suivi': 'Barnaamijka aad raacdo',
+  'Renommer le programme': 'Magac cusub sii barnaamijka',
+  Sèche: 'Dhuubasho',
+  'Suivre ce programme': 'Raac barnaamijkan',
+  'Supprimer le programme': 'Tirtir barnaamijka',
 };
 
 export default dictionary;

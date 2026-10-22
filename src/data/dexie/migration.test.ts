@@ -21,11 +21,18 @@ describe('mise à jour de la base sur un téléphone déjà utilisé', () => {
       timer: 'id',
     });
     await old.table('workouts').add({ id: 'w1', name: 'Ancienne séance', status: 'finished', startedAt: 1 });
+    await old.table('programs').bulkAdd([
+      { id: 'prog-prise-de-masse', name: 'Prise de masse (4 séances)', trainingDays: [1] },
+      { id: 'prog-full-body', name: 'Mon full body à moi', trainingDays: [1] },
+    ]);
     old.close();
 
     const db = new MuscuDB(name);
     await db.open();
-    expect(db.verno).toBe(3);
+    expect(db.verno).toBe(4);
+    // Version 4 : programmes fournis renommés, sauf ceux renommés par la personne.
+    expect((await db.programs.get('prog-prise-de-masse'))?.name).toBe('Prise de masse');
+    expect((await db.programs.get('prog-full-body'))?.name).toBe('Mon full body à moi');
     // Version 3 : exercices cardio et séances de course ajoutés.
     expect(await db.exercises.get('ex-course-exterieur')).toBeTruthy();
     expect(await db.templates.get('tpl-pdm-course-footing')).toMatchObject({ extra: true });

@@ -193,4 +193,18 @@ describe('dépôt Dexie des séances', () => {
     expect(saved?.programId).toBe(source?.programId);
     expect(await repos.templates.duplicate('inconnue', 'x')).toBeNull();
   });
+
+  it('crée, renomme et supprime un programme personnel avec ses séances', async () => {
+    const program = await repos.programs.create('Sèche');
+    const tpl = await repos.templates.create('Cardio + abdos', program.id);
+    await repos.programs.rename(program.id, 'Sèche été');
+    await repos.settings.update({ activeProgramId: program.id });
+    let all = await first(repos.programs.watchAll());
+    expect(all.find((p) => p.program.id === program.id)).toMatchObject({ program: { name: 'Sèche été' } });
+    await repos.programs.delete(program.id);
+    all = await first(repos.programs.watchAll());
+    expect(all.some((p) => p.program.id === program.id)).toBe(false);
+    expect((await db.templates.get(tpl.id))?.deletedAt).toBeTruthy();
+    expect((await repos.settings.get()).activeProgramId).toBeUndefined();
+  });
 });

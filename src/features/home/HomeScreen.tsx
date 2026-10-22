@@ -123,7 +123,12 @@ export function HomeScreen() {
     history.map((h) => h.workout.startedAt),
     today,
   );
-  const extras = current?.templates.filter((tpl) => tpl.extra) ?? [];
+  // Courses du programme suivi, ou d'un autre programme s'il n'en a pas (programme personnel).
+  const ownRuns = current?.templates.filter((tpl) => tpl.extra) ?? [];
+  const extras =
+    ownRuns.length > 0
+      ? ownRuns
+      : (allPrograms.find((p) => p.templates.some((tpl) => tpl.extra))?.templates.filter((tpl) => tpl.extra) ?? []);
   const mainTemplates = current?.templates.filter((tpl) => !tpl.extra) ?? [];
 
   return (

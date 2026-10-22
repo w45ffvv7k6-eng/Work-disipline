@@ -54,6 +54,20 @@ export class MuscuDB extends Dexie {
         for (const e of seedExercises()) if (!(await exercises.get(e.id))) await exercises.add(e);
         for (const t of seedPrograms().templates) if (t.extra && !(await templates.get(t.id))) await templates.add(t);
       });
+    // Version 4 : programmes fournis renommés (« Prise de masse », « Full body »), sauf s'ils ont été renommés.
+    this.version(4)
+      .stores({})
+      .upgrade(async (tx) => {
+        const programs = tx.table('programs');
+        const renames: [string, string, string][] = [
+          ['prog-prise-de-masse', 'Prise de masse (4 séances)', 'Prise de masse'],
+          ['prog-full-body', 'Full body (3 séances)', 'Full body'],
+        ];
+        for (const [id, before, after] of renames) {
+          const program = await programs.get(id);
+          if (program?.name === before) await programs.update(id, { name: after, updatedAt: Date.now() });
+        }
+      });
     // Au tout premier lancement : bibliothèque d'exercices et programmes fournis.
     this.on('populate', (tx) => {
       const { programs, templates } = seedPrograms();

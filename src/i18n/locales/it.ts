@@ -183,7 +183,7 @@ const dictionary: Dictionary = {
   'Footing 30 à 40 min, allure où tu peux parler': 'Corsa lenta 30–40 min, a un passo in cui riesci a parlare',
   Forêt: 'Foresta',
   'Front squat': 'Front squat',
-  'Full body (3 séances)': 'Full body (3 allenamenti)',
+  'Full body': 'Full body',
   'Full body A': 'Full body A',
   'Full body B': 'Full body B',
   'Gainage (planche)': 'Plank',
@@ -307,7 +307,7 @@ const dictionary: Dictionary = {
   'Première fois sur cet exercice': 'Prima volta con questo esercizio',
   Prénom: 'Nome',
   'Presse à cuisses': 'Leg press',
-  'Prise de masse (4 séances)': 'Massa (4 allenamenti)',
+  'Prise de masse': 'Massa',
   Profil: 'Profilo',
   Programme: 'Programma',
   'Pull-over à la poulie': 'Pullover ai cavi',
@@ -560,7 +560,6 @@ const dictionary: Dictionary = {
   '{name} (copie)': '{name} (copia)',
   'Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».':
     'Ancora nessun allenamento. Crea il primo con «+ Nuovo».',
-  'Course (à ajouter à ta semaine)': 'Corsa (aggiungila alla tua settimana)',
   'Démarre ou modifie tes séances': 'Avvia o modifica i tuoi allenamenti',
   Démarrer: 'Avvia',
   'Dupliquer la séance': 'Duplica allenamento',
@@ -571,6 +570,22 @@ const dictionary: Dictionary = {
   'Partir d’une séance vide': 'Parti da un allenamento vuoto',
   'Remplacer l’exercice': 'Sostituisci esercizio',
   'Séance copiée ✅': 'Allenamento copiato ✅',
+  '« {name} » est maintenant ton programme ✅': '«{name}» è ora il tuo programma ✅',
+  Course: 'Corsa',
+  'Donne-lui le nom que tu veux, puis ajoute tes séances avec « + Nouvelle ».':
+    'Dagli il nome che vuoi, poi aggiungi i tuoi allenamenti con «+ Nuovo».',
+  'Le programme et ses séances seront supprimés. Les séances déjà faites restent dans ton historique.':
+    'Il programma e i suoi allenamenti verranno eliminati. Gli allenamenti già fatti restano nello storico.',
+  'Nouveau programme': 'Nuovo programma',
+  'Nouvelle course': 'Nuova corsa',
+  'Nouvelle séance de course': 'Nuova sessione di corsa',
+  'Options du programme': 'Opzioni del programma',
+  'Programme « {name} » créé ✅': 'Programma «{name}» creato ✅',
+  'Programme suivi': 'Programma seguito',
+  'Renommer le programme': 'Rinomina programma',
+  Sèche: 'Definizione',
+  'Suivre ce programme': 'Segui questo programma',
+  'Supprimer le programme': 'Elimina programma',
 };
 
 export default dictionary;

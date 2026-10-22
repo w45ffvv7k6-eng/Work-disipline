@@ -27,7 +27,7 @@ function musclesOf(template: Template, exerciseById: Map<string, Exercise>): Mus
 export function SessionsScreen() {
   const { programs, templates, exercises, workouts, settings: settingsRepo } = useRepositories();
   const navigate = useNavigate();
-  const { toast } = useFeedback();
+  const { toast, confirm } = useFeedback();
   const all = useSubscribable(() => programs.watchAll(), []);
   const library = useSubscribable(() => exercises.watchAll(), []);
   const settings = useSubscribable(() => settingsRepo.watch(), []);
@@ -36,16 +36,25 @@ export function SessionsScreen() {
   const [programId, setProgramId] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
+  const [creatingProgram, setCreatingProgram] = useState(false);
+  const [programMenu, setProgramMenu] = useState(false);
+  const [renamingProgram, setRenamingProgram] = useState(false);
 
   if (!all || !settings || active === undefined) return null;
   // Le programme suivi en premier.
   const ordered = [...all].sort(
     (a, b) => Number(b.program.id === settings.activeProgramId) - Number(a.program.id === settings.activeProgramId),
   );
+  const onCourse = programId === COURSE_TAB;
   const shown = ordered.find((p) => p.program.id === programId) ?? ordered[0];
-  if (!shown) return null;
-  const main = shown.templates.filter((tpl) => !tpl.extra);
-  const runs = shown.templates.filter((tpl) => tpl.extra);
+  // Onglet « Course » : les séances de course du programme suivi (ou, s'il n'en a pas, d'un autre programme).
+  const followed = ordered.find((p) => p.program.id === settings.activeProgramId) ?? ordered[0];
+  const runsSource = followed?.templates.some((tpl) => tpl.extra)
+    ? followed
+    : (ordered.find((p) => p.templates.some((tpl) => tpl.extra)) ?? followed);
+  const runs = runsSource?.templates.filter((tpl) => tpl.extra) ?? [];
+  const list = onCourse ? runs : (shown?.templates.filter((tpl) => !tpl.extra) ?? []);
+  const target = onCourse ? runsSource : shown;
 
   const start = async (template: Template) => {
     if (active) {
@@ -111,73 +120,227 @@ export function SessionsScreen() {
     <div className="screen with-fab">
       <PageHeader icon={<TemplateIcon />} title={t('Mes séances')} subtitle={t('Démarre ou modifie tes séances')} />
 
-      {ordered.length > 1 && (
-        <div className="program-tabs" role="tablist">
-          {ordered.map(({ program }) => (
+      <div className="program-tabs" role="tablist">
+        {ordered.map(({ program }) => (
+          <button
+            key={program.id}
+            role="tab"
+            aria-selected={!onCourse && program.id === shown?.program.id}
+            className={`program-tab${!onCourse && program.id === shown?.program.id ? ' active' : ''}`}
+            onClick={() => {
+              setProgramId(program.id);
+              setExpanded(null);
+            }}
+          >
+            {t(program.name)}
+            {program.id === settings.activeProgramId && ' ✓'}
+          </button>
+        ))}
+        <button
+          role="tab"
+          aria-selected={onCourse}
+          className={`program-tab${onCourse ? ' active' : ''}`}
+          onClick={() => {
+            setProgramId(COURSE_TAB);
+            setExpanded(null);
+          }}
+        >
+          🏃 {t('Course')}
+        </button>
+        <button
+          className="program-tab add"
+          onClick={() => setCreatingProgram(true)}
+          aria-label={t('Nouveau programme')}
+        >
+          ＋
+        </button>
+      </div>
+
+      {!onCourse && shown && (
+        <div className="program-bar">
+          {shown.program.id === settings.activeProgramId ? (
+            <span className="program-followed">✓ {t('Programme suivi')}</span>
+          ) : (
             <button
-              key={program.id}
-              role="tab"
-              aria-selected={program.id === shown.program.id}
-              className={`program-tab${program.id === shown.program.id ? ' active' : ''}`}
-              onClick={() => {
-                setProgramId(program.id);
-                setExpanded(null);
+              className="link-btn"
+              onClick={async () => {
+                await settingsRepo.update({ activeProgramId: shown.program.id });
+                toast(t('« {name} » est maintenant ton programme ✅', { name: t(shown.program.name) }));
               }}
             >
-              {t(program.name)}
-              {program.id === settings.activeProgramId && ' ✓'}
+              {t('Suivre ce programme')}
             </button>
-          ))}
+          )}
+          <button
+            className="icon-btn program-more"
+            onClick={() => setProgramMenu(true)}
+            aria-label={t('Options du programme')}
+          >
+            ⋯
+          </button>
         </div>
       )}
 
-      <div className="stack">{main.map(card)}</div>
-      {main.length === 0 && (
+      <div className="stack">{list.map(card)}</div>
+      {list.length === 0 && (
         <p className="muted">{t('Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».')}</p>
       )}
 
-      {runs.length > 0 && (
-        <>
-          <h2 className="section-title">🏃 {t('Course (à ajouter à ta semaine)')}</h2>
-          <div className="stack">{runs.map(card)}</div>
-        </>
+      {target && (
+        <button className="fab" onClick={() => setCreating(true)}>
+          ＋ {t('Nouvelle')}
+        </button>
       )}
 
-      <button className="fab" onClick={() => setCreating(true)}>
-        ＋ {t('Nouvelle')}
-      </button>
-
-      {creating && (
-        <Sheet onClose={() => setCreating(false)} title={t('Nouvelle séance')}>
+      {creating && target && (
+        <Sheet
+          onClose={() => setCreating(false)}
+          title={onCourse ? t('Nouvelle séance de course') : t('Nouvelle séance')}
+        >
           <button
             className="btn btn-primary btn-block"
             onClick={async () => {
               setCreating(false);
-              const created = await templates.create(t('Nouvelle séance'), shown.program.id);
+              const created = await templates.create(
+                onCourse ? t('Nouvelle course') : t('Nouvelle séance'),
+                target.program.id,
+                onCourse,
+              );
               navigate(`/seances/${created.id}`);
             }}
           >
             ✨ {t('Partir d’une séance vide')}
           </button>
-          <h3 className="other-group">📋 {t('Ou copier une séance existante')}</h3>
+          {(onCourse ? runs : list).length > 0 && (
+            <>
+              <h3 className="other-group">📋 {t('Ou copier une séance existante')}</h3>
+              <div className="stack">
+                {(onCourse ? runs : list).map((tpl) => (
+                  <button
+                    key={tpl.id}
+                    className="card-button"
+                    onClick={async () => {
+                      setCreating(false);
+                      const copy = await templates.duplicate(tpl.id, t('{name} (copie)', { name: t(tpl.name) }));
+                      if (copy) navigate(`/seances/${copy.id}`);
+                    }}
+                  >
+                    <div style={{ fontWeight: 800 }}>{t(tpl.name)}</div>
+                    <div className="muted small">{plural(tpl.exercises.length, 'exercice')}</div>
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </Sheet>
+      )}
+
+      {creatingProgram && (
+        <NameSheet
+          title={t('Nouveau programme')}
+          initial=""
+          placeholder={t('ex. {value}', { value: t('Sèche') })}
+          hint={t('Donne-lui le nom que tu veux, puis ajoute tes séances avec « + Nouvelle ».')}
+          onClose={() => setCreatingProgram(false)}
+          onSave={async (name) => {
+            setCreatingProgram(false);
+            const program = await programs.create(name);
+            setProgramId(program.id);
+            toast(t('Programme « {name} » créé ✅', { name }));
+          }}
+        />
+      )}
+
+      {programMenu && shown && (
+        <Sheet onClose={() => setProgramMenu(false)} title={t(shown.program.name)}>
           <div className="stack">
-            {shown.templates.map((tpl) => (
-              <button
-                key={tpl.id}
-                className="card-button"
-                onClick={async () => {
-                  setCreating(false);
-                  const copy = await templates.duplicate(tpl.id, t('{name} (copie)', { name: t(tpl.name) }));
-                  if (copy) navigate(`/seances/${copy.id}`);
-                }}
-              >
-                <div style={{ fontWeight: 800 }}>{t(tpl.name)}</div>
-                <div className="muted small">{plural(tpl.exercises.length, 'exercice')}</div>
-              </button>
-            ))}
+            <button
+              className="btn btn-block"
+              onClick={() => {
+                setProgramMenu(false);
+                setRenamingProgram(true);
+              }}
+            >
+              ✏️ {t('Renommer le programme')}
+            </button>
+            <button
+              className="btn btn-block btn-danger"
+              onClick={async () => {
+                setProgramMenu(false);
+                const ok = await confirm({
+                  title: t('Supprimer « {name} » ?', { name: t(shown.program.name) }),
+                  message: t(
+                    'Le programme et ses séances seront supprimés. Les séances déjà faites restent dans ton historique.',
+                  ),
+                  confirmLabel: t('Supprimer'),
+                  danger: true,
+                });
+                if (!ok) return;
+                await programs.delete(shown.program.id);
+                setProgramId(null);
+              }}
+            >
+              🗑️ {t('Supprimer le programme')}
+            </button>
           </div>
         </Sheet>
       )}
+
+      {renamingProgram && shown && (
+        <NameSheet
+          title={t('Renommer le programme')}
+          initial={t(shown.program.name)}
+          onClose={() => setRenamingProgram(false)}
+          onSave={async (name) => {
+            setRenamingProgram(false);
+            await programs.rename(shown.program.id, name);
+          }}
+        />
+      )}
     </div>
+  );
+}
+
+/** Onglet spécial « Course » (séances de course, à côté des programmes). */
+const COURSE_TAB = 'course';
+
+/** Saisie d'un nom (nouveau programme, renommage). */
+function NameSheet({
+  title,
+  initial,
+  placeholder,
+  hint,
+  onClose,
+  onSave,
+}: {
+  title: string;
+  initial: string;
+  placeholder?: string;
+  hint?: string;
+  onClose: () => void;
+  onSave: (name: string) => void;
+}) {
+  const [name, setName] = useState(initial);
+  return (
+    <Sheet onClose={onClose} title={title}>
+      <input
+        className="search"
+        value={name}
+        placeholder={placeholder}
+        onChange={(e) => setName(e.target.value)}
+        onTouchEnd={(e) => e.currentTarget.focus()}
+        aria-label={title}
+        maxLength={40}
+      />
+      {hint && <p className="muted small">{hint}</p>}
+      <button
+        className="btn btn-primary btn-block"
+        style={{ marginTop: 12 }}
+        disabled={!name.trim()}
+        onClick={() => onSave(name.trim())}
+      >
+        {t('Enregistrer')}
+      </button>
+    </Sheet>
   );
 }

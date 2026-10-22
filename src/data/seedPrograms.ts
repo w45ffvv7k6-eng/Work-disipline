@@ -18,7 +18,7 @@ const PROGRAMS: { program: Omit<Program, 'updatedAt'>; templates: [id: string, n
   {
     program: {
       id: 'prog-prise-de-masse',
-      name: 'Prise de masse (4 séances)',
+      name: 'Prise de masse',
       description: 'Haut / bas du corps : lundi Haut A, mardi Bas A, jeudi Haut B, vendredi Bas B. 60 à 75 min.',
       trainingDays: [1, 2, 4, 5],
     },
@@ -76,7 +76,7 @@ const PROGRAMS: { program: Omit<Program, 'updatedAt'>; templates: [id: string, n
   {
     program: {
       id: 'prog-full-body',
-      name: 'Full body (3 séances)',
+      name: 'Full body',
       description: 'En alternance : lundi A, mercredi B, vendredi A, puis B, A, B la semaine suivante. 50 à 60 min.',
       trainingDays: [1, 3, 5],
     },

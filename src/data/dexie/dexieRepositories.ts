@@ -8,6 +8,7 @@ import {
   DEFAULT_SETTINGS,
   type Exercise,
   type ExerciseKind,
+  type Program,
   type Settings,
   type Template,
   type Workout,
@@ -392,6 +393,25 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
             .sort((a, b) => (a.programOrder ?? 0) - (b.programOrder ?? 0)),
         }));
       }),
+    async create(name) {
+      const program: Program = { id: newId(), name, description: '', trainingDays: [], updatedAt: now() };
+      await db.programs.add(program);
+      return program;
+    },
+    async rename(id, name) {
+      await db.programs.update(id, { name, updatedAt: now() });
+    },
+    async delete(id) {
+      const t = now();
+      await db.transaction('rw', [db.programs, db.templates, db.settings], async () => {
+        await db.programs.update(id, { deletedAt: t, updatedAt: t });
+        for (const tpl of await db.templates.where('programId').equals(id).toArray()) {
+          await db.templates.update(tpl.id, { deletedAt: t, updatedAt: t });
+        }
+        const current = await db.settings.get('settings');
+        if (current?.activeProgramId === id) await db.settings.update('settings', { activeProgramId: undefined });
+      });
+    },
   };
 
   // ---------- Séances détaillées (modèles) ----------
@@ -410,7 +430,7 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
         const t = await db.templates.get(id);
         return t && !t.deletedAt ? t : null;
       }),
-    async create(name, programId) {
+    async create(name, programId, extra) {
       const siblings = programId
         ? (await db.templates.where('programId').equals(programId).toArray()).filter((t) => !t.deletedAt)
         : [];
@@ -421,6 +441,7 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
         ...(programId
           ? { programId, programOrder: siblings.reduce((m, t) => Math.max(m, (t.programOrder ?? 0) + 1), 0) }
           : {}),
+        ...(extra ? { extra: true } : {}),
         updatedAt: now(),
       };
       await db.templates.add(template);

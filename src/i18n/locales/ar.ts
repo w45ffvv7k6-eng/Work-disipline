@@ -183,7 +183,7 @@ const dictionary: Dictionary = {
   'Footing 30 à 40 min, allure où tu peux parler': 'هرولة 30 إلى 40 د، بوتيرة تستطيع معها الكلام',
   Forêt: 'غابة',
   'Front squat': 'سكوات أمامي',
-  'Full body (3 séances)': 'الجسم كامل (3 حصص)',
+  'Full body': 'الجسم كامل',
   'Full body A': 'الجسم كامل A',
   'Full body B': 'الجسم كامل B',
   'Gainage (planche)': 'بلانك',
@@ -306,7 +306,7 @@ const dictionary: Dictionary = {
   'Première fois sur cet exercice': 'أول مرة في هذا التمرين',
   Prénom: 'الاسم الأول',
   'Presse à cuisses': 'ضغط الأرجل',
-  'Prise de masse (4 séances)': 'تضخيم (4 حصص)',
+  'Prise de masse': 'تضخيم',
   Profil: 'ملفي',
   Programme: 'البرنامج',
   'Pull-over à la poulie': 'بول أوفر بالكابل',
@@ -548,7 +548,6 @@ const dictionary: Dictionary = {
   'Une séance libre': 'حصة حرة',
   '{name} (copie)': '{name} (نسخة)',
   'Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».': 'لا توجد حصص بعد. أنشئ أول حصة بزر «+ جديدة».',
-  'Course (à ajouter à ta semaine)': 'الجري (أضفه إلى أسبوعك)',
   'Démarre ou modifie tes séances': 'ابدأ حصصك أو عدّلها',
   Démarrer: 'ابدأ',
   'Dupliquer la séance': 'نسخ الحصة',
@@ -559,6 +558,22 @@ const dictionary: Dictionary = {
   'Partir d’une séance vide': 'ابدأ بحصة فارغة',
   'Remplacer l’exercice': 'استبدال التمرين',
   'Séance copiée ✅': 'تم نسخ الحصة ✅',
+  '« {name} » est maintenant ton programme ✅': '«{name}» هو برنامجك الآن ✅',
+  Course: 'الجري',
+  'Donne-lui le nom que tu veux, puis ajoute tes séances avec « + Nouvelle ».':
+    'سمّه كما تشاء، ثم أضف حصصك بزر «+ جديدة».',
+  'Le programme et ses séances seront supprimés. Les séances déjà faites restent dans ton historique.':
+    'سيتم حذف البرنامج وحصصه. تبقى الحصص المنجزة في سجلك.',
+  'Nouveau programme': 'برنامج جديد',
+  'Nouvelle course': 'جري جديد',
+  'Nouvelle séance de course': 'حصة جري جديدة',
+  'Options du programme': 'خيارات البرنامج',
+  'Programme « {name} » créé ✅': 'تم إنشاء برنامج «{name}» ✅',
+  'Programme suivi': 'البرنامج المتّبع',
+  'Renommer le programme': 'إعادة تسمية البرنامج',
+  Sèche: 'تنشيف',
+  'Suivre ce programme': 'اتبع هذا البرنامج',
+  'Supprimer le programme': 'حذف البرنامج',
 };
 
 export default dictionary;

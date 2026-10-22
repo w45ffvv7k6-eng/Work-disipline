@@ -183,7 +183,7 @@ const dictionary: Dictionary = {
   'Footing 30 à 40 min, allure où tu peux parler': 'Jog 30 to 40 min, at a pace where you can talk',
   Forêt: 'Forest',
   'Front squat': 'Front squat',
-  'Full body (3 séances)': 'Full body (3 workouts)',
+  'Full body': 'Full body',
   'Full body A': 'Full body A',
   'Full body B': 'Full body B',
   'Gainage (planche)': 'Plank',
@@ -307,7 +307,7 @@ const dictionary: Dictionary = {
   'Première fois sur cet exercice': 'First time on this exercise',
   Prénom: 'First name',
   'Presse à cuisses': 'Leg press',
-  'Prise de masse (4 séances)': 'Muscle gain (4 workouts)',
+  'Prise de masse': 'Muscle gain',
   Profil: 'Profile',
   Programme: 'Program',
   'Pull-over à la poulie': 'Cable pullover',
@@ -553,7 +553,6 @@ const dictionary: Dictionary = {
   '{name} (copie)': '{name} (copy)',
   'Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».':
     'No workouts yet. Create the first one with “+ New”.',
-  'Course (à ajouter à ta semaine)': 'Running (add it to your week)',
   'Démarre ou modifie tes séances': 'Start or edit your workouts',
   Démarrer: 'Start',
   'Dupliquer la séance': 'Duplicate workout',
@@ -564,6 +563,22 @@ const dictionary: Dictionary = {
   'Partir d’une séance vide': 'Start from an empty workout',
   'Remplacer l’exercice': 'Replace exercise',
   'Séance copiée ✅': 'Workout copied ✅',
+  '« {name} » est maintenant ton programme ✅': '“{name}” is now your program ✅',
+  Course: 'Running',
+  'Donne-lui le nom que tu veux, puis ajoute tes séances avec « + Nouvelle ».':
+    'Name it however you like, then add your workouts with “+ New”.',
+  'Le programme et ses séances seront supprimés. Les séances déjà faites restent dans ton historique.':
+    'The program and its workouts will be deleted. Workouts you already did stay in your history.',
+  'Nouveau programme': 'New program',
+  'Nouvelle course': 'New run',
+  'Nouvelle séance de course': 'New running session',
+  'Options du programme': 'Program options',
+  'Programme « {name} » créé ✅': 'Program “{name}” created ✅',
+  'Programme suivi': 'Program you follow',
+  'Renommer le programme': 'Rename program',
+  Sèche: 'Cutting',
+  'Suivre ce programme': 'Follow this program',
+  'Supprimer le programme': 'Delete program',
 };
 
 export default dictionary;

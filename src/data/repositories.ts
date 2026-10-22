@@ -123,6 +123,11 @@ export interface ProgramWithTemplates {
 
 export interface ProgramRepository {
   watchAll(): Subscribable<ProgramWithTemplates[]>;
+  /** Nouveau programme vide (ex. « Sèche »), à remplir avec ses propres séances. */
+  create(name: string): Promise<Program>;
+  rename(id: string, name: string): Promise<void>;
+  /** Supprime le programme et ses séances (les séances déjà faites restent dans l'historique). */
+  delete(id: string): Promise<void>;
 }
 
 /** Séances détaillées (modèles) que l'utilisateur peut modifier. */
@@ -130,7 +135,7 @@ export interface TemplateRepository {
   /** null : séance introuvable ou supprimée. */
   watch(id: string): Subscribable<Template | null>;
   /** Crée une séance vide à la fin du programme. */
-  create(name: string, programId?: string): Promise<Template>;
+  create(name: string, programId?: string, extra?: boolean): Promise<Template>;
   /** Copie une séance (mêmes exercices, sans jour fixe) à la fin de son programme. */
   duplicate(id: string, name: string): Promise<Template | null>;
   /** Met à jour la séance ; les jours d'entraînement du programme suivent les jours des séances. */

@@ -183,7 +183,7 @@ const dictionary: Dictionary = {
   'Footing 30 à 40 min, allure où tu peux parler': 'Rodaje de 30 a 40 min, a un ritmo en el que puedas hablar',
   Forêt: 'Bosque',
   'Front squat': 'Sentadilla frontal',
-  'Full body (3 séances)': 'Full body (3 entrenos)',
+  'Full body': 'Full body',
   'Full body A': 'Full body A',
   'Full body B': 'Full body B',
   'Gainage (planche)': 'Plancha abdominal',
@@ -307,7 +307,7 @@ const dictionary: Dictionary = {
   'Première fois sur cet exercice': 'Primera vez con este ejercicio',
   Prénom: 'Nombre',
   'Presse à cuisses': 'Prensa de piernas',
-  'Prise de masse (4 séances)': 'Volumen (4 entrenos)',
+  'Prise de masse': 'Volumen',
   Profil: 'Perfil',
   Programme: 'Programa',
   'Pull-over à la poulie': 'Pull-over en polea',
@@ -556,7 +556,6 @@ const dictionary: Dictionary = {
   '{name} (copie)': '{name} (copia)',
   'Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».':
     'Aún no hay entrenos. Crea el primero con «+ Nuevo».',
-  'Course (à ajouter à ta semaine)': 'Carrera (añádela a tu semana)',
   'Démarre ou modifie tes séances': 'Empieza o modifica tus entrenos',
   Démarrer: 'Empezar',
   'Dupliquer la séance': 'Duplicar entreno',
@@ -567,6 +566,22 @@ const dictionary: Dictionary = {
   'Partir d’une séance vide': 'Empezar desde un entreno vacío',
   'Remplacer l’exercice': 'Reemplazar ejercicio',
   'Séance copiée ✅': 'Entreno copiado ✅',
+  '« {name} » est maintenant ton programme ✅': '«{name}» es ahora tu programa ✅',
+  Course: 'Carrera',
+  'Donne-lui le nom que tu veux, puis ajoute tes séances avec « + Nouvelle ».':
+    'Ponle el nombre que quieras y añade tus entrenos con «+ Nuevo».',
+  'Le programme et ses séances seront supprimés. Les séances déjà faites restent dans ton historique.':
+    'El programa y sus entrenos se eliminarán. Los entrenos ya hechos siguen en tu historial.',
+  'Nouveau programme': 'Nuevo programa',
+  'Nouvelle course': 'Nueva carrera',
+  'Nouvelle séance de course': 'Nueva sesión de carrera',
+  'Options du programme': 'Opciones del programa',
+  'Programme « {name} » créé ✅': 'Programa «{name}» creado ✅',
+  'Programme suivi': 'Programa que sigues',
+  'Renommer le programme': 'Renombrar programa',
+  Sèche: 'Definición',
+  'Suivre ce programme': 'Seguir este programa',
+  'Supprimer le programme': 'Eliminar programa',
 };
 
 export default dictionary;

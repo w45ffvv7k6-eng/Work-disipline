@@ -183,7 +183,7 @@ const dictionary: Dictionary = {
   'Footing 30 à 40 min, allure où tu peux parler': '30–40 dk hafif koşu, konuşabileceğin tempoda',
   Forêt: 'Orman',
   'Front squat': 'Front squat',
-  'Full body (3 séances)': 'Full body (3 antrenman)',
+  'Full body': 'Full body',
   'Full body A': 'Full body A',
   'Full body B': 'Full body B',
   'Gainage (planche)': 'Plank',
@@ -305,7 +305,7 @@ const dictionary: Dictionary = {
   'Première fois sur cet exercice': 'Bu egzersizde ilk seferin',
   Prénom: 'Ad',
   'Presse à cuisses': 'Leg press',
-  'Prise de masse (4 séances)': 'Kütle kazanımı (4 antrenman)',
+  'Prise de masse': 'Kütle kazanımı',
   Profil: 'Profil',
   Programme: 'Program',
   'Pull-over à la poulie': 'Cable pullover',
@@ -555,7 +555,6 @@ const dictionary: Dictionary = {
   '{name} (copie)': '{name} (kopya)',
   'Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».':
     'Henüz antrenman yok. İlkini «+ Yeni» ile oluştur.',
-  'Course (à ajouter à ta semaine)': 'Koşu (haftana ekle)',
   'Démarre ou modifie tes séances': 'Antrenmanlarını başlat veya düzenle',
   Démarrer: 'Başlat',
   'Dupliquer la séance': 'Antrenmanı kopyala',
@@ -566,6 +565,22 @@ const dictionary: Dictionary = {
   'Partir d’une séance vide': 'Boş bir antrenmanla başla',
   'Remplacer l’exercice': 'Egzersizi değiştir',
   'Séance copiée ✅': 'Antrenman kopyalandı ✅',
+  '« {name} » est maintenant ton programme ✅': 'Artık programın: «{name}» ✅',
+  Course: 'Koşu',
+  'Donne-lui le nom que tu veux, puis ajoute tes séances avec « + Nouvelle ».':
+    'İstediğin adı ver, sonra antrenmanlarını «+ Yeni» ile ekle.',
+  'Le programme et ses séances seront supprimés. Les séances déjà faites restent dans ton historique.':
+    'Program ve antrenmanları silinecek. Yaptığın antrenmanlar geçmişte kalır.',
+  'Nouveau programme': 'Yeni program',
+  'Nouvelle course': 'Yeni koşu',
+  'Nouvelle séance de course': 'Yeni koşu antrenmanı',
+  'Options du programme': 'Program seçenekleri',
+  'Programme « {name} » créé ✅': 'Program oluşturuldu: «{name}» ✅',
+  'Programme suivi': 'Takip ettiğin program',
+  'Renommer le programme': 'Programı yeniden adlandır',
+  Sèche: 'Definasyon',
+  'Suivre ce programme': 'Bu programı takip et',
+  'Supprimer le programme': 'Programı sil',
 };
 
 export default dictionary;

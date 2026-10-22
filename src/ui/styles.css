@@ -3576,3 +3576,30 @@ body {
   margin: 2px 0 12px;
   font-size: 0.78rem;
 }
+.program-tab.add {
+  padding: 9px 14px;
+  font-size: 1rem;
+  font-weight: 900;
+  color: var(--accent);
+  border: 1px dashed var(--accent);
+  background: transparent;
+}
+.program-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin: -4px 0 12px;
+}
+.program-followed {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.88rem;
+}
+.program-more {
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+  font-weight: 900;
+  background: var(--surface-2);
+}
