@@ -426,6 +426,14 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
       await db.templates.add(template);
       return template;
     },
+    async duplicate(id, name) {
+      const source = await db.templates.get(id);
+      if (!source || source.deletedAt) return null;
+      const copy = await templates.create(name, source.programId);
+      const exercises = source.exercises.map((e) => ({ ...e }));
+      await db.templates.update(copy.id, { exercises, ...(source.extra ? { extra: true } : {}), updatedAt: now() });
+      return { ...copy, exercises, ...(source.extra ? { extra: true } : {}) };
+    },
     async update(id, patch) {
       await db.templates.update(id, { ...patch, updatedAt: now() });
       if ('weekday' in patch) await syncTrainingDays((await db.templates.get(id))?.programId);

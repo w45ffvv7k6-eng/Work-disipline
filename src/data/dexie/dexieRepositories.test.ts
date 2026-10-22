@@ -182,4 +182,15 @@ describe('dépôt Dexie des séances', () => {
     const history = await first(repos.workouts.watchHistory());
     expect(history[0].summary.recordCount).toBe(1);
   });
+
+  it('copie une séance avec ses exercices, sans son jour fixe', async () => {
+    const copy = await repos.templates.duplicate('tpl-haut-a', 'Haut A maison');
+    const source = await db.templates.get('tpl-haut-a');
+    const saved = await db.templates.get(copy!.id);
+    expect(saved?.name).toBe('Haut A maison');
+    expect(saved?.exercises).toEqual(source?.exercises);
+    expect(saved?.weekday).toBeUndefined();
+    expect(saved?.programId).toBe(source?.programId);
+    expect(await repos.templates.duplicate('inconnue', 'x')).toBeNull();
+  });
 });

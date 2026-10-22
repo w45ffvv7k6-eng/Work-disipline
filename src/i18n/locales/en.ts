@@ -161,7 +161,6 @@ const dictionary: Dictionary = {
   'Élévations latérales': 'Lateral raises',
   'En alternance : lundi A, mercredi B, vendredi A, puis B, A, B la semaine suivante. 50 à 60 min.':
     'Alternating: Monday A, Wednesday B, Friday A, then B, A, B the next week. 50 to 60 min.',
-  'En plus · à ajouter à ta semaine': 'Extra · add to your week',
   'Enregistré automatiquement': 'Saved automatically',
   Enregistrer: 'Save',
   Épaules: 'Shoulders',
@@ -212,7 +211,6 @@ const dictionary: Dictionary = {
   Jambes: 'Legs',
   Jeu: 'Thu',
   jeudi: 'Thursday',
-  'Jour de la semaine': 'Day of the week',
   kg: 'kg',
   'Kickback fessier à la poulie': 'Cable glute kickback',
   'Kickback triceps': 'Triceps kickback',
@@ -221,14 +219,11 @@ const dictionary: Dictionary = {
   'La dernière fois :': 'Last time:',
   'La régularité bat le talent.': 'Consistency beats talent.',
   Langue: 'Language',
-  'Le {day}': 'On {day}',
   'Le muscle se construit à la salle, dans l’assiette et dans le lit.':
     'Muscle is built in the gym, in the kitchen and in bed.',
   'Leg curl allongé': 'Lying leg curl',
   'Leg curl assis': 'Seated leg curl',
   'Leg extension': 'Leg extension',
-  'Les jours grisés sont déjà pris par une autre séance du programme.':
-    'Grayed-out days are already taken by another workout in the program.',
   'Les séances déjà faites restent dans ton historique.': 'Workouts already done stay in your history.',
   'Les séries déjà validées pour cet exercice seront supprimées.':
     'Sets already completed for this exercise will be deleted.',
@@ -378,7 +373,6 @@ const dictionary: Dictionary = {
   'Soulevé de terre': 'Deadlift',
   'Soulevé de terre roumain': 'Romanian deadlift',
   'Squat (barre)': 'Barbell squat',
-  suivi: 'current',
   Supprimer: 'Delete',
   'Supprimer « {name} » ?': 'Delete “{name}”?',
   'Supprimer {name}': 'Delete {name}',
@@ -391,7 +385,6 @@ const dictionary: Dictionary = {
   Taille: 'Height',
   'Taille (cm)': 'Height (cm)',
   'Technique propre d’abord, charge ensuite.': 'Clean form first, weight second.',
-  'Temps de repos': 'Rest time',
   'Temps de repos : {time}': 'Rest time: {time}',
   Terminé: 'Done',
   'Termine d’abord la séance en cours.': 'Finish your current workout first.',
@@ -409,7 +402,6 @@ const dictionary: Dictionary = {
     'Tap the <b>Share</b> button ⬆️ at the bottom of the screen.',
   'Touche le menu <b>⋮</b> en haut à droite.': 'Tap the <b>⋮</b> menu at the top right.',
   'Touche une pesée pour la supprimer.': 'Tap a weigh-in to delete it.',
-  'Touche une séance pour la personnaliser': 'Tap a workout to customize it',
   Tous: 'All',
   'Toutes les séries de cette séance seront définitivement supprimées.':
     'All sets in this workout will be permanently deleted.',
@@ -558,6 +550,20 @@ const dictionary: Dictionary = {
   'Une autre séance du programme': 'Another workout from the program',
   'Une séance de course': 'A running session',
   'Une séance libre': 'A freestyle workout',
+  '{name} (copie)': '{name} (copy)',
+  'Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».':
+    'No workouts yet. Create the first one with “+ New”.',
+  'Course (à ajouter à ta semaine)': 'Running (add it to your week)',
+  'Démarre ou modifie tes séances': 'Start or edit your workouts',
+  Démarrer: 'Start',
+  'Dupliquer la séance': 'Duplicate workout',
+  Jour: 'Day',
+  Modifier: 'Edit',
+  Nouvelle: 'New',
+  'Ou copier une séance existante': 'Or copy an existing workout',
+  'Partir d’une séance vide': 'Start from an empty workout',
+  'Remplacer l’exercice': 'Replace exercise',
+  'Séance copiée ✅': 'Workout copied ✅',
 };
 
 export default dictionary;

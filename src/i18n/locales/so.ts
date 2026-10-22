@@ -161,7 +161,6 @@ const dictionary: Dictionary = {
   'Élévations latérales': 'Lateral raise',
   'En alternance : lundi A, mercredi B, vendredi A, puis B, A, B la semaine suivante. 50 à 60 min.':
     'Si wareeg ah: Isniin A, Arbaco B, Jimce A, kadibna B, A, B toddobaadka xiga. 50 ilaa 60 daqiiqo.',
-  'En plus · à ajouter à ta semaine': 'Dheeri · ku dar toddobaadkaaga',
   'Enregistré automatiquement': 'Si toos ah ayaa loo kaydiyay',
   Enregistrer: 'Kaydi',
   Épaules: 'Garbaha',
@@ -212,7 +211,6 @@ const dictionary: Dictionary = {
   Jambes: 'Lugaha',
   Jeu: 'Kha',
   jeudi: 'Khamiis',
-  'Jour de la semaine': 'Maalinta toddobaadka',
   kg: 'kg',
   'Kickback fessier à la poulie': 'Cable glute kickback',
   'Kickback triceps': 'Triceps kickback',
@@ -221,14 +219,11 @@ const dictionary: Dictionary = {
   'La dernière fois :': 'Markii u dambeysay:',
   'La régularité bat le talent.': 'Joogtayntu hibada way ka adkaataa.',
   Langue: 'Luqad',
-  'Le {day}': '{day}',
   'Le muscle se construit à la salle, dans l’assiette et dans le lit.':
     'Muruqa waxaa lagu dhisaa jimka, saxanka iyo sariirta.',
   'Leg curl allongé': 'Lying leg curl',
   'Leg curl assis': 'Seated leg curl',
   'Leg extension': 'Leg extension',
-  'Les jours grisés sont déjà pris par une autre séance du programme.':
-    'Maalmaha cawlan waxaa horay u qabsaday tababar kale oo barnaamijka ah.',
   'Les séances déjà faites restent dans ton historique.':
     'Tababarada aad horay u samaysay waxay ku jiraan taariikhdaada.',
   'Les séries déjà validées pour cet exercice seront supprimées.':
@@ -380,7 +375,6 @@ const dictionary: Dictionary = {
   'Soulevé de terre': 'Deadlift',
   'Soulevé de terre roumain': 'Romanian deadlift',
   'Squat (barre)': 'Squat (bar)',
-  suivi: 'la raacayo',
   Supprimer: 'Tirtir',
   'Supprimer « {name} » ?': 'Tirtir « {name} »?',
   'Supprimer {name}': 'Tirtir {name}',
@@ -393,7 +387,6 @@ const dictionary: Dictionary = {
   Taille: 'Dherer',
   'Taille (cm)': 'Dherer (cm)',
   'Technique propre d’abord, charge ensuite.': 'Farsamo nadiif ah marka hore, culeyskana kadib.',
-  'Temps de repos': 'Waqtiga nasashada',
   'Temps de repos : {time}': 'Waqtiga nasashada: {time}',
   Terminé: 'Dhammaaday',
   'Termine d’abord la séance en cours.': 'Marka hore dhammee tababarka socda.',
@@ -411,7 +404,6 @@ const dictionary: Dictionary = {
     'Taabo badhanka <b>Share</b> ⬆️ ee ku yaal hoosta shaashadda.',
   'Touche le menu <b>⋮</b> en haut à droite.': 'Taabo menu-ga <b>⋮</b> ee dhinaca sare ee midig.',
   'Touche une pesée pour la supprimer.': 'Taabo miisaan si aad u tirtirto.',
-  'Touche une séance pour la personnaliser': 'Taabo tababar si aad u habayso',
   Tous: 'Dhammaan',
   'Toutes les séries de cette séance seront définitivement supprimées.':
     'Dhammaan set-yada tababarkan si joogto ah ayaa loo tirtiri doonaa.',
@@ -566,6 +558,20 @@ const dictionary: Dictionary = {
   'Une autre séance du programme': 'Tababar kale oo barnaamijka ah',
   'Une séance de course': 'Tababar orod ah',
   'Une séance libre': 'Tababar xor ah',
+  '{name} (copie)': '{name} (nuqul)',
+  'Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».':
+    'Weli tababar ma jiro. Ku samee kan ugu horreeya «+ Cusub».',
+  'Course (à ajouter à ta semaine)': 'Orod (ku dar toddobaadkaaga)',
+  'Démarre ou modifie tes séances': 'Bilow ama wax ka beddel tababarradaada',
+  Démarrer: 'Bilow',
+  'Dupliquer la séance': 'Nuqul ka samee tababarka',
+  Jour: 'Maalin',
+  Modifier: 'Wax ka beddel',
+  Nouvelle: 'Cusub',
+  'Ou copier une séance existante': 'Ama nuqul ka samee tababar jira',
+  'Partir d’une séance vide': 'Ka bilow tababar madhan',
+  'Remplacer l’exercice': 'Beddel jimicsiga',
+  'Séance copiée ✅': 'Tababarka waa la nuqulay ✅',
 };
 
 export default dictionary;

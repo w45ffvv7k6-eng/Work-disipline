@@ -161,7 +161,6 @@ const dictionary: Dictionary = {
   'Élévations latérales': 'Elevações laterais',
   'En alternance : lundi A, mercredi B, vendredi A, puis B, A, B la semaine suivante. 50 à 60 min.':
     'Alternado: segunda A, quarta B, sexta A, depois B, A, B na semana seguinte. 50 a 60 min.',
-  'En plus · à ajouter à ta semaine': 'Extra · para adicionar à tua semana',
   'Enregistré automatiquement': 'Guardado automaticamente',
   Enregistrer: 'Guardar',
   Épaules: 'Ombros',
@@ -212,7 +211,6 @@ const dictionary: Dictionary = {
   Jambes: 'Pernas',
   Jeu: 'Qui',
   jeudi: 'quinta-feira',
-  'Jour de la semaine': 'Dia da semana',
   kg: 'kg',
   'Kickback fessier à la poulie': 'Kickback de glúteo na polia',
   'Kickback triceps': 'Kickback de tríceps',
@@ -221,14 +219,11 @@ const dictionary: Dictionary = {
   'La dernière fois :': 'Da última vez:',
   'La régularité bat le talent.': 'A consistência vence o talento.',
   Langue: 'Idioma',
-  'Le {day}': '{day}',
   'Le muscle se construit à la salle, dans l’assiette et dans le lit.':
     'O músculo constrói-se no ginásio, no prato e na cama.',
   'Leg curl allongé': 'Leg curl deitado',
   'Leg curl assis': 'Leg curl sentado',
   'Leg extension': 'Extensão de pernas',
-  'Les jours grisés sont déjà pris par une autre séance du programme.':
-    'Os dias a cinzento já têm outro treino do programa.',
   'Les séances déjà faites restent dans ton historique.': 'Os treinos já feitos ficam no teu histórico.',
   'Les séries déjà validées pour cet exercice seront supprimées.':
     'As séries já validadas deste exercício serão apagadas.',
@@ -378,7 +373,6 @@ const dictionary: Dictionary = {
   'Soulevé de terre': 'Peso morto',
   'Soulevé de terre roumain': 'Peso morto romeno',
   'Squat (barre)': 'Agachamento com barra',
-  suivi: 'atual',
   Supprimer: 'Apagar',
   'Supprimer « {name} » ?': 'Apagar « {name} »?',
   'Supprimer {name}': 'Apagar {name}',
@@ -391,7 +385,6 @@ const dictionary: Dictionary = {
   Taille: 'Altura',
   'Taille (cm)': 'Altura (cm)',
   'Technique propre d’abord, charge ensuite.': 'Primeiro a técnica, depois a carga.',
-  'Temps de repos': 'Tempo de descanso',
   'Temps de repos : {time}': 'Tempo de descanso: {time}',
   Terminé: 'Concluído',
   'Termine d’abord la séance en cours.': 'Acaba primeiro o treino em curso.',
@@ -408,7 +401,6 @@ const dictionary: Dictionary = {
   'Touche le bouton <b>Partager</b> ⬆️ en bas de l’écran.': 'Toca no botão <b>Partilhar</b> ⬆️ no fundo do ecrã.',
   'Touche le menu <b>⋮</b> en haut à droite.': 'Toca no menu <b>⋮</b> no canto superior direito.',
   'Touche une pesée pour la supprimer.': 'Toca numa pesagem para a apagar.',
-  'Touche une séance pour la personnaliser': 'Toca num treino para o personalizar',
   Tous: 'Todos',
   'Toutes les séries de cette séance seront définitivement supprimées.':
     'Todas as séries deste treino serão apagadas definitivamente.',
@@ -563,6 +555,20 @@ const dictionary: Dictionary = {
   'Une autre séance du programme': 'Outro treino do programa',
   'Une séance de course': 'Uma sessão de corrida',
   'Une séance libre': 'Um treino livre',
+  '{name} (copie)': '{name} (cópia)',
+  'Aucune séance pour l’instant. Crée la première avec « + Nouvelle ».':
+    'Ainda não há treinos. Cria o primeiro com «+ Novo».',
+  'Course (à ajouter à ta semaine)': 'Corrida (adiciona-a à tua semana)',
+  'Démarre ou modifie tes séances': 'Começa ou altera os teus treinos',
+  Démarrer: 'Começar',
+  'Dupliquer la séance': 'Duplicar treino',
+  Jour: 'Dia',
+  Modifier: 'Alterar',
+  Nouvelle: 'Novo',
+  'Ou copier une séance existante': 'Ou copia um treino existente',
+  'Partir d’une séance vide': 'Começar com um treino vazio',
+  'Remplacer l’exercice': 'Substituir exercício',
+  'Séance copiée ✅': 'Treino copiado ✅',
 };
 
 export default dictionary;

@@ -131,6 +131,8 @@ export interface TemplateRepository {
   watch(id: string): Subscribable<Template | null>;
   /** Crée une séance vide à la fin du programme. */
   create(name: string, programId?: string): Promise<Template>;
+  /** Copie une séance (mêmes exercices, sans jour fixe) à la fin de son programme. */
+  duplicate(id: string, name: string): Promise<Template | null>;
   /** Met à jour la séance ; les jours d'entraînement du programme suivent les jours des séances. */
   update(id: string, patch: Partial<Pick<Template, 'name' | 'exercises' | 'weekday'>>): Promise<void>;
   delete(id: string): Promise<void>;
