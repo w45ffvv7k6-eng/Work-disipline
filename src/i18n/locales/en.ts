@@ -597,6 +597,17 @@ const dictionary: Dictionary = {
     'Your most-done exercises will show up here after your first workouts.',
   'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.': 'Add extra weight (belt, vest…) to see this curve.',
   'Lest max par séance': 'Max added weight per workout',
+  'Autres semaines': 'Other weeks',
+  'Choisis une semaine à venir pour décider à l’avance de tes séances.':
+    'Pick an upcoming week to plan your workouts in advance.',
+  Organisée: 'Planned',
+  'Planifier une semaine': 'Plan a week',
+  'Planifier une semaine à venir': 'Plan an upcoming week',
+  'Planning du programme': 'Program schedule',
+  'Semaine du {from} au {to}': 'Week of {from} to {to}',
+  'Semaine remise au planning du programme': 'Week reset to the program schedule',
+  'Touche un jour pour choisir sa séance ou le mettre en repos.':
+    'Tap a day to choose its workout or make it a rest day.',
 };
 
 export default dictionary;

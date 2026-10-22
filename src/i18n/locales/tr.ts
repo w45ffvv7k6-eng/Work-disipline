@@ -599,6 +599,17 @@ const dictionary: Dictionary = {
     'En çok yaptığın egzersizler ilk antrenmanlarından sonra burada görünecek.',
   'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.': 'Bu eğriyi görmek için ek ağırlık ekle (kemer, yelek…).',
   'Lest max par séance': 'Antrenman başına maks. ek ağırlık',
+  'Autres semaines': 'Diğer haftalar',
+  'Choisis une semaine à venir pour décider à l’avance de tes séances.':
+    'Antrenmanlarına önceden karar vermek için gelecek bir hafta seç.',
+  Organisée: 'Düzenlendi',
+  'Planifier une semaine': 'Bir hafta planla',
+  'Planifier une semaine à venir': 'Gelecek bir haftayı planla',
+  'Planning du programme': 'Program planı',
+  'Semaine du {from} au {to}': 'Hafta: {from} – {to}',
+  'Semaine remise au planning du programme': 'Hafta program planına döndürüldü',
+  'Touche un jour pour choisir sa séance ou le mettre en repos.':
+    'Antrenmanını seçmek veya dinlenme günü yapmak için bir güne dokun.',
 };
 
 export default dictionary;

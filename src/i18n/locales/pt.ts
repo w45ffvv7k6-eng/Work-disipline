@@ -603,6 +603,17 @@ const dictionary: Dictionary = {
   'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.':
     'Adiciona lastro (cinto, colete…) para veres esta curva.',
   'Lest max par séance': 'Lastro máx. por treino',
+  'Autres semaines': 'Outras semanas',
+  'Choisis une semaine à venir pour décider à l’avance de tes séances.':
+    'Escolhe uma semana futura para decidires os teus treinos com antecedência.',
+  Organisée: 'Organizada',
+  'Planifier une semaine': 'Planear uma semana',
+  'Planifier une semaine à venir': 'Planear uma semana futura',
+  'Planning du programme': 'Plano do programa',
+  'Semaine du {from} au {to}': 'Semana de {from} a {to}',
+  'Semaine remise au planning du programme': 'Semana reposta no plano do programa',
+  'Touche un jour pour choisir sa séance ou le mettre en repos.':
+    'Toca num dia para escolheres o treino ou pô-lo em descanso.',
 };
 
 export default dictionary;

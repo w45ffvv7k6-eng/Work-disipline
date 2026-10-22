@@ -474,6 +474,7 @@ export function createDexieRepositories(db: MuscuDB): Repositories {
 
   const weekPlans: WeekPlanRepository = {
     watch: (key) => liveQuery(async () => (await db.weekPlans.get(key)) ?? null),
+    watchAll: () => liveQuery(() => db.weekPlans.toArray()),
     async save(key, programId, days) {
       await db.weekPlans.put({ id: key, programId, days, updatedAt: now() });
     },

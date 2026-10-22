@@ -606,6 +606,17 @@ const dictionary: Dictionary = {
   'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.':
     'Ku dar culeys dheeri ah (suun, jaakad…) si aad u aragto qalooccan.',
   'Lest max par séance': 'Culeyska dheeriga ah ee ugu badan tababar kasta',
+  'Autres semaines': 'Toddobaadyo kale',
+  'Choisis une semaine à venir pour décider à l’avance de tes séances.':
+    'Dooro toddobaad soo socda si aad horay ugu go’aamiso tababarradaada.',
+  Organisée: 'La habeeyay',
+  'Planifier une semaine': 'Qorshee toddobaad',
+  'Planifier une semaine à venir': 'Qorshee toddobaad soo socda',
+  'Planning du programme': 'Qorshaha barnaamijka',
+  'Semaine du {from} au {to}': 'Toddobaadka {from} ilaa {to}',
+  'Semaine remise au planning du programme': 'Toddobaadka waxaa loo celiyay qorshaha barnaamijka',
+  'Touche un jour pour choisir sa séance ou le mettre en repos.':
+    'Taabo maalin si aad u doorato tababarkeeda ama aad nasasho uga dhigto.',
 };
 
 export default dictionary;

@@ -159,6 +159,8 @@ export interface ProfileRepository {
 export interface WeekPlanRepository {
   /** null : la semaine suit le planning du programme. */
   watch(weekKey: string): Subscribable<WeekPlan | null>;
+  /** Toutes les semaines organisées par la personne (pour savoir lesquelles sont personnalisées). */
+  watchAll(): Subscribable<WeekPlan[]>;
   save(weekKey: string, programId: string, days: WeekPlan['days']): Promise<void>;
   /** Revient au planning du programme pour cette semaine. */
   reset(weekKey: string): Promise<void>;

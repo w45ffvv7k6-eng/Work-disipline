@@ -25,6 +25,7 @@ import { Sheet } from '../../ui/Sheet';
 import { useNow } from '../../ui/useNow';
 import { locale, t, tn } from '../../i18n';
 import { Rich } from '../../i18n/react';
+import { WeekPlanner } from './WeekPlanner';
 
 /** "Haut A (force)" → "Haut A", "Full body A" → "FB A". */
 export function shortName(name: string): string {
@@ -64,6 +65,7 @@ export function HomeScreen() {
   const [openOnChange, setOpenOnChange] = useState(false);
   const [doingOther, setDoingOther] = useState(false);
   const [organizing, setOrganizing] = useState(false);
+  const [planningAhead, setPlanningAhead] = useState(false);
 
   const exerciseById = useMemo(() => new Map((library ?? []).map((e) => [e.id, e])), [library]);
   const current = allPrograms?.find((p) => p.program.id === settings?.activeProgramId);
@@ -264,8 +266,21 @@ export function HomeScreen() {
                 ↺ {t('Revenir au planning du programme')}
               </button>
             )}
+            <button
+              className="btn btn-block"
+              onClick={() => {
+                setOrganizing(false);
+                setPlanningAhead(true);
+              }}
+            >
+              📅 {t('Planifier une semaine à venir')}
+            </button>
           </div>
         </Sheet>
+      )}
+
+      {planningAhead && current && (
+        <WeekPlanner current={current} finished={finished} now={today} onClose={() => setPlanningAhead(false)} />
       )}
 
       {choosingProgram && (

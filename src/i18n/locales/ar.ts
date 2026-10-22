@@ -592,6 +592,15 @@ const dictionary: Dictionary = {
     'ستظهر هنا تمارينك الأكثر أداءً بعد حصصك الأولى.',
   'Ajoute du lest (ceinture, gilet…) pour voir cette courbe.': 'أضف وزنًا إضافيًا (حزام، سترة…) لترى هذا المنحنى.',
   'Lest max par séance': 'أقصى وزن إضافي لكل حصة',
+  'Autres semaines': 'أسابيع أخرى',
+  'Choisis une semaine à venir pour décider à l’avance de tes séances.': 'اختر أسبوعًا قادمًا لتحدد حصصك مسبقًا.',
+  Organisée: 'منظَّم',
+  'Planifier une semaine': 'خطط لأسبوع',
+  'Planifier une semaine à venir': 'خطط لأسبوع قادم',
+  'Planning du programme': 'خطة البرنامج',
+  'Semaine du {from} au {to}': 'الأسبوع من {from} إلى {to}',
+  'Semaine remise au planning du programme': 'تمت إعادة الأسبوع إلى خطة البرنامج',
+  'Touche un jour pour choisir sa séance ou le mettre en repos.': 'المس يومًا لاختيار حصته أو جعله يوم راحة.',
 };
 
 export default dictionary;
