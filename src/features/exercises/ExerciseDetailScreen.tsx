@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import { formatKg, formatLongDate, formatShortDate } from '../../domain/format';
@@ -8,6 +9,7 @@ import { k, t } from '../../i18n';
 import { LineChart } from '../../ui/charts';
 import { BackIcon } from '../../ui/icons';
 import { MUSCLE_COLORS } from '../../ui/muscles';
+import { Sheet } from '../../ui/Sheet';
 import { SetValues } from '../workout/ExerciseCard';
 
 /** Records affichés selon le type d'exercice. */
@@ -37,6 +39,7 @@ export function ExerciseDetailScreen() {
   const { id = '' } = useParams();
   const navigate = useNavigate();
   const { exercises } = useRepositories();
+  const [renaming, setRenaming] = useState(false);
   const all = useSubscribable(() => exercises.watchAll(), []);
   const sessions = useSubscribable(() => exercises.watchHistory(id), [id]);
   if (!all || !sessions) return null;
@@ -80,8 +83,22 @@ export function ExerciseDetailScreen() {
               {t(MUSCLE_GROUP_LABELS[exercise.muscleGroup])} · {t(KIND_LABELS[exercise.kind])}
             </div>
           </div>
+          <button className="icon-btn edit-btn" onClick={() => setRenaming(true)} aria-label={t('Renommer l’exercice')}>
+            ✏️
+          </button>
         </div>
       </header>
+
+      {renaming && (
+        <RenameExerciseSheet
+          initial={t(exercise.name)}
+          onClose={() => setRenaming(false)}
+          onSave={async (name) => {
+            setRenaming(false);
+            await exercises.update(exercise.id, { name });
+          }}
+        />
+      )}
 
       <div className="screen" style={{ paddingTop: 16 }}>
         <h2 className="section-title" style={{ marginTop: 0 }}>
@@ -151,5 +168,34 @@ export function ExerciseDetailScreen() {
         )}
       </div>
     </>
+  );
+}
+
+/** Donner à l'exercice le nom qu'on veut (il change partout : séances, historique, records). */
+function RenameExerciseSheet({
+  initial,
+  onClose,
+  onSave,
+}: {
+  initial: string;
+  onClose: () => void;
+  onSave: (name: string) => void;
+}) {
+  const [name, setName] = useState(initial);
+  return (
+    <Sheet onClose={onClose} title={t('Renommer l’exercice')}>
+      <input
+        className="search"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        onTouchEnd={(e) => e.currentTarget.focus()}
+        aria-label={t('Nom')}
+        maxLength={60}
+      />
+      <p className="muted small">{t('Le nouveau nom s’affiche partout : séances, historique et records.')}</p>
+      <button className="btn btn-primary btn-block" disabled={!name.trim()} onClick={() => onSave(name.trim())}>
+        {t('Enregistrer')}
+      </button>
+    </Sheet>
   );
 }

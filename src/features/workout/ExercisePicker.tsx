@@ -45,6 +45,11 @@ export function ExercisePicker({ onClose, onPick }: Props) {
 
   return (
     <Sheet onClose={onClose} title={t('Ajouter un exercice')} full>
+      {/* Deux façons : écrire son propre exercice, ou en choisir un dans la liste. */}
+      <button className="btn btn-primary btn-block create-own" onClick={() => setCreating(true)}>
+        ✏️ {t('Créer mon exercice (nom au choix)')}
+      </button>
+      <div className="picker-or">{t('ou choisis dans la liste')}</div>
       <input
         className="search"
         type="search"
@@ -112,7 +117,16 @@ function CreateExerciseSheet({
     <Sheet onClose={onClose} title={t('Nouvel exercice')}>
       <div className="form-field">
         <label htmlFor="ex-name">{t('Nom')}</label>
-        <input id="ex-name" className="search" value={name} onChange={(e) => setName(e.target.value)} autoFocus />
+        <input
+          id="ex-name"
+          className="search"
+          value={name}
+          placeholder={t('ex. {value}', { value: t('Curl araignée') })}
+          onChange={(e) => setName(e.target.value)}
+          // Pas d'autoFocus : sur iPhone le clavier s'ouvre au toucher.
+          onTouchEnd={(e) => e.currentTarget.focus()}
+          maxLength={60}
+        />
       </div>
       <div className="form-field">
         <label>{t('Type')}</label>

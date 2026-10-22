@@ -20,9 +20,7 @@ const dictionary: Dictionary = {
   '{n} record': '{n} recorde',
   '{n} records': '{n} recordes',
   '{n} séance': '{n} treino',
-  '{n} séance sur {goal}': '{n} treino de {goal}',
   '{n} séances': '{n} treinos',
-  '{n} séances sur {goal}': '{n} treinos de {goal}',
   '{n} série': '{n} série',
   '{n} série non validée sera supprimée.': '{n} série não validada será apagada.',
   '{n} séries': '{n} séries',
@@ -81,7 +79,6 @@ const dictionary: Dictionary = {
   'Cette photo n’a pas pu être ouverte.': 'Não foi possível abrir esta foto.',
   'Cette séance n’est plus en cours.': 'Este treino já não está a decorrer.',
   'Cette séance n’existe plus.': 'Este treino já não existe.',
-  'Cette semaine': 'Esta semana',
   changer: 'mudar',
   Changer: 'Mudar',
   'Changer de personne': 'Mudar de pessoa',
@@ -375,7 +372,6 @@ const dictionary: Dictionary = {
   Séances: 'Treinos',
   'Séances échangées : {from} ⇄ {to}': 'Treinos trocados: {from} ⇄ {to}',
   Secondes: 'Segundos',
-  'Semaine bouclée, bravo ! 🔥': 'Semana fechada, boa! 🔥',
   'Semaine validée ✅ Tu pourras toujours la modifier.': 'Semana validada ✅ Podes sempre alterá-la.',
   Série: 'Série',
   'Série {n}': 'Série {n}',
@@ -565,6 +561,12 @@ const dictionary: Dictionary = {
   Version: 'Versão',
   'Mon planning de la semaine': 'O meu plano da semana',
   'Choisir une autre séance': 'Escolher outro treino',
+  'Créer mon exercice (nom au choix)': 'Criar o meu exercício (nome à escolha)',
+  'Curl araignée': 'Curl aranha',
+  'Le nouveau nom s’affiche partout : séances, historique et records.':
+    'O novo nome aparece em todo o lado: treinos, histórico e recordes.',
+  'ou choisis dans la liste': 'ou escolhe um da lista',
+  'Renommer l’exercice': 'Mudar o nome do exercício',
 };
 
 export default dictionary;

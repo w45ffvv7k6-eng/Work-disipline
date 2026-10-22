@@ -1071,11 +1071,6 @@ button:disabled {
   background: linear-gradient(135deg, rgba(var(--accent-rgb), 0.16), rgba(var(--accent-2-rgb), 0.12));
   border: 1px solid rgba(var(--accent-rgb), 0.25);
 }
-.ring-text {
-  fill: var(--text);
-  font-weight: 800;
-  font-size: 15px;
-}
 .ring-value {
   transition: stroke-dashoffset 0.8s ease;
 }
@@ -3133,4 +3128,26 @@ body {
 }
 .planning-body {
   animation: rise 0.25s ease both;
+}
+.program-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 12px 16px;
+  border-radius: var(--radius);
+  background: rgba(var(--surface-rgb), 0.7);
+}
+.program-row .program-name {
+  font-size: 0.95rem;
+}
+.create-own {
+  margin-bottom: 4px;
+}
+.picker-or {
+  margin: 10px 0 8px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  font-weight: 600;
 }

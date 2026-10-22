@@ -3,12 +3,21 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import { execSync } from 'node:child_process';
 
-/** Numéro de version : 1.<nombre de mises à jour>, il augmente à chaque mise en ligne. */
+/**
+ * Numéro de version « 1.40.003 » :
+ * - 40 = nombre total de mises à jour (augmente à chaque mise en ligne) ;
+ * - 003 = 3e mise à jour de la journée (heure de Suisse).
+ */
 function appVersion(): string {
   try {
-    return `1.${execSync('git rev-list --count HEAD').toString().trim()}`;
+    const times = execSync('git log --format=%ct').toString().trim().split('\n').map(Number);
+    const day = (seconds: number) =>
+      new Date(seconds * 1000).toLocaleDateString('fr-CH', { timeZone: 'Europe/Zurich' });
+    const today = day(times[0]);
+    const ofTheDay = times.filter((s) => day(s) === today).length;
+    return `1.${times.length}.${String(ofTheDay).padStart(3, '0')}`;
   } catch {
-    return '1.0';
+    return '1.0.000';
   }
 }
 

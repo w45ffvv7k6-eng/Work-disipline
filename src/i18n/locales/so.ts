@@ -20,9 +20,7 @@ const dictionary: Dictionary = {
   '{n} record': '{n} rikoor',
   '{n} records': '{n} rikoor',
   '{n} séance': '{n} tababar',
-  '{n} séance sur {goal}': '{n} ka mid ah {goal} tababar',
   '{n} séances': '{n} tababar',
-  '{n} séances sur {goal}': '{n} ka mid ah {goal} tababar',
   '{n} série': '{n} set',
   '{n} série non validée sera supprimée.': '{n} set oo aan la xaqiijin ayaa la tirtiri doonaa.',
   '{n} séries': '{n} set',
@@ -81,7 +79,6 @@ const dictionary: Dictionary = {
   'Cette photo n’a pas pu être ouverte.': 'Sawirkan lama furi karin.',
   'Cette séance n’est plus en cours.': 'Tababarkan hadda ma socdo.',
   'Cette séance n’existe plus.': 'Tababarkan mar dambe ma jiro.',
-  'Cette semaine': 'Toddobaadkan',
   changer: 'beddel',
   Changer: 'Beddel',
   'Changer de personne': 'Beddel qofka',
@@ -376,7 +373,6 @@ const dictionary: Dictionary = {
   Séances: 'Tababarada',
   'Séances échangées : {from} ⇄ {to}': 'Tababarada la is dhaafsaday: {from} ⇄ {to}',
   Secondes: 'Ilbiriqsiyo',
-  'Semaine bouclée, bravo ! 🔥': 'Toddobaadka waa la dhammeeyay, hambalyo! 🔥',
   'Semaine validée ✅ Tu pourras toujours la modifier.':
     'Toddobaadka waa la xaqiijiyay ✅ Weli wax baad ka beddeli kartaa.',
   Série: 'Set',
@@ -568,6 +564,12 @@ const dictionary: Dictionary = {
   Version: 'Nooca',
   'Mon planning de la semaine': 'Qorshahayga toddobaadka',
   'Choisir une autre séance': 'Dooro tababar kale',
+  'Créer mon exercice (nom au choix)': 'Samee jimicsigayga (magac kasta)',
+  'Curl araignée': 'Spider curl',
+  'Le nouveau nom s’affiche partout : séances, historique et records.':
+    'Magaca cusub meel walba wuu ka muuqdaa: tababarrada, taariikhda iyo rikoorrada.',
+  'ou choisis dans la liste': 'ama ka dooro liiska',
+  'Renommer l’exercice': 'Magac cusub sii jimicsiga',
 };
 
 export default dictionary;

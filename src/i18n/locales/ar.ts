@@ -20,9 +20,7 @@ const dictionary: Dictionary = {
   '{n} record': '{n} رقم قياسي',
   '{n} records': '{n} أرقام قياسية',
   '{n} séance': '{n} حصة',
-  '{n} séance sur {goal}': '{n} حصة من {goal}',
   '{n} séances': '{n} حصص',
-  '{n} séances sur {goal}': '{n} حصص من {goal}',
   '{n} série': '{n} مجموعة',
   '{n} série non validée sera supprimée.': '{n} مجموعة غير مؤكدة سيتم حذفها.',
   '{n} séries': '{n} مجموعات',
@@ -81,7 +79,6 @@ const dictionary: Dictionary = {
   'Cette photo n’a pas pu être ouverte.': 'تعذّر فتح هذه الصورة.',
   'Cette séance n’est plus en cours.': 'هذه الحصة لم تعد جارية.',
   'Cette séance n’existe plus.': 'هذه الحصة لم تعد موجودة.',
-  'Cette semaine': 'هذا الأسبوع',
   changer: 'تغيير',
   Changer: 'تغيير',
   'Changer de personne': 'تغيير الشخص',
@@ -373,7 +370,6 @@ const dictionary: Dictionary = {
   Séances: 'الحصص',
   'Séances échangées : {from} ⇄ {to}': 'تم تبادل الحصص: {from} ⇄ {to}',
   Secondes: 'ثوانٍ',
-  'Semaine bouclée, bravo ! 🔥': 'أسبوع مكتمل، أحسنت! 🔥',
   'Semaine validée ✅ Tu pourras toujours la modifier.': 'تم تأكيد الأسبوع ✅ يمكنك دائمًا تعديله.',
   Série: 'مجموعة',
   'Série {n}': 'المجموعة {n}',
@@ -555,6 +551,12 @@ const dictionary: Dictionary = {
   Version: 'الإصدار',
   'Mon planning de la semaine': 'خطتي لهذا الأسبوع',
   'Choisir une autre séance': 'اختر حصة أخرى',
+  'Créer mon exercice (nom au choix)': 'أنشئ تمريني (اسم من اختيارك)',
+  'Curl araignée': 'تمرين العنكبوت للبايسبس',
+  'Le nouveau nom s’affiche partout : séances, historique et records.':
+    'يظهر الاسم الجديد في كل مكان: الحصص والسجل والأرقام القياسية.',
+  'ou choisis dans la liste': 'أو اختر من القائمة',
+  'Renommer l’exercice': 'إعادة تسمية التمرين',
 };
 
 export default dictionary;

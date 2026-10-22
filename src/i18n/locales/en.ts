@@ -20,9 +20,7 @@ const dictionary: Dictionary = {
   '{n} record': '{n} PR',
   '{n} records': '{n} PRs',
   '{n} séance': '{n} workout',
-  '{n} séance sur {goal}': '{n} workout out of {goal}',
   '{n} séances': '{n} workouts',
-  '{n} séances sur {goal}': '{n} workouts out of {goal}',
   '{n} série': '{n} set',
   '{n} série non validée sera supprimée.': '{n} incomplete set will be deleted.',
   '{n} séries': '{n} sets',
@@ -81,7 +79,6 @@ const dictionary: Dictionary = {
   'Cette photo n’a pas pu être ouverte.': 'This photo couldn’t be opened.',
   'Cette séance n’est plus en cours.': 'This workout is no longer in progress.',
   'Cette séance n’existe plus.': 'This workout no longer exists.',
-  'Cette semaine': 'This week',
   changer: 'change',
   Changer: 'Change',
   'Changer de personne': 'Switch person',
@@ -375,7 +372,6 @@ const dictionary: Dictionary = {
   Séances: 'Workouts',
   'Séances échangées : {from} ⇄ {to}': 'Workouts swapped: {from} ⇄ {to}',
   Secondes: 'Seconds',
-  'Semaine bouclée, bravo ! 🔥': 'Week wrapped up, nice work! 🔥',
   'Semaine validée ✅ Tu pourras toujours la modifier.': 'Week confirmed ✅ You can still change it.',
   Série: 'Set',
   'Série {n}': 'Set {n}',
@@ -560,6 +556,12 @@ const dictionary: Dictionary = {
   Version: 'Version',
   'Mon planning de la semaine': 'My weekly plan',
   'Choisir une autre séance': 'Choose another workout',
+  'Créer mon exercice (nom au choix)': 'Create my exercise (any name)',
+  'Curl araignée': 'Spider curl',
+  'Le nouveau nom s’affiche partout : séances, historique et records.':
+    'The new name shows everywhere: workouts, history and PRs.',
+  'ou choisis dans la liste': 'or pick one from the list',
+  'Renommer l’exercice': 'Rename exercise',
 };
 
 export default dictionary;

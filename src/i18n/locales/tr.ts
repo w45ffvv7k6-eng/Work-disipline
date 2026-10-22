@@ -20,9 +20,7 @@ const dictionary: Dictionary = {
   '{n} record': '{n} rekor',
   '{n} records': '{n} rekor',
   '{n} séance': '{n} antrenman',
-  '{n} séance sur {goal}': '{n} / {goal} antrenman',
   '{n} séances': '{n} antrenman',
-  '{n} séances sur {goal}': '{n} / {goal} antrenman',
   '{n} série': '{n} set',
   '{n} série non validée sera supprimée.': 'Onaylanmamış {n} set silinecek.',
   '{n} séries': '{n} set',
@@ -81,7 +79,6 @@ const dictionary: Dictionary = {
   'Cette photo n’a pas pu être ouverte.': 'Bu fotoğraf açılamadı.',
   'Cette séance n’est plus en cours.': 'Bu antrenman artık devam etmiyor.',
   'Cette séance n’existe plus.': 'Bu antrenman artık yok.',
-  'Cette semaine': 'Bu hafta',
   changer: 'değiştir',
   Changer: 'Değiştir',
   'Changer de personne': 'Kişi değiştir',
@@ -373,7 +370,6 @@ const dictionary: Dictionary = {
   Séances: 'Antrenman',
   'Séances échangées : {from} ⇄ {to}': 'Antrenmanlar değişti: {from} ⇄ {to}',
   Secondes: 'Saniye',
-  'Semaine bouclée, bravo ! 🔥': 'Hafta tamam, bravo! 🔥',
   'Semaine validée ✅ Tu pourras toujours la modifier.': 'Hafta onaylandı ✅ İstediğin zaman değiştirebilirsin.',
   Série: 'Set',
   'Série {n}': 'Set {n}',
@@ -562,6 +558,12 @@ const dictionary: Dictionary = {
   Version: 'Sürüm',
   'Mon planning de la semaine': 'Haftalık planım',
   'Choisir une autre séance': 'Başka bir antrenman seç',
+  'Créer mon exercice (nom au choix)': 'Kendi egzersizimi oluştur (istediğin ad)',
+  'Curl araignée': 'Spider curl',
+  'Le nouveau nom s’affiche partout : séances, historique et records.':
+    'Yeni ad her yerde görünür: antrenmanlar, geçmiş ve rekorlar.',
+  'ou choisis dans la liste': 'ya da listeden seç',
+  'Renommer l’exercice': 'Egzersizi yeniden adlandır',
 };
 
 export default dictionary;

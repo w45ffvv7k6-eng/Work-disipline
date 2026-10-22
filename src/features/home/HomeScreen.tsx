@@ -15,14 +15,12 @@ import {
   startOfDay,
   suggestedSession,
   weekKey,
-  weeklyGoal,
   weekPlan,
   type DayPlan,
   type WeekAssignment,
 } from '../../domain/week';
 import { haptic, useFeedback } from '../../ui/feedback';
 import { MUSCLE_COLORS } from '../../ui/muscles';
-import { ProgressRing } from '../../ui/ProgressRing';
 import { Sheet } from '../../ui/Sheet';
 import { useNow } from '../../ui/useNow';
 import { locale, t, tn } from '../../i18n';
@@ -94,8 +92,6 @@ export function HomeScreen() {
   // Un planning enregistré pour un autre programme ne s'applique pas.
   const assignment = savedWeek && current && savedWeek.programId === current.program.id ? savedWeek.days : null;
   const plan = current ? weekPlan(current.program, current.templates, finished, today, assignment) : null;
-  const doneThisWeek = plan ? plan.reduce((n, d) => n + d.done.length, 0) : 0;
-  const goal = plan ? weeklyGoal(plan) : 0;
 
   /** Modifie le planning de la semaine (en partant du planning du programme s'il n'a jamais été modifié). */
   const editWeek = async (change: (a: WeekAssignment) => WeekAssignment, message?: string) => {
@@ -177,11 +173,7 @@ export function HomeScreen() {
           >
             <span className="grow">
               <span className="planning-title">🗓️ {t('Mon planning de la semaine')}</span>
-              <span className="planning-sub">
-                {goal > 0 && doneThisWeek >= goal
-                  ? t('Semaine bouclée, bravo ! 🔥')
-                  : tn(doneThisWeek, '{n} séance sur {goal}', '{n} séances sur {goal}', { goal })}
-              </span>
+              <span className="planning-sub">{t(current.program.name)}</span>
             </span>
             <span className="planning-chevron" aria-hidden="true">
               ▾
@@ -189,19 +181,12 @@ export function HomeScreen() {
           </button>
           {weekOpen && (
             <div className="planning-body">
-              <div className="week-summary">
-                <ProgressRing value={doneThisWeek} max={goal} />
-                <div className="grow">
-                  <div className="muted small">{t('Cette semaine')}</div>
-                  <div className="program-name">
-                    {goal > 0 && doneThisWeek >= goal
-                      ? t('Semaine bouclée, bravo ! 🔥')
-                      : tn(doneThisWeek, '{n} séance sur {goal}', '{n} séances sur {goal}', { goal })}
-                  </div>
-                  <button className="link-btn" onClick={() => setChoosingProgram(true)}>
-                    {t(current.program.name)} · {t('changer')}
-                  </button>
-                </div>
+              <div className="program-row">
+                <span className="muted small">{t('Programme')}</span>
+                <span className="grow program-name">{t(current.program.name)}</span>
+                <button className="link-btn" onClick={() => setChoosingProgram(true)}>
+                  {t('changer')}
+                </button>
               </div>
 
               <div className="days">
