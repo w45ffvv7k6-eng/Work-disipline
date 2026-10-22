@@ -552,6 +552,7 @@ const dictionary: Dictionary = {
     'ستُزال من هذا الهاتف. يمكنك إضافة صورة أخرى متى شئت.',
   'Photo de fond supprimée': 'تم حذف صورة الخلفية',
   'Supprimer ma photo de fond': 'حذف صورة الخلفية الخاصة بي',
+  Version: 'الإصدار',
 };
 
 export default dictionary;

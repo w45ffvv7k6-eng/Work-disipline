@@ -560,6 +560,7 @@ const dictionary: Dictionary = {
     'Se quitará de este móvil. Puedes poner otra cuando quieras.',
   'Photo de fond supprimée': 'Foto de fondo eliminada',
   'Supprimer ma photo de fond': 'Eliminar mi foto de fondo',
+  Version: 'Versión',
 };
 
 export default dictionary;

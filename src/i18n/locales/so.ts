@@ -565,6 +565,7 @@ const dictionary: Dictionary = {
     'Waa laga saari doonaa taleefankan. Mar kasta waad ku dari kartaa mid kale.',
   'Photo de fond supprimée': 'Sawirka gadaashiisa waa la tirtiray',
   'Supprimer ma photo de fond': 'Tirtir sawirkayga gadaashiisa',
+  Version: 'Nooca',
 };
 
 export default dictionary;

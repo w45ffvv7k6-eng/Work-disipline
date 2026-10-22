@@ -559,6 +559,7 @@ const dictionary: Dictionary = {
     'Bu telefondan kaldırılacak. İstediğin zaman yenisini ekleyebilirsin.',
   'Photo de fond supprimée': 'Arka plan fotoğrafı silindi',
   'Supprimer ma photo de fond': 'Arka plan fotoğrafımı sil',
+  Version: 'Sürüm',
 };
 
 export default dictionary;

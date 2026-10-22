@@ -4,6 +4,7 @@ import { people } from '../data/people';
 import { haptic } from './feedback';
 import { personPhoto, splashPhotoUrl } from './splashPhotos';
 import { t } from '../i18n';
+import { versionLabel } from '../version';
 
 /** Délai entre deux photos du fond. */
 const PHOTO_INTERVAL_MS = 1600;
@@ -93,6 +94,8 @@ export function WelcomeSplash() {
       >
         GO
       </button>
+
+      <div className="splash-version">{versionLabel(t('Version'))}</div>
 
       <div className="splash-signature">
         By <b>RPA</b>

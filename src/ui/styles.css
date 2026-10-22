@@ -3054,3 +3054,31 @@ body {
 .link-btn.danger-link {
   color: var(--danger);
 }
+
+/* Pas de zoom : ni à deux doigts, ni par double toucher (le défilement reste possible). */
+html,
+body {
+  touch-action: pan-x pan-y;
+}
+
+/* Numéro de version */
+.splash-version {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: calc(14px + var(--safe-bottom));
+  transform: translateX(-50%);
+  white-space: nowrap;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+}
+.app-version {
+  margin: 28px 0 8px;
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}

@@ -1,10 +1,24 @@
 import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { execSync } from 'node:child_process';
+
+/** Numéro de version : 1.<nombre de mises à jour>, il augmente à chaque mise en ligne. */
+function appVersion(): string {
+  try {
+    return `1.${execSync('git rev-list --count HEAD').toString().trim()}`;
+  } catch {
+    return '1.0';
+  }
+}
 
 export default defineConfig({
   // Chemins relatifs : l'appli fonctionne quel que soit le sous-dossier d'hébergement.
   base: './',
+  define: {
+    __APP_VERSION__: JSON.stringify(appVersion()),
+    __BUILD_DATE__: JSON.stringify(new Date().toISOString()),
+  },
   plugins: [
     react(),
     // Appli installable sur l'écran d'accueil, qui fonctionne sans connexion.

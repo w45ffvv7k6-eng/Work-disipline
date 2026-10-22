@@ -557,6 +557,7 @@ const dictionary: Dictionary = {
     'It will be removed from this phone. You can add another one anytime.',
   'Photo de fond supprimée': 'Background photo deleted',
   'Supprimer ma photo de fond': 'Delete my background photo',
+  Version: 'Version',
 };
 
 export default dictionary;

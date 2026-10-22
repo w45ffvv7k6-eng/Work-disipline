@@ -20,6 +20,7 @@ import {
 } from '../../ui/splashPhotos';
 import { PHOTO_CHANGED } from '../../ui/AppBackground';
 import { SettingsSection } from '../settings/SettingsSection';
+import { versionLabel } from '../../version';
 import { UserIcon } from '../../ui/icons';
 import { PageHeader } from '../../ui/PageHeader';
 import { Avatar, photoToAvatar, photoToBackground } from '../../ui/Avatar';
@@ -70,6 +71,7 @@ export function ProfileScreen() {
         <PersonSection avatar={avatar} />
         <BackupSection />
         <SettingsSection />
+        <AppVersion />
       </div>
     );
   }
@@ -172,6 +174,7 @@ export function ProfileScreen() {
       <InstallSection />
       <AccountSection />
       <SettingsSection />
+      <AppVersion />
 
       {editing && (
         <Sheet onClose={() => setEditing(false)} title={t('Modifier le profil')}>
@@ -457,4 +460,9 @@ function PersonSection({ avatar }: { avatar: AvatarState }) {
       </div>
     </>
   );
+}
+
+/** Numéro de version tout en bas du profil (il change à chaque mise à jour de l'appli). */
+function AppVersion() {
+  return <p className="app-version">{versionLabel(t('Version'))}</p>;
 }
