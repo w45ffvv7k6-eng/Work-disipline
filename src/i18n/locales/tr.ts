@@ -610,6 +610,17 @@ const dictionary: Dictionary = {
   'Semaine remise au planning du programme': 'Hafta program planına döndürüldü',
   'Touche un jour pour choisir sa séance ou le mettre en repos.':
     'Antrenmanını seçmek veya dinlenme günü yapmak için bir güne dokun.',
+  'Super !': 'Harika!',
+  'Voici ce qui a changé :': 'İşte yenilikler:',
+  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
+    '⭐ Favoriler: en çok yaptığın egzersizler, aramana gerek yok.',
+  '🎉 Nouvelle version {version}': '🎉 Yeni sürüm {version}',
+  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
+    '📅 Bir haftayı önceden planla: Program sekmesi, ⋯ ardından “Gelecek bir haftayı planla”.',
+  '📈 Fiche exercice : courbes des répétitions max et du lest.':
+    '📈 Egzersiz sayfası: maksimum tekrar ve ek ağırlık grafikleri.',
+  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
+    '😃 Her antrenmanın başında ruh halin ve Geçmiş’teki grafiği.',
 };
 
 export default dictionary;

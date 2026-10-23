@@ -4,6 +4,7 @@ import { App } from './App';
 import { requestPersistentStorage } from './data';
 import { applyTheme, cachedTheme } from './ui/theme';
 import { listenForInstallPrompt } from './features/install/install';
+import { markWhatsNewSeenOnFreshInstall } from './features/whatsnew/WhatsNew';
 import './ui/styles.css';
 import { applyLanguage, initialLanguage } from './i18n/react';
 
@@ -19,6 +20,7 @@ for (const gesture of ['gesturestart', 'gesturechange', 'gestureend']) {
 applyLanguage(initialLanguage());
 requestPersistentStorage();
 listenForInstallPrompt();
+markWhatsNewSeenOnFreshInstall();
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

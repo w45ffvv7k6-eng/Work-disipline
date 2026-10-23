@@ -608,6 +608,16 @@ const dictionary: Dictionary = {
   'Semaine remise au planning du programme': 'Week reset to the program schedule',
   'Touche un jour pour choisir sa séance ou le mettre en repos.':
     'Tap a day to choose its workout or make it a rest day.',
+  'Super !': 'Great!',
+  'Voici ce qui a changé :': 'Here’s what’s new:',
+  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
+    '⭐ Favorites: your most-done exercises, no need to search for them.',
+  '🎉 Nouvelle version {version}': '🎉 New version {version}',
+  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
+    '📅 Plan a week ahead: Program tab, ⋯ then “Plan an upcoming week”.',
+  '📈 Fiche exercice : courbes des répétitions max et du lest.': '📈 Exercise page: max reps and added weight charts.',
+  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
+    '😃 Your mood at the start of each workout, with its chart in History.',
 };
 
 export default dictionary;

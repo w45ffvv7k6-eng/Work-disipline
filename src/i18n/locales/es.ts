@@ -611,6 +611,17 @@ const dictionary: Dictionary = {
   'Semaine remise au planning du programme': 'Semana devuelta al plan del programa',
   'Touche un jour pour choisir sa séance ou le mettre en repos.':
     'Toca un día para elegir su entreno o ponerlo de descanso.',
+  'Super !': '¡Genial!',
+  'Voici ce qui a changé :': 'Esto es lo nuevo:',
+  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
+    '⭐ Favoritos: tus ejercicios más hechos, sin tener que buscarlos.',
+  '🎉 Nouvelle version {version}': '🎉 Nueva versión {version}',
+  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
+    '📅 Planifica una semana por adelantado: pestaña Programa, ⋯ y luego «Planificar una semana próxima».',
+  '📈 Fiche exercice : courbes des répétitions max et du lest.':
+    '📈 Ficha del ejercicio: gráficos de repeticiones máximas y de lastre.',
+  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
+    '😃 Tu estado de ánimo al empezar cada sesión, y su gráfico en el Historial.',
 };
 
 export default dictionary;

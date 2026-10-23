@@ -617,6 +617,17 @@ const dictionary: Dictionary = {
   'Semaine remise au planning du programme': 'Toddobaadka waxaa loo celiyay qorshaha barnaamijka',
   'Touche un jour pour choisir sa séance ou le mettre en repos.':
     'Taabo maalin si aad u doorato tababarkeeda ama aad nasasho uga dhigto.',
+  'Super !': 'Aad u fiican!',
+  'Voici ce qui a changé :': 'Waa kuwan waxa cusub:',
+  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
+    '⭐ Kuwa la jecel yahay: jimicsiyada aad ugu badan samaysid, adigoon raadin.',
+  '🎉 Nouvelle version {version}': '🎉 Nooc cusub {version}',
+  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
+    '📅 Qorshee toddobaad hore: tab-ka Barnaamij, ⋯ kadibna «Qorshee toddobaad soo socda».',
+  '📈 Fiche exercice : courbes des répétitions max et du lest.':
+    '📈 Bogga jimicsiga: jaantusyada ku celcelinta ugu badan iyo miisaanka dheeriga ah.',
+  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
+    '😃 Niyaddaada bilowga tababar kasta, iyo jaantuskeeda Taariikhda.',
 };
 
 export default dictionary;

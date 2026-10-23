@@ -601,6 +601,17 @@ const dictionary: Dictionary = {
   'Semaine du {from} au {to}': 'الأسبوع من {from} إلى {to}',
   'Semaine remise au planning du programme': 'تمت إعادة الأسبوع إلى خطة البرنامج',
   'Touche un jour pour choisir sa séance ou le mettre en repos.': 'المس يومًا لاختيار حصته أو جعله يوم راحة.',
+  'Super !': 'رائع!',
+  'Voici ce qui a changé :': 'إليك الجديد:',
+  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
+    '⭐ المفضلة: تمارينك الأكثر أداءً، دون الحاجة إلى البحث عنها.',
+  '🎉 Nouvelle version {version}': '🎉 إصدار جديد {version}',
+  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
+    '📅 خطط لأسبوع مسبقًا: تبويب البرنامج، ثم ⋯ ثم «خطط لأسبوع قادم».',
+  '📈 Fiche exercice : courbes des répétitions max et du lest.':
+    '📈 صفحة التمرين: رسمان بيانيان لأقصى عدد تكرارات وللوزن الإضافي.',
+  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
+    '😃 مزاجك في بداية كل حصة، ورسمه البياني في السجل.',
 };
 
 export default dictionary;
