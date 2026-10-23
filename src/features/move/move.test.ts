@@ -34,7 +34,7 @@ describe('code de transfert', () => {
 
   it('accepte le lien complet collé à la place du code', async () => {
     const code = await encodeTransfer(transfer);
-    expect(await decodeTransfer(`https://workanddiscipline.github.io/#transfert=${code}`)).toEqual(transfer);
+    expect(await decodeTransfer(`https://workanddiscipline-rpaa.ch/#transfert=${code}`)).toEqual(transfer);
   });
 
   it('refuse un texte qui n’est pas un code', async () => {

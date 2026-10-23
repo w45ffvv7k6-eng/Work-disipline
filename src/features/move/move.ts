@@ -10,7 +10,7 @@ import { isLang } from '../../i18n';
 import { CUSTOM_PHOTO, isImageDataUrl, SPLASH_PHOTOS } from '../../ui/splashPhotos';
 
 /** Nouvelle adresse de l'appli. */
-export const NEW_ORIGIN = 'https://workanddiscipline.github.io';
+export const NEW_ORIGIN = 'https://workanddiscipline-rpaa.ch';
 /** Ancienne adresse (GitHub Pages). */
 export const OLD_HOST = 'w45ffvv7k6-eng.github.io';
 
