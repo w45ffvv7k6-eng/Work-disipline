@@ -612,6 +612,7 @@ const dictionary: Dictionary = {
     '📈 صفحة التمرين: رسمان بيانيان لأقصى عدد تكرارات وللوزن الإضافي.',
   '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
     '😃 مزاجك في بداية كل حصة، ورسمه البياني في السجل.',
+  'Tourne ton téléphone à la verticale pour utiliser l’appli.': 'أدر هاتفك إلى الوضع العمودي لاستخدام التطبيق.',
 };
 
 export default dictionary;

@@ -618,6 +618,7 @@ const dictionary: Dictionary = {
   '📈 Fiche exercice : courbes des répétitions max et du lest.': '📈 Exercise page: max reps and added weight charts.',
   '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
     '😃 Your mood at the start of each workout, with its chart in History.',
+  'Tourne ton téléphone à la verticale pour utiliser l’appli.': 'Turn your phone upright to use the app.',
 };
 
 export default dictionary;

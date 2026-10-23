@@ -621,6 +621,7 @@ const dictionary: Dictionary = {
     '📈 Egzersiz sayfası: maksimum tekrar ve ek ağırlık grafikleri.',
   '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
     '😃 Her antrenmanın başında ruh halin ve Geçmiş’teki grafiği.',
+  'Tourne ton téléphone à la verticale pour utiliser l’appli.': 'Uygulamayı kullanmak için telefonunu dik tut.',
 };
 
 export default dictionary;

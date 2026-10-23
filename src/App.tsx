@@ -17,6 +17,7 @@ import { FeedbackProvider } from './ui/feedback';
 import { AppBackground } from './ui/AppBackground';
 import { ThemeSync } from './ui/ThemeSync';
 import { WelcomeSplash } from './ui/WelcomeSplash';
+import { PortraitOnly } from './ui/PortraitOnly';
 import { WhatsNew } from './features/whatsnew/WhatsNew';
 import { k, t as translate } from './i18n';
 import { LanguageProvider, useLanguage } from './i18n/react';
@@ -111,6 +112,7 @@ export function App() {
               </AuthGate>
             </PersonGate>
             <ThemeSync />
+            <PortraitOnly />
           </AuthProvider>
         </FeedbackProvider>
       </HashRouter>

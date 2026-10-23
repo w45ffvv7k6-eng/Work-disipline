@@ -3741,3 +3741,47 @@ body {
 .history-stats {
   margin-bottom: 12px;
 }
+
+/* ---------- Portrait uniquement : message quand un téléphone est à l'horizontale ---------- */
+
+.portrait-only {
+  display: none;
+}
+
+/* Téléphone à l'horizontale (peu de hauteur, assez de largeur : pas un clavier ouvert en portrait). */
+@media (orientation: landscape) and (max-height: 500px) and (min-width: 600px) {
+  .portrait-only {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 24px;
+    background: var(--bg);
+    color: var(--text);
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .portrait-only-icon {
+    font-size: 3rem;
+    animation: portrait-turn 1.6s ease-in-out infinite;
+  }
+  body:has(.portrait-only) {
+    overflow: hidden;
+  }
+}
+
+@keyframes portrait-turn {
+  0%,
+  30% {
+    transform: rotate(-90deg);
+  }
+  60%,
+  100% {
+    transform: rotate(0deg);
+  }
+}

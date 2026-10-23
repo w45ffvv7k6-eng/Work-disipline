@@ -627,6 +627,7 @@ const dictionary: Dictionary = {
     '📈 Scheda esercizio: grafici delle ripetizioni massime e della zavorra.',
   '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
     '😃 Il tuo umore all’inizio di ogni allenamento, con il grafico nello Storico.',
+  'Tourne ton téléphone à la verticale pour utiliser l’appli.': 'Ruota il telefono in verticale per usare l’app.',
 };
 
 export default dictionary;

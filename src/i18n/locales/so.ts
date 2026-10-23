@@ -628,6 +628,8 @@ const dictionary: Dictionary = {
     '📈 Bogga jimicsiga: jaantusyada ku celcelinta ugu badan iyo miisaanka dheeriga ah.',
   '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
     '😃 Niyaddaada bilowga tababar kasta, iyo jaantuskeeda Taariikhda.',
+  'Tourne ton téléphone à la verticale pour utiliser l’appli.':
+    'U rog telefoonkaaga si toosan si aad u isticmaasho app-ka.',
 };
 
 export default dictionary;
