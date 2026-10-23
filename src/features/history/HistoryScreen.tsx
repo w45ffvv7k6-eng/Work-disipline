@@ -115,7 +115,7 @@ export function HistoryScreen() {
       )}
 
       <h2 className="section-title">{t('Ma progression')}</h2>
-      <div className="stat-grid">
+      <div className="stat-grid history-stats">
         <div className="stat">
           <div className="stat-label">{t('Séances au total')}</div>
           <div className="stat-value">{history.length}</div>

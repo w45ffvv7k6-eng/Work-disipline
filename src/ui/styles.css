@@ -3736,3 +3736,8 @@ body {
   padding: 12px 14px;
   line-height: 1.4;
 }
+
+/* Espace entre les chiffres clés et le premier graphique de l'Historique. */
+.history-stats {
+  margin-bottom: 12px;
+}
