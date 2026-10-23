@@ -54,6 +54,8 @@ export default defineConfig({
         // Tout est gardé sur le téléphone : l'appli s'ouvre même sans réseau (salle de sport).
         globPatterns: ['**/*.{js,css,html,png,webp,svg}'],
         navigateFallback: 'index.html',
+        // La page « Télécharger » est un site à part : elle ne doit pas ouvrir l'appli à sa place.
+        navigateFallbackDenylist: [/\/telecharger\//],
         cleanupOutdatedCaches: true,
       },
     }),

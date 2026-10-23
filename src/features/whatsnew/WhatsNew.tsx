@@ -9,12 +9,10 @@ import { APP_VERSION } from '../../version';
  * Pour annoncer une nouvelle mise à jour : changer `id` et remplacer `items`.
  */
 export const WHATS_NEW = {
-  id: '2026-10-planifier-semaine',
+  id: '2026-10-celebration',
   items: [
-    k('📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».'),
-    k('😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.'),
-    k('⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.'),
-    k('📈 Fiche exercice : courbes des répétitions max et du lest.'),
+    k('🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.'),
+    k('📱 L’appli s’utilise maintenant uniquement à la verticale.'),
   ],
 };
 

@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Work &amp; Discipline – Appli de musculation gratuite</title>
+    <meta
+      name="description"
+      content="Work & Discipline : appli de musculation gratuite, sans pub et sans compte. Programme, chrono de repos, records et progression. Installe-la sur ton iPhone ou ton Android en 1 minute."
+    />
+    <link rel="canonical" href="https://w45ffvv7k6-eng.github.io/work-disipline/telecharger/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Work & Discipline – Appli de musculation gratuite" />
+    <meta property="og:description" content="Programme, chrono de repos, records et progression. Gratuit, sans pub, sans compte." />
+    <meta property="og:url" content="https://w45ffvv7k6-eng.github.io/work-disipline/telecharger/" />
+    <meta property="og:image" content="https://w45ffvv7k6-eng.github.io/work-disipline/icons/icon-512.png" />
+    <meta name="theme-color" content="#0b0a09" />
+    <!-- Ajoutée à l'écran d'accueil depuis cette page, c'est quand même l'appli qui s'ouvre. -->
+    <link rel="manifest" href="../manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="../icons/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" href="../icons/favicon-64.png" />
+    <meta name="apple-mobile-web-app-title" content="Work &amp; Discipline" />
+    <style>
+      :root {
+        --bg: #0b0a09;
+        --surface: #17130f;
+        --surface-2: #221c17;
+        --border: #372d24;
+        --text: #f6f0e8;
+        --text-dim: #ab9c8c;
+        --accent: #f2a03d;
+        --accent-2: #e8642c;
+        --accent-text: #1c1105;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family:
+          -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        line-height: 1.5;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: inherit;
+      }
+      .wrap {
+        max-width: 760px;
+        margin: 0 auto;
+        padding: 0 16px;
+      }
+
+      /* ---------- Haut de page ---------- */
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding: calc(48px + env(safe-area-inset-top, 0px)) 0 56px;
+        text-align: center;
+        background:
+          linear-gradient(180deg, rgba(11, 10, 9, 0.55), var(--bg) 92%),
+          url('../accueil/salle.webp') center 30% / cover no-repeat;
+      }
+      .hero::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 30%, rgba(242, 160, 61, 0.28), transparent 60%);
+        pointer-events: none;
+      }
+      .hero > * {
+        position: relative;
+      }
+      .logo {
+        width: min(70vw, 300px);
+        height: auto;
+        filter: drop-shadow(0 8px 30px rgba(242, 160, 61, 0.35));
+      }
+      h1 {
+        font-size: clamp(1.9rem, 6vw, 2.8rem);
+        line-height: 1.15;
+        margin: 18px 0 10px;
+        font-weight: 900;
+      }
+      .tagline {
+        color: var(--text-dim);
+        font-size: 1.1rem;
+        margin: 0 auto 26px;
+        max-width: 520px;
+      }
+      .badges {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 28px;
+      }
+      .badge {
+        padding: 6px 12px;
+        border-radius: 999px;
+        background: rgba(242, 160, 61, 0.14);
+        color: var(--accent);
+        font-weight: 800;
+        font-size: 0.9rem;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 56px;
+        padding: 0 28px;
+        border-radius: 16px;
+        border: 0;
+        font: inherit;
+        font-weight: 900;
+        font-size: 1.1rem;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: var(--accent-text);
+        box-shadow: 0 10px 30px rgba(232, 100, 44, 0.35);
+      }
+      .btn-ghost {
+        background: var(--surface-2);
+        color: var(--text);
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+      }
+      .hint {
+        color: var(--text-dim);
+        font-size: 0.9rem;
+        margin-top: 14px;
+      }
+
+      /* ---------- Sections ---------- */
+      section {
+        padding: 36px 0;
+      }
+      h2 {
+        font-size: 1.6rem;
+        line-height: 1.2;
+        margin: 0 0 6px;
+        font-weight: 900;
+      }
+      .sub {
+        color: var(--text-dim);
+        margin: 0 0 22px;
+      }
+      .features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 12px;
+      }
+      .feature {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 16px;
+      }
+      .feature .icon {
+        font-size: 1.8rem;
+      }
+      .feature h3 {
+        margin: 6px 0 4px;
+        font-size: 1.05rem;
+      }
+      .feature p {
+        margin: 0;
+        color: var(--text-dim);
+        font-size: 0.95rem;
+      }
+
+      /* ---------- Marche à suivre ---------- */
+      .tabs {
+        display: flex;
+        gap: 6px;
+        padding: 5px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        margin-bottom: 16px;
+      }
+      .tab {
+        flex: 1;
+        min-height: 48px;
+        border: 0;
+        border-radius: 10px;
+        background: transparent;
+        color: var(--text-dim);
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+      }
+      .tab[aria-selected='true'] {
+        background: var(--surface-2);
+        color: var(--text);
+        box-shadow: inset 0 0 0 1px var(--border);
+      }
+      .steps {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        counter-reset: step;
+      }
+      .steps[hidden] {
+        display: none;
+      }
+      .step {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 14px 16px;
+        counter-increment: step;
+      }
+      .step::before {
+        content: counter(step);
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--accent), var(--accent-2));
+        color: var(--accent-text);
+        font-weight: 900;
+      }
+      .step b {
+        display: block;
+        margin-bottom: 2px;
+      }
+      .step span {
+        color: var(--text-dim);
+        font-size: 0.95rem;
+      }
+      .key {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 1px 8px;
+        border-radius: 8px;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        color: var(--text);
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .key svg {
+        width: 16px;
+        height: 16px;
+      }
+      .done {
+        margin-top: 14px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: rgba(242, 160, 61, 0.12);
+        color: var(--text);
+      }
+
+      /* ---------- Questions ---------- */
+      details {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 0 16px;
+        margin-bottom: 8px;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 800;
+        padding: 14px 0;
+        list-style: none;
+      }
+      summary::-webkit-details-marker {
+        display: none;
+      }
+      summary::after {
+        content: '＋';
+        float: right;
+        color: var(--accent);
+      }
+      details[open] summary::after {
+        content: '－';
+      }
+      details p {
+        margin: 0 0 14px;
+        color: var(--text-dim);
+      }
+
+      footer {
+        padding: 30px 0 calc(30px + env(safe-area-inset-bottom, 0px));
+        text-align: center;
+        color: var(--text-dim);
+        font-size: 0.9rem;
+      }
+      footer .final {
+        margin-bottom: 26px;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="hero">
+      <div class="wrap">
+        <img class="logo" src="../accueil/logo.webp" alt="Work &amp; Discipline" width="720" height="320" />
+        <h1>Ton coach de muscu<br />dans ta poche</h1>
+        <p class="tagline">
+          Ton programme, tes séances avec chrono de repos, tes records et ta progression. Tout au même endroit.
+        </p>
+        <div class="badges">
+          <span class="badge">Gratuit</span>
+          <span class="badge">Sans pub</span>
+          <span class="badge">Sans compte</span>
+          <span class="badge">Marche sans internet</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="../">Ouvrir l’appli 💪</a>
+          <a class="btn btn-ghost" href="#installer">Comment l’installer ?</a>
+          <button class="btn btn-ghost" id="install-btn" type="button" hidden>📲 Installer</button>
+        </div>
+        <p class="hint">Rien à télécharger sur l’App Store : l’appli s’ajoute à ton écran d’accueil en 1 minute.</p>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section>
+        <h2>Ce que fait l’appli</h2>
+        <p class="sub">Pensée pour être simple, même si tu débutes.</p>
+        <div class="features">
+          <div class="feature">
+            <div class="icon">📅</div>
+            <h3>Ton programme</h3>
+            <p>Prise de masse, full body, course… ou ton propre programme. Planifie tes semaines à l’avance.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">⏱️</div>
+            <h3>Séance guidée</h3>
+            <p>Coche tes séries, le chrono de repos se lance tout seul et sonne quand c’est reparti.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">🏆</div>
+            <h3>Records et progrès</h3>
+            <p>Tes records sont détectés automatiquement, avec des courbes pour voir ta progression.</p>
+          </div>
+          <div class="feature">
+            <div class="icon">🌍</div>
+            <h3>8 langues</h3>
+            <p>Français, English, Español, Português, Italiano, Türkçe, العربية, Soomaali.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="installer">
+        <h2>Mettre l’appli sur ton écran d’accueil</h2>
+        <p class="sub">Choisis ton téléphone et suis les étapes : l’icône W&amp;D apparaîtra comme une vraie appli.</p>
+
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" id="tab-iphone" aria-controls="steps-iphone" aria-selected="true">
+            📱 iPhone
+          </button>
+          <button class="tab" role="tab" id="tab-android" aria-controls="steps-android" aria-selected="false">
+            🤖 Android
+          </button>
+        </div>
+
+        <ol class="steps" id="steps-iphone" role="tabpanel" aria-labelledby="tab-iphone">
+          <li class="step">
+            <div>
+              <b>Ouvre l’appli dans Safari</b>
+              <span>Touche le bouton <a href="../">Ouvrir l’appli</a> en haut de cette page.</span>
+            </div>
+          </li>
+          <li class="step">
+            <div>
+              <b>
+                Touche le bouton Partager
+                <span class="key"
+                  ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 3v12M8 7l4-4 4 4" />
+                    <path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1" /></svg
+                ></span>
+              </b>
+              <span>En bas de l’écran. Si tu ne le vois pas, touche d’abord <span class="key">⋯</span>.</span>
+            </div>
+          </li>
+          <li class="step">
+            <div>
+              <b>
+                Touche « Sur l’écran d’accueil »
+                <span class="key"
+                  ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <rect x="4" y="4" width="16" height="16" rx="4" />
+                    <path d="M12 8v8M8 12h8" /></svg
+                ></span>
+              </b>
+              <span>Fais défiler la liste vers le bas si besoin.</span>
+            </div>
+          </li>
+          <li class="step">
+            <div>
+              <b>Touche « Ajouter »</b>
+              <span>Si l’option « Ouvrir en tant qu’app web » apparaît, laisse-la activée.</span>
+            </div>
+          </li>
+          <li class="step">
+            <div>
+              <b>C’est prêt !</b>
+              <span>Ouvre l’appli avec l’icône W&amp;D de ton écran d’accueil, comme n’importe quelle appli.</span>
+            </div>
+          </li>
+        </ol>
+
+        <ol class="steps" id="steps-android" role="tabpanel" aria-labelledby="tab-android" hidden>
+          <li class="step">
+            <div>
+              <b>Ouvre l’appli dans Chrome</b>
+              <span>Touche le bouton <a href="../">Ouvrir l’appli</a> en haut de cette page.</span>
+            </div>
+          </li>
+          <li class="step">
+            <div>
+              <b>Touche le menu <span class="key">⋮</span></b>
+              <span>En haut à droite de l’écran.</span>
+            </div>
+          </li>
+          <li class="step">
+            <div>
+              <b>Touche « Installer l’application »</b>
+              <span>Ou « Ajouter à l’écran d’accueil », selon ton téléphone.</span>
+            </div>
+          </li>
+          <li class="step">
+            <div>
+              <b>Confirme avec « Installer »</b>
+              <span>L’icône W&amp;D apparaît sur ton écran d’accueil.</span>
+            </div>
+          </li>
+        </ol>
+
+        <p class="done">
+          💡 Une fois installée, l’appli fonctionne même sans internet (pratique à la salle) et se met à jour toute seule.
+        </p>
+      </section>
+
+      <section>
+        <h2>Questions fréquentes</h2>
+        <details>
+          <summary>C’est vraiment gratuit ?</summary>
+          <p>Oui, entièrement gratuit, sans publicité et sans abonnement.</p>
+        </details>
+        <details>
+          <summary>Où sont mes données ?</summary>
+          <p>
+            Sur ton téléphone, et nulle part ailleurs. Pas besoin de créer de compte. Tu peux faire une sauvegarde
+            depuis l’onglet Profil.
+          </p>
+        </details>
+        <details>
+          <summary>Pourquoi elle n’est pas sur l’App Store ?</summary>
+          <p>
+            C’est une appli web : elle s’installe directement depuis ton navigateur, sans passer par un magasin
+            d’applis. Elle reste légère et toujours à jour.
+          </p>
+        </details>
+        <details>
+          <summary>Je ne trouve pas « Sur l’écran d’accueil » sur iPhone</summary>
+          <p>
+            Vérifie que tu es bien dans Safari (l’icône boussole bleue). Dans le menu Partager, fais défiler vers le
+            bas : l’option est souvent un peu plus loin dans la liste.
+          </p>
+        </details>
+        <details>
+          <summary>Comment la supprimer ?</summary>
+          <p>Comme n’importe quelle appli : appui long sur l’icône, puis « Supprimer l’app ».</p>
+        </details>
+      </section>
+    </main>
+
+    <footer>
+      <div class="wrap">
+        <div class="final">
+          <a class="btn btn-primary" href="../">Ouvrir l’appli 💪</a>
+        </div>
+        Work &amp; Discipline · By RPA
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        // Onglets iPhone / Android, avec le bon téléphone sélectionné d'office.
+        var tabs = { iphone: document.getElementById('tab-iphone'), android: document.getElementById('tab-android') };
+        function show(which) {
+          for (var name in tabs) {
+            var selected = name === which;
+            tabs[name].setAttribute('aria-selected', String(selected));
+            document.getElementById('steps-' + name).hidden = !selected;
+          }
+        }
+        tabs.iphone.addEventListener('click', function () {
+          show('iphone');
+        });
+        tabs.android.addEventListener('click', function () {
+          show('android');
+        });
+        if (/android/i.test(navigator.userAgent)) show('android');
+
+        // Android : bouton « Installer » direct quand le téléphone le permet.
+        var button = document.getElementById('install-btn');
+        var prompt = null;
+        window.addEventListener('beforeinstallprompt', function (e) {
+          e.preventDefault();
+          prompt = e;
+          button.hidden = false;
+        });
+        button.addEventListener('click', function () {
+          if (!prompt) return;
+          prompt.prompt();
+          prompt = null;
+          button.hidden = true;
+        });
+      })();
+    </script>
+  </body>
+</html>

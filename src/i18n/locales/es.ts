@@ -613,15 +613,7 @@ const dictionary: Dictionary = {
     'Toca un día para elegir su entreno o ponerlo de descanso.',
   'Super !': '¡Genial!',
   'Voici ce qui a changé :': 'Esto es lo nuevo:',
-  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
-    '⭐ Favoritos: tus ejercicios más hechos, sin tener que buscarlos.',
   '🎉 Nouvelle version {version}': '🎉 Nueva versión {version}',
-  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
-    '📅 Planifica una semana por adelantado: pestaña Programa, ⋯ y luego «Planificar una semana próxima».',
-  '📈 Fiche exercice : courbes des répétitions max et du lest.':
-    '📈 Ficha del ejercicio: gráficos de repeticiones máximas y de lastre.',
-  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
-    '😃 Tu estado de ánimo al empezar cada sesión, y su gráfico en el Historial.',
   'Tourne ton téléphone à la verticale pour utiliser l’appli.': 'Pon tu teléfono en vertical para usar la app.',
   '{name}, aujourd’hui tu as gagné contre la flemme 😤': '{name}, hoy le ganaste a la pereza 😤',
   '{name}, c’est comme ça qu’on construit un corps ! 🏗️': '{name}, ¡así se construye un cuerpo! 🏗️',
@@ -653,6 +645,9 @@ const dictionary: Dictionary = {
   'Séance validée, {name} ! Rien ne t’arrête 🚀': '¡Sesión completada, {name}! Nada te detiene 🚀',
   'Touche pour voir ton bilan': 'Toca para ver tu resumen',
   'Work & Discipline : {name} l’a prouvé aujourd’hui 🏅': 'Work & Discipline: {name} lo demostró hoy 🏅',
+  '🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.':
+    '🎉 Fin de la sesión: una celebración con tu frase del día y tu mejor cifra subiendo.',
+  '📱 L’appli s’utilise maintenant uniquement à la verticale.': '📱 La app ahora solo se usa en vertical.',
 };
 
 export default dictionary;

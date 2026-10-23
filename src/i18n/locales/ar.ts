@@ -603,15 +603,7 @@ const dictionary: Dictionary = {
   'Touche un jour pour choisir sa séance ou le mettre en repos.': 'المس يومًا لاختيار حصته أو جعله يوم راحة.',
   'Super !': 'رائع!',
   'Voici ce qui a changé :': 'إليك الجديد:',
-  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
-    '⭐ المفضلة: تمارينك الأكثر أداءً، دون الحاجة إلى البحث عنها.',
   '🎉 Nouvelle version {version}': '🎉 إصدار جديد {version}',
-  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
-    '📅 خطط لأسبوع مسبقًا: تبويب البرنامج، ثم ⋯ ثم «خطط لأسبوع قادم».',
-  '📈 Fiche exercice : courbes des répétitions max et du lest.':
-    '📈 صفحة التمرين: رسمان بيانيان لأقصى عدد تكرارات وللوزن الإضافي.',
-  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
-    '😃 مزاجك في بداية كل حصة، ورسمه البياني في السجل.',
   'Tourne ton téléphone à la verticale pour utiliser l’appli.': 'أدر هاتفك إلى الوضع العمودي لاستخدام التطبيق.',
   '{name}, aujourd’hui tu as gagné contre la flemme 😤': '{name}، اليوم انتصرت على الكسل 😤',
   '{name}, c’est comme ça qu’on construit un corps ! 🏗️': '{name}، هكذا يُبنى الجسم! 🏗️',
@@ -643,6 +635,9 @@ const dictionary: Dictionary = {
   'Séance validée, {name} ! Rien ne t’arrête 🚀': 'الحصة مكتملة يا {name}! لا شيء يوقفك 🚀',
   'Touche pour voir ton bilan': 'المس لرؤية ملخصك',
   'Work & Discipline : {name} l’a prouvé aujourd’hui 🏅': 'Work & Discipline: {name} أثبت ذلك اليوم 🏅',
+  '🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.':
+    '🎉 نهاية الحصة: احتفال بعبارة اليوم وأفضل رقم لك وهو يرتفع.',
+  '📱 L’appli s’utilise maintenant uniquement à la verticale.': '📱 يُستخدم التطبيق الآن في الوضع العمودي فقط.',
 };
 
 export default dictionary;

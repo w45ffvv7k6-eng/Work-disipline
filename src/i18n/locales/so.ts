@@ -619,15 +619,7 @@ const dictionary: Dictionary = {
     'Taabo maalin si aad u doorato tababarkeeda ama aad nasasho uga dhigto.',
   'Super !': 'Aad u fiican!',
   'Voici ce qui a changé :': 'Waa kuwan waxa cusub:',
-  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
-    '⭐ Kuwa la jecel yahay: jimicsiyada aad ugu badan samaysid, adigoon raadin.',
   '🎉 Nouvelle version {version}': '🎉 Nooc cusub {version}',
-  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
-    '📅 Qorshee toddobaad hore: tab-ka Barnaamij, ⋯ kadibna «Qorshee toddobaad soo socda».',
-  '📈 Fiche exercice : courbes des répétitions max et du lest.':
-    '📈 Bogga jimicsiga: jaantusyada ku celcelinta ugu badan iyo miisaanka dheeriga ah.',
-  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
-    '😃 Niyaddaada bilowga tababar kasta, iyo jaantuskeeda Taariikhda.',
   'Tourne ton téléphone à la verticale pour utiliser l’appli.':
     'U rog telefoonkaaga si toosan si aad u isticmaasho app-ka.',
   '{name}, aujourd’hui tu as gagné contre la flemme 😤': '{name}, maanta waxaad ka adkaatay caajiska 😤',
@@ -660,6 +652,10 @@ const dictionary: Dictionary = {
   'Séance validée, {name} ! Rien ne t’arrête 🚀': 'Tababarka waa la dhammeeyay, {name}! Waxba kuma joojinayaan 🚀',
   'Touche pour voir ton bilan': 'Taabo si aad u aragto soo koobiddaada',
   'Work & Discipline : {name} l’a prouvé aujourd’hui 🏅': 'Work & Discipline: {name} ayaa maanta caddeeyay 🏅',
+  '🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.':
+    '🎉 Dhammaadka tababarka: dabaaldeg leh weedhaada maanta iyo tiradaada ugu fiican oo kor u kacaysa.',
+  '📱 L’appli s’utilise maintenant uniquement à la verticale.':
+    '📱 App-ka hadda waxaa lagu isticmaalaa oo kaliya si toosan.',
 };
 
 export default dictionary;

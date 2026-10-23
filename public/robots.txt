@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://w45ffvv7k6-eng.github.io/work-disipline/sitemap.xml

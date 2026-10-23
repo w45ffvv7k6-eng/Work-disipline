@@ -610,14 +610,7 @@ const dictionary: Dictionary = {
     'Tap a day to choose its workout or make it a rest day.',
   'Super !': 'Great!',
   'Voici ce qui a changé :': 'Here’s what’s new:',
-  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
-    '⭐ Favorites: your most-done exercises, no need to search for them.',
   '🎉 Nouvelle version {version}': '🎉 New version {version}',
-  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
-    '📅 Plan a week ahead: Program tab, ⋯ then “Plan an upcoming week”.',
-  '📈 Fiche exercice : courbes des répétitions max et du lest.': '📈 Exercise page: max reps and added weight charts.',
-  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
-    '😃 Your mood at the start of each workout, with its chart in History.',
   'Tourne ton téléphone à la verticale pour utiliser l’appli.': 'Turn your phone upright to use the app.',
   '{name}, aujourd’hui tu as gagné contre la flemme 😤': '{name}, today you beat laziness 😤',
   '{name}, c’est comme ça qu’on construit un corps ! 🏗️': '{name}, that’s how you build a body! 🏗️',
@@ -649,6 +642,9 @@ const dictionary: Dictionary = {
   'Séance validée, {name} ! Rien ne t’arrête 🚀': 'Workout done, {name}! Nothing can stop you 🚀',
   'Touche pour voir ton bilan': 'Tap to see your summary',
   'Work & Discipline : {name} l’a prouvé aujourd’hui 🏅': 'Work & Discipline: {name} proved it today 🏅',
+  '🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.':
+    '🎉 End of workout: a celebration with your phrase of the day and your best number counting up.',
+  '📱 L’appli s’utilise maintenant uniquement à la verticale.': '📱 The app now works in portrait mode only.',
 };
 
 export default dictionary;

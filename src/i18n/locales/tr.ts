@@ -612,15 +612,7 @@ const dictionary: Dictionary = {
     'Antrenmanını seçmek veya dinlenme günü yapmak için bir güne dokun.',
   'Super !': 'Harika!',
   'Voici ce qui a changé :': 'İşte yenilikler:',
-  '⭐ Favoris : tes exercices les plus faits, sans avoir à les chercher.':
-    '⭐ Favoriler: en çok yaptığın egzersizler, aramana gerek yok.',
   '🎉 Nouvelle version {version}': '🎉 Yeni sürüm {version}',
-  '📅 Planifie une semaine à l’avance : onglet Programme, ⋯ puis « Planifier une semaine à venir ».':
-    '📅 Bir haftayı önceden planla: Program sekmesi, ⋯ ardından “Gelecek bir haftayı planla”.',
-  '📈 Fiche exercice : courbes des répétitions max et du lest.':
-    '📈 Egzersiz sayfası: maksimum tekrar ve ek ağırlık grafikleri.',
-  '😃 Ton humeur au début de chaque séance, et sa courbe dans l’Historique.':
-    '😃 Her antrenmanın başında ruh halin ve Geçmiş’teki grafiği.',
   'Tourne ton téléphone à la verticale pour utiliser l’appli.': 'Uygulamayı kullanmak için telefonunu dik tut.',
   '{name}, aujourd’hui tu as gagné contre la flemme 😤': '{name}, bugün tembelliği yendin 😤',
   '{name}, c’est comme ça qu’on construit un corps ! 🏗️': '{name}, vücut işte böyle inşa edilir! 🏗️',
@@ -652,6 +644,9 @@ const dictionary: Dictionary = {
   'Séance validée, {name} ! Rien ne t’arrête 🚀': 'Antrenman tamam, {name}! Hiçbir şey seni durduramaz 🚀',
   'Touche pour voir ton bilan': 'Özetini görmek için dokun',
   'Work & Discipline : {name} l’a prouvé aujourd’hui 🏅': 'Work & Discipline: {name} bugün bunu kanıtladı 🏅',
+  '🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.':
+    '🎉 Antrenman sonu: günün sözü ve yükselen en iyi rakamınla bir kutlama.',
+  '📱 L’appli s’utilise maintenant uniquement à la verticale.': '📱 Uygulama artık yalnızca dikey modda kullanılıyor.',
 };
 
 export default dictionary;
