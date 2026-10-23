@@ -651,6 +651,26 @@ const dictionary: Dictionary = {
   '🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.':
     '🎉 Fim do treino: uma celebração com a tua frase do dia e o teu melhor número a subir.',
   '📱 L’appli s’utilise maintenant uniquement à la verticale.': '📱 A app agora só se usa na vertical.',
+  '🚚 L’appli déménage !': '🚚 A app está a mudar!',
+  'Ajoute-la à ton écran d’accueil, puis supprime l’ancienne icône.':
+    'Adiciona-a ao ecrã principal e depois apaga o ícone antigo.',
+  'Aucun code trouvé. Dans l’ancienne appli, touche « Préparer mes données » puis « Ouvrir la nouvelle appli ».':
+    'Nenhum código encontrado. Na app antiga, toca em «Preparar os meus dados» e depois «Abrir a nova app».',
+  'J’avais déjà l’appli : récupérer mes données': 'Já tinha a app: recuperar os meus dados',
+  'La nouvelle appli s’ouvre avec toutes tes données.': 'A nova app abre com todos os teus dados.',
+  'Le transfert n’a pas pu être préparé. Fais une sauvegarde depuis l’onglet Profil.':
+    'Não foi possível preparar a transferência. Faz uma cópia de segurança no separador Perfil.',
+  'Nouvelle adresse : {address}': 'Novo endereço: {address}',
+  'Ouvrir la nouvelle appli': 'Abrir a nova app',
+  'Plus tard': 'Mais tarde',
+  'Préparation…': 'A preparar…',
+  'Préparer mes données': 'Preparar os meus dados',
+  'Si elle est vide, touche « J’avais déjà l’appli » : ton code de transfert est copié.':
+    'Se estiver vazia, toca em «Já tinha a app»: o teu código de transferência foi copiado.',
+  'Tes données sont arrivées ✅ Bienvenue à la nouvelle adresse !':
+    'Os teus dados chegaram ✅ Bem-vindo ao novo endereço!',
+  'Tes séances sont enregistrées à l’ancienne adresse : emporte-les en deux touchers.':
+    'Os teus treinos estão guardados no endereço antigo: leva-os em dois toques.',
 };
 
 export default dictionary;

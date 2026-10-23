@@ -647,6 +647,24 @@ const dictionary: Dictionary = {
   '🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.':
     '🎉 Antrenman sonu: günün sözü ve yükselen en iyi rakamınla bir kutlama.',
   '📱 L’appli s’utilise maintenant uniquement à la verticale.': '📱 Uygulama artık yalnızca dikey modda kullanılıyor.',
+  '🚚 L’appli déménage !': '🚚 Uygulama taşınıyor!',
+  'Ajoute-la à ton écran d’accueil, puis supprime l’ancienne icône.': 'Ana ekranına ekle, sonra eski simgeyi sil.',
+  'Aucun code trouvé. Dans l’ancienne appli, touche « Préparer mes données » puis « Ouvrir la nouvelle appli ».':
+    'Kod bulunamadı. Eski uygulamada “Verilerimi hazırla”ya, sonra “Yeni uygulamayı aç”a dokun.',
+  'J’avais déjà l’appli : récupérer mes données': 'Uygulamam zaten vardı: verilerimi geri al',
+  'La nouvelle appli s’ouvre avec toutes tes données.': 'Yeni uygulama tüm verilerinle açılır.',
+  'Le transfert n’a pas pu être préparé. Fais une sauvegarde depuis l’onglet Profil.':
+    'Aktarım hazırlanamadı. Profil sekmesinden yedek al.',
+  'Nouvelle adresse : {address}': 'Yeni adres: {address}',
+  'Ouvrir la nouvelle appli': 'Yeni uygulamayı aç',
+  'Plus tard': 'Daha sonra',
+  'Préparation…': 'Hazırlanıyor…',
+  'Préparer mes données': 'Verilerimi hazırla',
+  'Si elle est vide, touche « J’avais déjà l’appli » : ton code de transfert est copié.':
+    'Boşsa “Uygulamam zaten vardı”ya dokun: aktarım kodun kopyalandı.',
+  'Tes données sont arrivées ✅ Bienvenue à la nouvelle adresse !': 'Verilerin geldi ✅ Yeni adrese hoş geldin!',
+  'Tes séances sont enregistrées à l’ancienne adresse : emporte-les en deux touchers.':
+    'Antrenmanların eski adreste kayıtlı: iki dokunuşla yanına al.',
 };
 
 export default dictionary;

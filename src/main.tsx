@@ -5,6 +5,7 @@ import { requestPersistentStorage } from './data';
 import { applyTheme, cachedTheme } from './ui/theme';
 import { listenForInstallPrompt } from './features/install/install';
 import { markWhatsNewSeenOnFreshInstall } from './features/whatsnew/WhatsNew';
+import { applyTransfer, transferCodeFromAddress } from './features/move/move';
 import './ui/styles.css';
 import { applyLanguage, initialLanguage } from './i18n/react';
 
@@ -22,8 +23,16 @@ requestPersistentStorage();
 listenForInstallPrompt();
 markWhatsNewSeenOnFreshInstall();
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-);
+// Arrivée depuis l'ancienne adresse avec un code de transfert : on installe les données, puis on redémarre.
+const transferCode = transferCodeFromAddress();
+if (transferCode) {
+  void applyTransfer(transferCode)
+    .catch(() => false)
+    .finally(() => window.location.replace(window.location.pathname + window.location.search));
+} else {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <App />
+    </StrictMode>,
+  );
+}

@@ -656,6 +656,26 @@ const dictionary: Dictionary = {
     '🎉 Dhammaadka tababarka: dabaaldeg leh weedhaada maanta iyo tiradaada ugu fiican oo kor u kacaysa.',
   '📱 L’appli s’utilise maintenant uniquement à la verticale.':
     '📱 App-ka hadda waxaa lagu isticmaalaa oo kaliya si toosan.',
+  '🚚 L’appli déménage !': '🚚 App-ku wuu guurayaa!',
+  'Ajoute-la à ton écran d’accueil, puis supprime l’ancienne icône.':
+    'Ku dar shaashaddaada hore, kadibna tirtir astaanta hore.',
+  'Aucun code trouvé. Dans l’ancienne appli, touche « Préparer mes données » puis « Ouvrir la nouvelle appli ».':
+    'Kood lama helin. App-ka hore, taabo «Diyaari xogtayda» kadibna «Fur app-ka cusub».',
+  'J’avais déjà l’appli : récupérer mes données': 'Horey ayaan u haystay app-ka: soo celi xogtayda',
+  'La nouvelle appli s’ouvre avec toutes tes données.': 'App-ka cusub wuxuu ku furmayaa xogtaada oo dhan.',
+  'Le transfert n’a pas pu être préparé. Fais une sauvegarde depuis l’onglet Profil.':
+    'Wareejinta lama diyaarin karin. Ka samee kayd tab-ka Profile-ka.',
+  'Nouvelle adresse : {address}': 'Cinwaanka cusub: {address}',
+  'Ouvrir la nouvelle appli': 'Fur app-ka cusub',
+  'Plus tard': 'Hadhow',
+  'Préparation…': 'Waa la diyaarinayaa…',
+  'Préparer mes données': 'Diyaari xogtayda',
+  'Si elle est vide, touche « J’avais déjà l’appli » : ton code de transfert est copié.':
+    'Haddii uu madhan yahay, taabo «Horey ayaan u haystay app-ka»: koodkaaga wareejinta waa la koobiyeeyay.',
+  'Tes données sont arrivées ✅ Bienvenue à la nouvelle adresse !':
+    'Xogtaadu way timid ✅ Ku soo dhawoow cinwaanka cusub!',
+  'Tes séances sont enregistrées à l’ancienne adresse : emporte-les en deux touchers.':
+    'Tababaradaadu waxay ku kaydsan yihiin cinwaanka hore: ku qaado laba taabasho.',
 };
 
 export default dictionary;
