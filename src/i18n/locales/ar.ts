@@ -638,25 +638,6 @@ const dictionary: Dictionary = {
   '🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.':
     '🎉 نهاية الحصة: احتفال بعبارة اليوم وأفضل رقم لك وهو يرتفع.',
   '📱 L’appli s’utilise maintenant uniquement à la verticale.': '📱 يُستخدم التطبيق الآن في الوضع العمودي فقط.',
-  '🚚 L’appli déménage !': '🚚 التطبيق ينتقل!',
-  'Ajoute-la à ton écran d’accueil, puis supprime l’ancienne icône.':
-    'أضفه إلى شاشتك الرئيسية، ثم احذف الأيقونة القديمة.',
-  'Aucun code trouvé. Dans l’ancienne appli, touche « Préparer mes données » puis « Ouvrir la nouvelle appli ».':
-    'لم يتم العثور على رمز. في التطبيق القديم، المس «تحضير بياناتي» ثم «فتح التطبيق الجديد».',
-  'J’avais déjà l’appli : récupérer mes données': 'كان لدي التطبيق: استرجاع بياناتي',
-  'La nouvelle appli s’ouvre avec toutes tes données.': 'يفتح التطبيق الجديد بكل بياناتك.',
-  'Le transfert n’a pas pu être préparé. Fais une sauvegarde depuis l’onglet Profil.':
-    'تعذر تحضير النقل. أنشئ نسخة احتياطية من تبويب الملف الشخصي.',
-  'Nouvelle adresse : {address}': 'العنوان الجديد: {address}',
-  'Ouvrir la nouvelle appli': 'فتح التطبيق الجديد',
-  'Plus tard': 'لاحقًا',
-  'Préparation…': 'جارٍ التحضير…',
-  'Préparer mes données': 'تحضير بياناتي',
-  'Si elle est vide, touche « J’avais déjà l’appli » : ton code de transfert est copié.':
-    'إذا كان فارغًا، المس «كان لدي التطبيق»: تم نسخ رمز النقل.',
-  'Tes données sont arrivées ✅ Bienvenue à la nouvelle adresse !': 'وصلت بياناتك ✅ مرحبًا بك في العنوان الجديد!',
-  'Tes séances sont enregistrées à l’ancienne adresse : emporte-les en deux touchers.':
-    'حصصك محفوظة في العنوان القديم: انقلها بلمستين.',
 };
 
 export default dictionary;

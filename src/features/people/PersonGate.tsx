@@ -8,7 +8,6 @@ import { Avatar } from '../../ui/Avatar';
 import { PhotoChoice } from '../../ui/PhotoChoice';
 import { DEFAULT_PHOTO, photoForName, splashPhotoUrl } from '../../ui/splashPhotos';
 import { getLanguage, t } from '../../i18n';
-import { RecoverFromOldApp } from '../move/MoveSheet';
 
 // Demande d'afficher « Qui s'entraîne ? » (bouton « Changer de personne » du profil).
 const PICK_KEY = 'wd-pick';
@@ -194,7 +193,6 @@ function PersonPicker({ onChoose }: { onChoose: (p: Person) => void }) {
             <button className="btn btn-primary btn-block btn-big" type="submit" disabled={!name.trim()}>
               {t('C’est parti')} 💪
             </button>
-            {list.length === 0 && <RecoverFromOldApp />}
             {list.length > 0 && (
               <button type="button" className="link-btn auth-link" onClick={() => setAdding(false)}>
                 ← {t('Retour')}

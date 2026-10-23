@@ -645,26 +645,6 @@ const dictionary: Dictionary = {
   '🎉 Fin de séance : une célébration avec ta phrase du jour et ton meilleur chiffre qui grimpe.':
     '🎉 End of workout: a celebration with your phrase of the day and your best number counting up.',
   '📱 L’appli s’utilise maintenant uniquement à la verticale.': '📱 The app now works in portrait mode only.',
-  '🚚 L’appli déménage !': '🚚 The app is moving!',
-  'Ajoute-la à ton écran d’accueil, puis supprime l’ancienne icône.':
-    'Add it to your home screen, then delete the old icon.',
-  'Aucun code trouvé. Dans l’ancienne appli, touche « Préparer mes données » puis « Ouvrir la nouvelle appli ».':
-    'No code found. In the old app, tap “Prepare my data” then “Open the new app”.',
-  'J’avais déjà l’appli : récupérer mes données': 'I already had the app: get my data back',
-  'La nouvelle appli s’ouvre avec toutes tes données.': 'The new app opens with all your data.',
-  'Le transfert n’a pas pu être préparé. Fais une sauvegarde depuis l’onglet Profil.':
-    'The transfer couldn’t be prepared. Make a backup from the Profile tab.',
-  'Nouvelle adresse : {address}': 'New address: {address}',
-  'Ouvrir la nouvelle appli': 'Open the new app',
-  'Plus tard': 'Later',
-  'Préparation…': 'Preparing…',
-  'Préparer mes données': 'Prepare my data',
-  'Si elle est vide, touche « J’avais déjà l’appli » : ton code de transfert est copié.':
-    'If it’s empty, tap “I already had the app”: your transfer code has been copied.',
-  'Tes données sont arrivées ✅ Bienvenue à la nouvelle adresse !':
-    'Your data has arrived ✅ Welcome to the new address!',
-  'Tes séances sont enregistrées à l’ancienne adresse : emporte-les en deux touchers.':
-    'Your workouts are saved at the old address: take them with you in two taps.',
 };
 
 export default dictionary;
