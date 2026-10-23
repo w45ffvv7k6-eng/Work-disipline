@@ -28,6 +28,33 @@
     <!-- Filet de sécurité : si l'appli ne démarre pas, on affiche l'erreur au lieu d'une page blanche. -->
     <script>
       (function () {
+        // Ouverte par erreur à la place de la page « Télécharger » (vieille copie gardée par le téléphone) :
+        // on met la copie à jour puis on recharge la vraie page, une seule fois.
+        if (/\/telecharger\//.test(location.pathname)) {
+          var retried = false;
+          try {
+            retried = sessionStorage.getItem('wd-telecharger') === '1';
+            sessionStorage.setItem('wd-telecharger', '1');
+          } catch (e) {}
+          if (!retried) {
+            var sw = navigator.serviceWorker;
+            (sw ? sw.getRegistrations() : Promise.resolve([]))
+              .then(function (list) {
+                return Promise.all(
+                  list.map(function (r) {
+                    return r.update();
+                  }),
+                );
+              })
+              .catch(function () {})
+              .then(function () {
+                setTimeout(function () {
+                  location.reload();
+                }, 1200);
+              });
+            return;
+          }
+        }
         var errors = [];
         function escape(text) {
           return String(text).replace(/[&<>"']/g, function (c) {
