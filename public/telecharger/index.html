@@ -11,7 +11,10 @@
     <link rel="canonical" href="https://w45ffvv7k6-eng.github.io/Work-disipline/telecharger/" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Installe Work & Discipline" />
-    <meta property="og:description" content="L'appli de musculation gratuite, sans pub et sans compte. Installée en 1 minute." />
+    <meta
+      property="og:description"
+      content="L'appli de musculation gratuite, sans pub et sans compte. Installée en 1 minute."
+    />
     <meta property="og:url" content="https://w45ffvv7k6-eng.github.io/Work-disipline/telecharger/" />
     <meta property="og:image" content="https://w45ffvv7k6-eng.github.io/Work-disipline/icons/icon-512.png" />
     <meta name="theme-color" content="#0b0a09" />
@@ -47,9 +50,7 @@
       body {
         margin: 0;
         min-height: 100dvh;
-        background:
-          radial-gradient(circle at 50% 0%, rgba(242, 160, 61, 0.22), transparent 55%),
-          var(--bg);
+        background: radial-gradient(circle at 50% 0%, rgba(242, 160, 61, 0.22), transparent 55%), var(--bg);
         color: var(--text);
         font-family:
           -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -62,10 +63,9 @@
         padding: calc(32px + env(safe-area-inset-top, 0px)) 16px calc(32px + env(safe-area-inset-bottom, 0px));
         text-align: center;
       }
-      .logo {
-        width: min(62vw, 240px);
-        height: auto;
-        filter: drop-shadow(0 8px 30px rgba(242, 160, 61, 0.35));
+      .sub {
+        color: var(--text-dim);
+        margin: 0;
       }
       h1 {
         font-size: clamp(1.8rem, 7.5vw, 2.4rem);
@@ -73,57 +73,13 @@
         margin: 14px 0 8px;
         font-weight: 900;
       }
-      .tagline {
-        color: var(--text-dim);
-        margin: 0 0 22px;
-        font-weight: 700;
-      }
-
-      /* ---------- Bouton principal ---------- */
-      .cta {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        min-height: 64px;
-        padding: 0 24px;
-        border: 0;
-        border-radius: 18px;
-        background: linear-gradient(135deg, var(--accent), var(--accent-2));
-        color: var(--accent-text);
-        font: inherit;
-        font-size: 1.25rem;
-        font-weight: 900;
-        text-decoration: none;
-        cursor: pointer;
-        box-shadow: 0 12px 34px rgba(232, 100, 44, 0.4);
-        animation: pulse 2.2s ease-in-out infinite;
-      }
-      .cta[hidden] {
-        display: none;
-      }
-      @keyframes pulse {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-        50% {
-          transform: scale(1.03);
-        }
-      }
-      @media (prefers-reduced-motion: reduce) {
-        .cta {
-          animation: none;
-        }
-      }
 
       /* ---------- Choix du téléphone ---------- */
       .tabs {
         display: flex;
         gap: 6px;
         padding: 5px;
-        margin: 26px 0 14px;
+        margin: 22px 0 14px;
         background: var(--surface);
         border: 1px solid var(--border);
         border-radius: 14px;
@@ -205,41 +161,17 @@
         width: 17px;
         height: 17px;
       }
-      .highlight {
-        border-color: var(--accent);
-        box-shadow: 0 0 0 3px rgba(242, 160, 61, 0.25);
-      }
-
-      .note {
-        margin: 18px 0 0;
-        color: var(--text-dim);
-        font-size: 0.92rem;
-      }
-      .open {
-        display: inline-block;
-        margin-top: 22px;
-        color: var(--text-dim);
-        font-weight: 700;
-      }
-      footer {
-        margin-top: 30px;
-        color: var(--text-dim);
-        font-size: 0.85rem;
-      }
     </style>
   </head>
   <body>
     <main>
-      <img class="logo" src="../accueil/logo.webp" alt="Work &amp; Discipline" width="720" height="320" />
-      <h1>Installe l’appli<br />en 1 minute</h1>
-      <p class="tagline">Gratuit · Sans pub · Sans compte</p>
-
-      <!-- Android : installation en un toucher quand le téléphone le permet. Sinon, on montre les étapes. -->
-      <button class="cta" id="install" type="button" hidden>📲 Installer l’appli</button>
-      <a class="cta" id="show-steps" href="#etapes">👇 Je l’installe maintenant</a>
+      <h1>Mettre l’appli sur ton écran d’accueil</h1>
+      <p class="sub">Choisis ton téléphone et suis les étapes.</p>
 
       <div class="tabs" role="tablist" id="etapes">
-        <button class="tab" role="tab" id="tab-iphone" aria-controls="steps-iphone" aria-selected="true">📱 iPhone</button>
+        <button class="tab" role="tab" id="tab-iphone" aria-controls="steps-iphone" aria-selected="true">
+          📱 iPhone
+        </button>
         <button class="tab" role="tab" id="tab-android" aria-controls="steps-android" aria-selected="false">
           🤖 Android
         </button>
@@ -253,12 +185,22 @@
           <div>
             Touche <span class="key">⋯</span> puis
             <span class="key" aria-label="Partager"
-              ><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              ><svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
                 <path d="M12 3v12M8 7l4-4 4 4" />
                 <path d="M6 11H5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-8a1 1 0 0 0-1-1h-1" /></svg
             ></span>
             <b>Partager</b>
-            <small>Le bouton ⋯ est en bas, à côté de l’adresse. Si tu vois directement le bouton Partager, touche-le.</small>
+            <small
+              >Le bouton ⋯ est en bas, à côté de l’adresse. Si tu vois directement le bouton Partager, touche-le.</small
+            >
           </div>
         </li>
         <li class="step">
@@ -270,7 +212,9 @@
         <li class="step">
           <div>
             Touche <b>« Ajouter »</b> 🎉
-            <small>Laisse « Ouvrir en tant qu’app web » activé. L’icône W&amp;D apparaît sur ton écran d’accueil.</small>
+            <small
+              >Laisse « Ouvrir en tant qu’app web » activé. L’icône W&amp;D apparaît sur ton écran d’accueil.</small
+            >
           </div>
         </li>
       </ol>
@@ -289,13 +233,11 @@
           </div>
         </li>
         <li class="step">
-          <div>Confirme avec <b>« Installer »</b> 🎉<small>L’icône W&amp;D apparaît sur ton écran d’accueil.</small></div>
+          <div>
+            Confirme avec <b>« Installer »</b> 🎉<small>L’icône W&amp;D apparaît sur ton écran d’accueil.</small>
+          </div>
         </li>
       </ol>
-
-      <p class="note">Ensuite, ouvre l’appli depuis l’icône W&amp;D : elle marche même sans internet.</p>
-      <a class="open" href="../">Ou ouvrir l’appli sans l’installer →</a>
-      <footer>Work &amp; Discipline · By RPA</footer>
     </main>
 
     <script>
@@ -315,36 +257,6 @@
         });
         // Le bon téléphone est choisi d'office.
         if (/android/i.test(navigator.userAgent)) show('android');
-
-        // « Je l'installe maintenant » : descend aux étapes et met en avant celle du bouton Partager / du menu.
-        document.getElementById('show-steps').addEventListener('click', function (e) {
-          e.preventDefault();
-          document.getElementById('etapes').scrollIntoView({ behavior: 'smooth', block: 'start' });
-          var visible = document.querySelector('.steps:not([hidden])');
-          var step = visible && visible.children[1];
-          if (!step) return;
-          step.classList.remove('highlight');
-          void step.offsetWidth;
-          step.classList.add('highlight');
-        });
-
-        // Android : vrai bouton « Installer » à la place des étapes quand Chrome le propose.
-        var install = document.getElementById('install');
-        var prompt = null;
-        window.addEventListener('beforeinstallprompt', function (e) {
-          e.preventDefault();
-          prompt = e;
-          install.hidden = false;
-          document.getElementById('show-steps').hidden = true;
-        });
-        install.addEventListener('click', function () {
-          if (!prompt) return;
-          prompt.prompt();
-          prompt = null;
-        });
-        window.addEventListener('appinstalled', function () {
-          install.textContent = '✅ Appli installée !';
-        });
       })();
     </script>
   </body>
