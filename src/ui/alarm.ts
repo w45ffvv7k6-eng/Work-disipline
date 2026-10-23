@@ -134,3 +134,15 @@ export function playAlarm(sound: string = DEFAULT_ALARM_SOUND, volume = 70) {
       for (let i = 0; i < 3; i++) tone(ctx, 880, t + i * 0.28, 0.2, 'sine', 0.6);
   }
 }
+
+/** Petite fanfare de victoire en fin de séance (au volume de l'alarme de repos). */
+export function playVictory(volume = 70) {
+  if (!ctx) return;
+  outputFor(ctx, volume);
+  duckOtherAudio();
+  const t = ctx.currentTime + 0.05;
+  // Montée rapide do-mi-sol, puis accord final tenu.
+  [523, 659, 784].forEach((f, i) => tone(ctx!, f, t + i * 0.11, 0.18, 'triangle', 0.4));
+  for (const f of [1047, 784, 659]) tone(ctx, f, t + 0.36, 1.1, 'triangle', 0.32);
+  tone(ctx, 1568, t + 0.36, 0.9, 'sine', 0.12);
+}

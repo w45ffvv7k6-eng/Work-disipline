@@ -45,11 +45,11 @@ export function markWhatsNewSeenOnFreshInstall() {
   }
 }
 
-/** Fenêtre « Nouvelle version » affichée après une mise à jour (jamais pendant une séance). */
+/** Fenêtre « Nouvelle version » affichée après une mise à jour (jamais pendant une séance ni sur son bilan). */
 export function WhatsNew() {
   const [open, setOpen] = useState(() => read() !== WHATS_NEW.id);
   const { pathname } = useLocation();
-  if (!open || pathname.startsWith('/seance/')) return null;
+  if (!open || pathname.startsWith('/seance/') || pathname.startsWith('/bravo/')) return null;
   const close = () => {
     markSeen();
     setOpen(false);

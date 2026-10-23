@@ -3785,3 +3785,164 @@ body {
     transform: rotate(0deg);
   }
 }
+
+/* ---------- Célébration de fin de séance ---------- */
+
+.celebration {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px 24px calc(24px + var(--safe-bottom));
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 38%, color-mix(in srgb, var(--accent) 35%, transparent), transparent 60%),
+    var(--bg);
+  color: var(--text);
+  animation: fade 0.25s ease;
+  transition: opacity 0.45s ease;
+  cursor: pointer;
+}
+.celebration.leaving {
+  opacity: 0;
+}
+
+.celebration-stage {
+  position: relative;
+  width: 150px;
+  height: 150px;
+}
+
+/* Logo : arrive, gonfle, puis éclate. */
+.celebration-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 220px;
+  height: auto;
+  margin: -49px 0 0 -110px;
+  animation: celebration-logo 0.95s ease forwards;
+}
+@keyframes celebration-logo {
+  0% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  72% {
+    transform: scale(1.12);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.celebration-burst span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  margin: -5px 0 0 -5px;
+  border-radius: 3px;
+  opacity: 0;
+  animation: celebration-burst 1.1s cubic-bezier(0.15, 0.7, 0.3, 1) forwards;
+}
+@keyframes celebration-burst {
+  0% {
+    transform: translate(0, 0) scale(1.2) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(var(--dx), calc(var(--dy) + 60px)) scale(0.6) rotate(320deg);
+    opacity: 0;
+  }
+}
+
+/* ✅ qui se dessine après l'explosion. */
+.celebration-check {
+  position: absolute;
+  inset: 0;
+  width: 150px;
+  height: 150px;
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.celebration-check circle {
+  stroke: var(--accent);
+  stroke-width: 7;
+  stroke-dasharray: 327;
+  stroke-dashoffset: 327;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  animation: celebration-draw 0.55s ease 0.9s forwards;
+}
+.celebration-check path {
+  stroke: var(--text);
+  stroke-width: 9;
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: celebration-draw 0.35s ease 1.35s forwards;
+}
+@keyframes celebration-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.celebration-phrase {
+  margin: 0;
+  max-width: 420px;
+  font-size: 1.55rem;
+  font-weight: 900;
+  line-height: 1.25;
+  opacity: 0;
+  animation: celebration-rise 0.5s ease 1.45s forwards;
+}
+.celebration-highlight {
+  opacity: 0;
+  animation: celebration-rise 0.45s ease 1.65s forwards;
+}
+.celebration-label {
+  color: var(--text-dim);
+  font-weight: 700;
+}
+.celebration-value {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.celebration-caption {
+  color: var(--text-dim);
+  font-weight: 700;
+}
+.celebration-skip {
+  position: absolute;
+  bottom: calc(22px + var(--safe-bottom));
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  opacity: 0;
+  animation: celebration-rise 0.4s ease 2.6s forwards;
+}
+@keyframes celebration-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}

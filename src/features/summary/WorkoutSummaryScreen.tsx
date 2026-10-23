@@ -1,13 +1,15 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import { formatDuration, formatKg, formatLastTime, formatVolume } from '../../domain/format';
-import { formatRecord, formatRecordValue } from '../../domain/records';
+import { formatRecord, formatRecordValue, type RecordHit } from '../../domain/records';
 import { compareToLast, percentChange } from '../../domain/stats';
 import { formatPace, paceSecPerKm } from '../../domain/cardio';
 import { summarizeWorkout } from '../../domain/summary';
 import { haptic } from '../../ui/feedback';
 import { t, tn } from '../../i18n';
+import { people } from '../../data/people';
+import { Celebration, type CelebrationHighlight } from './Celebration';
 
 /** Confettis aux couleurs du thème choisi (variables CSS), avec du blanc et du doré. */
 const CONFETTI_COLORS = ['var(--accent)', 'var(--accent-2)', '#ffd166', '#f6f0e8', 'var(--accent)', 'var(--accent-2)'];
@@ -16,9 +18,14 @@ const CONFETTI_COLORS = ['var(--accent)', 'var(--accent-2)', '#ffd166', '#f6f0e8
 export function WorkoutSummaryScreen() {
   const { id = '' } = useParams();
   const navigate = useNavigate();
-  const { workouts } = useRepositories();
+  const { workouts, settings: settingsRepo, profile } = useRepositories();
   const detail = useSubscribable(() => workouts.watchDetail(id), [id]);
   const history = useSubscribable(() => workouts.watchHistory(), []);
+  const settings = useSubscribable(() => settingsRepo.watch(), []);
+  const me = useSubscribable(() => profile.watch(), []);
+  // Célébration une seule fois par séance (pas de nouveau si on revient sur le bilan).
+  const [celebrating, setCelebrating] = useState(() => !wasCelebrated(id));
+  const endCelebration = useCallback(() => setCelebrating(false), []);
 
   // Confettis générés une fois (positions et délais aléatoires).
   const confetti = useMemo(
@@ -33,9 +40,12 @@ export function WorkoutSummaryScreen() {
     [],
   );
 
-  useEffect(() => haptic([40, 60, 40, 60, 120]), []);
+  useEffect(() => {
+    if (!celebrating) haptic([40, 60, 40, 60, 120]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  if (detail === undefined || !history) return null;
+  if (detail === undefined || !history || !settings || me === undefined) return null;
   if (detail === null) return <Navigate to="/" replace />;
 
   const { workout, exercises } = detail;
@@ -64,6 +74,18 @@ export function WorkoutSummaryScreen() {
       (e.records.get(s.id) ?? []).map((hit) => ({ exercise: t(e.exercise.name), hit, setId: s.id })),
     ),
   );
+
+  if (celebrating) {
+    return (
+      <Celebration
+        onStart={() => markCelebrated(id)}
+        name={me?.firstName || people.active()?.name || ''}
+        highlight={celebrationHighlight(records, volumeChange, summary)}
+        volume={settings.alarmVolume ?? 70}
+        onDone={endCelebration}
+      />
+    );
+  }
 
   return (
     <div className="screen bravo">
@@ -192,4 +214,68 @@ export function WorkoutSummaryScreen() {
       </button>
     </div>
   );
+}
+
+const CELEBRATED_KEY = 'wd-celebrated';
+
+function wasCelebrated(id: string): boolean {
+  try {
+    return sessionStorage.getItem(CELEBRATED_KEY) === id;
+  } catch {
+    return false;
+  }
+}
+
+function markCelebrated(id: string) {
+  try {
+    sessionStorage.setItem(CELEBRATED_KEY, id);
+  } catch {
+    // stockage indisponible : sans gravité
+  }
+}
+
+/** Poids moyen d'une voiture, pour « l'équivalent de N voitures ». */
+const CAR_KG = 1300;
+
+/** Le chiffre qui fait plaisir : un record, sinon un progrès, sinon le total de la séance. */
+function celebrationHighlight(
+  records: { exercise: string; hit: RecordHit }[],
+  volumeChange: number | null,
+  summary: { volumeKg: number; distanceKm: number; setCount: number },
+): CelebrationHighlight {
+  const record = records[0];
+  if (record) {
+    const { hit } = record;
+    return {
+      label: tn(records.length, '🏆 Nouveau record !', '🏆 {n} nouveaux records !'),
+      render: (p) =>
+        formatRecordValue(
+          p < 1 && hit.type !== 'bestSpeed' ? { ...hit, value: Math.round(hit.value * p) } : hit,
+          formatKg,
+        ),
+      caption: record.exercise,
+    };
+  }
+  if (volumeChange !== null && volumeChange > 0) {
+    return {
+      label: t('📈 Tu progresses !'),
+      render: (p) => `+${Math.round(volumeChange * p)} %`,
+      caption: t('de volume par rapport à la dernière fois'),
+    };
+  }
+  if (summary.volumeKg > 0) {
+    const cars = Math.round(summary.volumeKg / CAR_KG);
+    return {
+      label: t('💪 Soulevé aujourd’hui'),
+      render: (p) => `${formatKg(Math.round(summary.volumeKg * p))} kg`,
+      caption: cars >= 1 ? tn(cars, 'l’équivalent de {n} voiture 🚗', 'l’équivalent de {n} voitures 🚗') : undefined,
+    };
+  }
+  if (summary.distanceKm > 0) {
+    return {
+      label: t('🏃 Distance courue'),
+      render: (p) => `${formatKg(Math.round(summary.distanceKm * p * 10) / 10)} km`,
+    };
+  }
+  return { label: t('✅ Séries terminées'), render: (p) => String(Math.round(summary.setCount * p)) };
 }
