@@ -63,6 +63,19 @@
         padding: calc(32px + env(safe-area-inset-top, 0px)) 16px calc(32px + env(safe-area-inset-bottom, 0px));
         text-align: center;
       }
+      .logo {
+        width: min(52vw, 200px);
+        height: auto;
+        filter: drop-shadow(0 8px 26px rgba(242, 160, 61, 0.35));
+      }
+      footer {
+        margin-top: 28px;
+        color: var(--text-dim);
+        font-size: 0.9rem;
+      }
+      footer b {
+        color: var(--text);
+      }
       .sub {
         color: var(--text-dim);
         margin: 0;
@@ -165,6 +178,7 @@
   </head>
   <body>
     <main>
+      <img class="logo" src="../accueil/logo.webp" alt="Work &amp; Discipline" width="720" height="320" />
       <h1>Mettre l’appli sur ton écran d’accueil</h1>
       <p class="sub">Choisis ton téléphone et suis les étapes.</p>
 
@@ -238,6 +252,7 @@
           </div>
         </li>
       </ol>
+      <footer><b>Work &amp; Discipline</b> · By RPA</footer>
     </main>
 
     <script>
