@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRepositories, useSubscribable } from '../../data';
 import { people } from '../../data/people';
@@ -45,6 +45,9 @@ const PREVIEW_COUNT = 3;
 /** Un jour peut être réorganisé s'il n'est pas passé et qu'aucune séance n'y a encore été faite. */
 const isEditable = (d: DayPlan) => !d.isPast && d.done.length === 0;
 
+/** Programme suivi d'office à la première ouverture. */
+const DEFAULT_PROGRAM_ID = 'prog-prise-de-masse';
+
 export function HomeScreen() {
   const { workouts, programs, settings: settingsRepo, exercises, profile, weekPlans } = useRepositories();
   const navigate = useNavigate();
@@ -69,6 +72,12 @@ export function HomeScreen() {
 
   const exerciseById = useMemo(() => new Map((library ?? []).map((e) => [e.id, e])), [library]);
   const current = allPrograms?.find((p) => p.program.id === settings?.activeProgramId);
+  // Pas de choix à faire au premier lancement : on suit d'office « Prise de masse » (ou le 1er programme).
+  const fallbackProgramId = (allPrograms?.find((p) => p.program.id === DEFAULT_PROGRAM_ID) ?? allPrograms?.[0])?.program
+    .id;
+  useEffect(() => {
+    if (settings && !current && fallbackProgramId) void settingsRepo.update({ activeProgramId: fallbackProgramId });
+  }, [settings, current, fallbackProgramId, settingsRepo]);
 
   if (active === undefined || !finished || !history || !allPrograms || !settings || savedWeek === undefined)
     return null;
@@ -159,7 +168,7 @@ export function HomeScreen() {
         </button>
       )}
 
-      {!current && (
+      {!current && allPrograms.length === 0 && (
         <>
           <h2 className="section-title">{t('Choisis ton programme')}</h2>
           <ProgramChoices programs={allPrograms} onPick={(id) => settingsRepo.update({ activeProgramId: id })} />
